@@ -2,6 +2,7 @@
 import { reactive /* , ref */ } from "vue";
 import router from "../router";
 import LoginRepository from "../repositories/login/LoginRepository";
+import { ILoginInfo } from "../repositories/login/ILoginInfo";
 // const email = ref(""); -- USE REF TO SINGLE VALUES AND REACTIVE TO OBJECTS
 // const password = ref("");
 const loginForm = reactive({ email: '', password: '' });
@@ -9,12 +10,15 @@ const loginForm = reactive({ email: '', password: '' });
 const doLogin = (e: Event) => {
   e.preventDefault();
   LoginRepository.doLogin(loginForm)
-    .then(() => { router.push('/dashboard'); })
+    .then((data: ILoginInfo) => {
+      console.log(data);
+      router.push({ name: 'dashboard' });
+    })
     .catch((error) => { console.log({ error }); });
 }
 
 const handleUserLoggedIn = () => {
-  if (LoginRepository.canUseLoginInfo) router.push('/dashboard');
+  if (LoginRepository.canUseLoginInfo()) router.push('/dashboard');
 };
 
 handleUserLoggedIn();

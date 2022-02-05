@@ -4,6 +4,8 @@ import router from "../router";
 import LoginRepository from "../repositories/login/LoginRepository";
 import PasswordRepository from "../repositories/passwords/PasswordRepository";
 
+import Sidebar from "../components/dashboard/Sidebar.vue";
+
 const passwords = ref([]);
 
 const mount = () : void => {
@@ -28,6 +30,15 @@ mount();
 </script>
 
 <template>
-  <div>Welcome to Dashboard</div>
-  {{ passwords }}
+  <div class="flex flex-no-wrap">
+    <Sidebar />
+    <!-- Remove class [ h-64 ] when adding a card block -->
+    <div class="container mx-auto py-10 h-64 md:w-4/5 w-11/12 px-6">
+      <!-- Remove class [ border-dashed border-2 border-gray-300 ] to remove dotted border -->
+      <div class="w-full h-full rounded border-dashed border-2 border-gray-300">
+        <div>Welcome to Dashboard</div>
+        {{ passwords }}
+      </div>
+    </div>
+  </div>
 </template>

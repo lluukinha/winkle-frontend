@@ -17,9 +17,8 @@ const Repository = axios.create({
 Repository.interceptors.request.use(async (config: AxiosRequestConfig) => {
   const isJwtExpired = !LoginRepository.canUseLoginInfo;
   if (isJwtExpired) return;
-  if (LoginRepository.loginData && config.headers) {
-    config.headers.Authorization = `Bearer ${LoginRepository.loginData.access_token}`;
-  }
+  const login = LoginRepository.loginData();
+  if (login && config.headers) config.headers.Authorization = `Bearer ${login.access_token}`;
   return config;
 });
 
