@@ -2,24 +2,28 @@
 import Modal from "../shared/Modal.vue";
 import { IPassword } from "../../repositories/passwords/IPassword";
 import { ref, reactive } from "@vue/reactivity";
-import { Ref } from "vue";
+import { FormHTMLAttributes, Ref } from "vue";
 import PasswordRepository from "../../repositories/passwords/PasswordRepository";
 import LoadingScript from "../../scripts/LoadingScript";
-const props = defineProps<{ password: IPassword }>();
-const emit = defineEmits(["close", "save"]);
 
+const emit = defineEmits(["close", "save"]);
+const password : Readonly<IPassword> = reactive({
+  type: 'password',
+  name: '',
+  description: '',
+  login: '',
+  password: '',
+  url: ''
+});
 const formSubmit : Ref<HTMLElement> = ref(null);
-const updatedPassword : Readonly<IPassword> = reactive(JSON.parse(JSON.stringify(props.password)));
 const isShowingLogin : Ref<Boolean> = ref(false);
 const isShowingPassword : Ref<Boolean> = ref(false);
-
-const copy = (text: string): void => { navigator.clipboard.writeText(text); };
-const sendForm = () => { formSubmit.value.click(); };
 const handleClose = () => { emit("close"); };
+const sendForm = () => { formSubmit.value.click(); };
 const handleSave = (e: Event) => {
   e.preventDefault();
   LoadingScript.setLoading(true);
-  PasswordRepository.updatePassword(updatedPassword)
+  PasswordRepository.createPassword(password)
     .then((newPass : IPassword) => { emit("save", newPass); })
     .catch(() => { console.log('something went wrong'); })
     .finally(() => { LoadingScript.setLoading(false); });
@@ -28,10 +32,8 @@ const handleSave = (e: Event) => {
 
 <template>
   <Modal @close="handleClose()" @save="sendForm()">
-    <h2 class="text-xl font-bold py-4">Edit Password</h2>
-    <!-- p class="text-sm text-gray-500 px-8">
-      Do you really want to delete your account? This process cannot be undone
-    </p -->
+    <h2 class="text-xl font-bold py-4">Create new Password</h2>
+
     <form class="w-full" @submit="handleSave">
       <button type="submit" class="hidden" ref="formSubmit"></button>
       <div class="md:flex md:items-center mb-6">
@@ -67,9 +69,9 @@ const handleSave = (e: Event) => {
             "
             id="inline-full-name"
             type="text"
-            v-model="updatedPassword.name"
-            placeholder="Application name"
+            v-model="password.name"
             required
+            placeholder="Application name"
           />
         </div>
       </div>
@@ -90,14 +92,7 @@ const handleSave = (e: Event) => {
             for="inline-full-login"
           >
             Login
-            <span class="ml-2 cursor-pointer" @click="copy(updatedPassword.login)">
-              <!-- copy icon -->
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-              </svg>
-              <!-- end copy icon -->
-            </span>
-            <span @click="isShowingLogin = !isShowingLogin" title="Show/hide password" class="cursor-pointer">
+            <span @click="isShowingLogin = !isShowingLogin" title="Show/hide login" class="cursor-pointer">
               <!-- EYE ICON -->
               <svg v-if="!isShowingLogin" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -127,7 +122,7 @@ const handleSave = (e: Event) => {
             "
             id="inline-full-login"
             :type="isShowingLogin ? 'text' : 'password'"
-            v-model="updatedPassword.login"
+            v-model="password.login"
             placeholder="login/username"
           />
         </div>
@@ -149,13 +144,6 @@ const handleSave = (e: Event) => {
             for="inline-password"
           >
             Password
-            <span class="ml-2 cursor-pointer" @click="copy(updatedPassword.password)">
-              <!-- copy icon -->
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-              </svg>
-              <!-- end copy icon -->
-            </span>
             <span @click="isShowingPassword = !isShowingPassword" title="Show/hide password" class="cursor-pointer">
               <!-- EYE ICON -->
               <svg v-if="!isShowingPassword" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -187,7 +175,7 @@ const handleSave = (e: Event) => {
             id="inline-password"
             :type="isShowingPassword ? 'text' : 'password'"
             placeholder="******************"
-            v-model="updatedPassword.password"
+            v-model="password.password"
           />
         </div>
       </div>
@@ -225,7 +213,7 @@ const handleSave = (e: Event) => {
             "
             id="inline-full-url"
             type="text"
-            v-model="updatedPassword.url"
+            v-model="password.url"
             placeholder="Example: https://www.facebook.com"
           />
         </div>
@@ -264,7 +252,7 @@ const handleSave = (e: Event) => {
             "
             id="inline-full-desc"
             type="text"
-            v-model="updatedPassword.description"
+            v-model="password.description"
           />
         </div>
       </div>

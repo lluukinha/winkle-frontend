@@ -17,7 +17,7 @@ mount();
 </script>
 
 <template>
-  <div class="flex flex-no-wrap">
+  <div class="flex flex-no-wrap bg-gray-100">
     <Sidebar />
     <!-- Remove class [ h-64 ] when adding a card block -->
     <div class="container mx-auto py-10 h-64 md:w-4/5 w-11/12 px-6">

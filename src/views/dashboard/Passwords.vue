@@ -2,33 +2,44 @@
 import { Ref, ref } from "vue";
 import { IPassword } from "../../repositories/passwords/IPassword";
 import PasswordRepository from "../../repositories/passwords/PasswordRepository";
-import Alert from "../../scripts/Alert";
+import LoadingScript from "../../scripts/LoadingScript";
 
 import EditPasswordModal from "../../components/password/EditPasswordModal.vue";
+import PasswordCard from "../../components/password/PasswordCard.vue";
+import CreatePasswordModal from "../../components/password/CreatePasswordModal.vue";
 
 const passwords: Ref<IPassword[]> = ref([]);
 const editingPassword: Ref<IPassword | null> = ref(null);
+const isCreating: Ref<boolean> = ref(false);
 
 const getPasswords = () => {
+  LoadingScript.setLoading(true);
   PasswordRepository.getPasswords()
-    .then(({ data }) => {
-      console.log(data);
-      passwords.value = data;
+    .then((passwordList: IPassword[]) => {
+      passwords.value = passwordList;
     })
     .catch((errors) => {
       console.log(errors);
+    })
+    .finally(() => {
+      LoadingScript.setLoading(false);
     });
 };
 
-const copy = (title: string, textToCopy: string): void => {
-  navigator.clipboard.writeText(textToCopy);
-  Alert.showWarning(`${title} copied`, "text copied to your clipboard", 1000);
+const includePasswordInList = (password: IPassword) => {
+  passwords.value.push(password);
+  isCreating.value = false;
 };
 
 const changePasswordInList = (password: IPassword) => {
-  const index = passwords.value.findIndex(p => p.id === password.id);
+  const index = passwords.value.findIndex((p) => p.id === password.id);
   passwords.value[index] = password;
   editingPassword.value = null;
+};
+
+const removePasswordFromList = (passwordId: number) => {
+  const index = passwords.value.findIndex((p) => Number(p.id) === passwordId);
+  passwords.value.splice(index, 1);
 };
 
 getPasswords();
@@ -41,43 +52,49 @@ getPasswords();
     @close="editingPassword = null"
     @save="changePasswordInList"
   />
+  <CreatePasswordModal
+    v-if="isCreating"
+    @close="isCreating = false"
+    @save="includePasswordInList"
+  />
   <div class="header text-left flex justify-between mb-4">
     <div>
       <h1 class="text-2xl">Passwords</h1>
       <h2 class="text-md">All your passwords here</h2>
     </div>
     <div>
-      <button class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-        Toggle modal
+      <button
+        class="
+          py-2
+          px-3
+          text-xs
+          leading-3
+          rounded-full
+          text-gray-700
+          bg-gray-300
+          hover:bg-gray-400
+          shadow
+          flex
+          items-center
+        "
+        type="button"
+        @click="isCreating = true"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
       </button>
     </div>
   </div>
   <hr />
 
-  <div class="mt-4">
-    <div
-      class="bg-white rounded-3xl border shadow-xl p-6 w-full md:w-3/6 lg:w-2/6"
+  <div class="lg:flex items-center justify-center w-full mt-4">
+    <PasswordCard
       v-for="password in passwords"
       :key="password.id"
-    >
-      <div @click="editingPassword = password">
-        <h1 class="font-semibold text-xl text-gray-700">{{ password.name }}</h1>
-        <h3 class="font-semibold text-sm text-gray-400">{{ password.url }}</h3>
-      </div>
-      <div class="mt-2 text-xs">
-        <button
-          class="bg-slate-300 p-1 rounded mr-2"
-          @click="copy('Username', password.login)"
-        >
-          Copy username
-        </button>
-        <button
-          class="bg-slate-300 p-1 rounded"
-          @click="copy('Password', password.password)"
-        >
-          Copy password
-        </button>
-      </div>
-    </div>
+      :password="password"
+      @edit="editingPassword = password"
+      @remove="removePasswordFromList"
+    />
   </div>
 </template>

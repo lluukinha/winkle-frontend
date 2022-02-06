@@ -23,7 +23,7 @@ Repository.interceptors.request.use(async (config: AxiosRequestConfig) => {
 });
 
 Repository.interceptors.response.use(undefined, (error) => {
-  if (error.response.status === 401) router.push('/logout');
+  if (error.response.status === 401) router.push({ name: 'logout' });
   return Promise.reject(error);
 });
 
