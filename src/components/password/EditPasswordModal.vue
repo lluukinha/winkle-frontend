@@ -28,10 +28,7 @@ const handleSave = (e: Event) => {
 
 <template>
   <Modal @close="handleClose()" @save="sendForm()">
-    <h2 class="text-xl font-bold py-4">Edit Password</h2>
-    <!-- p class="text-sm text-gray-500 px-8">
-      Do you really want to delete your account? This process cannot be undone
-    </p -->
+    <h2 class="text-xl font-bold py-4">{{ $t('passwords.edit') }}</h2>
     <form class="w-full" @submit="handleSave">
       <button type="submit" class="hidden" ref="formSubmit"></button>
       <div class="md:flex md:items-center mb-6">
@@ -48,7 +45,7 @@ const handleSave = (e: Event) => {
             "
             for="inline-full-name"
           >
-            Name *
+            {{ $t('passwords.form.name') }} *
           </label>
         </div>
         <div class="md:w-2/3">
@@ -68,7 +65,7 @@ const handleSave = (e: Event) => {
             id="inline-full-name"
             type="text"
             v-model="updatedPassword.name"
-            placeholder="Application name"
+            :placeholder="$t('passwords.form.name-placeholder')"
             required
           />
         </div>
@@ -89,15 +86,22 @@ const handleSave = (e: Event) => {
             "
             for="inline-full-login"
           >
-            Login
-            <span class="ml-2 cursor-pointer" @click="copy(updatedPassword.login)">
+            {{ $t('passwords.form.login') }}
+            <button
+              class="ml-2"
+              @click="copy(updatedPassword.login)"
+              :title="$t('passwords.copy-login')"
+            >
               <!-- copy icon -->
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
               </svg>
               <!-- end copy icon -->
-            </span>
-            <span @click="isShowingLogin = !isShowingLogin" title="Show/hide password" class="cursor-pointer">
+            </button>
+            <button
+              @click="isShowingLogin = !isShowingLogin"
+              :title="$t('passwords.form.show-login')"
+            >
               <!-- EYE ICON -->
               <svg v-if="!isShowingLogin" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -108,7 +112,7 @@ const handleSave = (e: Event) => {
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
               </svg>
               <!-- END EYE ICON -->
-            </span>
+            </button>
           </label>
         </div>
         <div class="md:w-2/3">
@@ -128,7 +132,7 @@ const handleSave = (e: Event) => {
             id="inline-full-login"
             :type="isShowingLogin ? 'text' : 'password'"
             v-model="updatedPassword.login"
-            placeholder="login/username"
+            :placeholder="$t('passwords.form.login-placeholder')"
           />
         </div>
       </div>
@@ -148,15 +152,22 @@ const handleSave = (e: Event) => {
             "
             for="inline-password"
           >
-            Password
-            <span class="ml-2 cursor-pointer" @click="copy(updatedPassword.password)">
+            {{ $t('passwords.form.password') }}
+            <button
+              class="ml-2"
+              @click="copy(updatedPassword.password)"
+              :title="$t('passwords.copy-password')"
+            >
               <!-- copy icon -->
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
               </svg>
               <!-- end copy icon -->
-            </span>
-            <span @click="isShowingPassword = !isShowingPassword" title="Show/hide password" class="cursor-pointer">
+            </button>
+            <button
+              @click="isShowingPassword = !isShowingPassword"
+              :title="$t('passwords.form.show-password')"
+            >
               <!-- EYE ICON -->
               <svg v-if="!isShowingPassword" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -167,7 +178,7 @@ const handleSave = (e: Event) => {
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
               </svg>
               <!-- END EYE ICON -->
-            </span>
+            </button>
           </label>
         </div>
         <div class="md:w-2/3">
@@ -186,7 +197,7 @@ const handleSave = (e: Event) => {
             "
             id="inline-password"
             :type="isShowingPassword ? 'text' : 'password'"
-            placeholder="******************"
+            :placeholder="$t('passwords.form.password-placeholder')"
             v-model="updatedPassword.password"
           />
         </div>
@@ -206,7 +217,7 @@ const handleSave = (e: Event) => {
             "
             for="inline-full-url"
           >
-            URL
+            {{ $t('passwords.form.url') }}
           </label>
         </div>
         <div class="md:w-2/3">
@@ -226,7 +237,7 @@ const handleSave = (e: Event) => {
             id="inline-full-url"
             type="text"
             v-model="updatedPassword.url"
-            placeholder="Example: https://www.facebook.com"
+            :placeholder="$t('passwords.form.url-placeholder')"
           />
         </div>
       </div>
@@ -245,7 +256,7 @@ const handleSave = (e: Event) => {
             "
             for="inline-full-desc"
           >
-            Description
+            {{ $t('passwords.form.description') }}
           </label>
         </div>
         <div class="md:w-2/3">
@@ -265,6 +276,7 @@ const handleSave = (e: Event) => {
             id="inline-full-desc"
             type="text"
             v-model="updatedPassword.description"
+            :placeholder="$t('passwords.form.description-placeholder')"
           />
         </div>
       </div>

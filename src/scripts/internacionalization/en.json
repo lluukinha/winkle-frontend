@@ -1,0 +1,47 @@
+{
+    "cancel": "Cancel",
+    "save": "Save",
+    "remove": "Remove",
+    "passwords": {
+        "login": "login",
+        "password": "password",
+        "title": "Passwords",
+        "description": "All your passwords is here",
+        "copy-login": "Copy login",
+        "copy-password": "Copy password",
+        "create": "Create new password",
+        "edit": "Update password",
+        "remove": "Remove password",
+        "remove-confirm": "Are you sure you want to remove this password?",
+        "open-url": "Open URL in a new tab",
+        "form": {
+            "name": "Name",
+            "name-placeholder": "Application name",
+            "login": "Login",
+            "login-placeholder": "Login/Username",
+            "show-login": "Show/hide login",
+            "password": "Password",
+            "password-placeholder": "********",
+            "show-password": "Show/hide password",
+            "url": "URL",
+            "url-placeholder": "https://www.facebook.com.br",
+            "description": "Description",
+            "description-placeholder": ""
+        }
+    },
+    "documents": {
+        "title": "Documents"
+    },
+    "bank-accounts": {
+        "title": "Bank accounts"
+    },
+    "credit-cards": {
+        "title": "Credit cards"
+    },
+    "bitcoin-wallet": {
+        "title": "Bitcoin wallet"
+    },
+    "notes": {
+        "title": "Notes"
+    }
+}

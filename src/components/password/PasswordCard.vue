@@ -1,22 +1,24 @@
 <script setup lang="ts">
+import { useI18n  } from "vue-i18n";
 import { computed } from "@vue/runtime-core";
 import { IPassword } from "../../repositories/passwords/IPassword";
 import PasswordRepository from "../../repositories/passwords/PasswordRepository";
 import LoadingScript from "../../scripts/LoadingScript";
+const { t } = useI18n();
 const props = defineProps<{ password: IPassword }>();
 const emit = defineEmits(["edit", "remove"]);
 const copy = (text: string): void => { navigator.clipboard.writeText(text); };
 const initial = computed(() => props.password.name.charAt(0).toUpperCase());
 const handleEdit = () => { emit("edit", props.password); };
 const handleRemove = () => {
-    const willRemove = confirm('Are you sure you want to remove this password?');
-    if (!willRemove) return;
+  const willRemove = confirm(t('passwords.remove-confirm'));
+  if (!willRemove) return;
 
-    LoadingScript.setLoading(true);
-    PasswordRepository.removePassword(Number(props.password.id))
-      .then(() => { emit("remove", Number(props.password.id)); })
-      .catch((errors) => { console.log(errors); })
-      .finally(() => { LoadingScript.setLoading(false); });
+  LoadingScript.setLoading(true);
+  PasswordRepository.removePassword(Number(props.password.id))
+    .then(() => { emit("remove", Number(props.password.id)); })
+    .catch((errors) => { console.log(errors); })
+    .finally(() => { LoadingScript.setLoading(false); });
 };
 </script>
 
@@ -34,14 +36,14 @@ const handleRemove = () => {
       rounded
     "
   >
-    <div class="flex items-center border-b border-gray-200 pb-6 text-left cursor-pointer" @click="handleEdit()">
-      <div>
+    <div class="flex items-center border-b border-gray-200 pb-6 text-left cursor-pointer">
+      <div @click="handleEdit()">
         <div class="avatar w-12 h-12 rounded-full bg-gray-300 shadow flex items-center justify-center text-xl">
           {{ initial }}
         </div>
       </div>
       <div class="flex items-start justify-between w-full">
-        <div class="pl-3 w-full">
+        <div class="pl-3 w-full" @click="handleEdit()">
           <p
             tabindex="0"
             class="
@@ -54,14 +56,13 @@ const handleRemove = () => {
           >
             {{ password.name }}
           </p>
-          <p
-            tabindex="0"
+          <span
             class="focus:outline-none text-sm leading-normal pt-2 text-gray-500"
           >
             {{ password.url }}
-          </p>
+          </span>
         </div>
-        <a title="Go to url" target="_blank" :href="password.url">
+        <a v-if="password.url" :title="$t('passwords.open-url')" target="_blank" :href="password.url">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
@@ -84,10 +85,12 @@ const handleRemove = () => {
             flex items-center
           "
           @click="copy(password.login)"
+          :title="$t('passwords.copy-login')"
+          v-if="password.login"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-          </svg> login
+          </svg> {{ $t('passwords.login') }}
         </button>
         <button
           class="
@@ -103,11 +106,12 @@ const handleRemove = () => {
             items-center
           "
           @click="copy(password.password)"
-          title="Remove password"
+          :title="$t('passwords.copy-password')"
+          v-if="password.password"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-          </svg> password
+          </svg> {{ $t('passwords.password') }}
         </button>
         <button
           class="
@@ -123,6 +127,7 @@ const handleRemove = () => {
             items-center
           "
           @click="handleRemove()"
+          :title="$t('passwords.remove')"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />

@@ -65,7 +65,7 @@ const handleSave = () => { emit('save'); }
             "
             @click="handleClose()"
           >
-            Cancel
+            {{ $t('cancel') }}
           </button>
           <button
             class="
@@ -85,7 +85,7 @@ const handleSave = () => { emit('save'); }
             "
             @click="handleSave()"
           >
-            Save
+            {{ $t('save') }}
           </button>
         </div>
       </div>

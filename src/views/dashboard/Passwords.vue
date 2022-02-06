@@ -59,8 +59,8 @@ getPasswords();
   />
   <div class="header text-left flex justify-between mb-4">
     <div>
-      <h1 class="text-2xl">Passwords</h1>
-      <h2 class="text-md">All your passwords here</h2>
+      <h1 class="text-2xl">{{ $t('passwords.title') }}</h1>
+      <h2 class="text-md">{{ $t('passwords.description') }}</h2>
     </div>
     <div>
       <button
@@ -79,6 +79,7 @@ getPasswords();
         "
         type="button"
         @click="isCreating = true"
+        :title="$t('passwords.create')"
       >
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />

@@ -68,9 +68,9 @@ const checkRoute = (route: string) : boolean => route === currentRoute;
             <SidebarIcon :icon="item.icon" />
             <span class="text-sm ml-2">{{ item.name }}</span>
           </router-link>
-          <div class="py-1 px-3 bg-gray-600 rounded text-gray-300 flex items-center justify-center text-xs">
+          <!-- div class="py-1 px-3 bg-gray-600 rounded text-gray-300 flex items-center justify-center text-xs">
             5
-          </div>
+          </div -->
         </li>
       </ul>
     </div>

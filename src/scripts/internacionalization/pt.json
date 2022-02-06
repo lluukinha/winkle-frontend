@@ -1,0 +1,47 @@
+{
+    "cancel": "Cancelar",
+    "save": "Salvar",
+    "remove": "Remover",
+    "passwords": {
+        "login": "login",
+        "password": "senha",
+        "title": "Senhas",
+        "description": "Todas as suas senhas cadastradas estão aqui",
+        "copy-login": "Copiar login",
+        "copy-password": "Copiar senha",
+        "create": "Criar nova senha",
+        "edit": "Alterar senha",
+        "remove": "Remover senha",
+        "remove-confirm": "Tem certeza que deseja remover esta senha?",
+        "open-url": "Abrir url em uma nova aba",
+        "form": {
+            "name": "Nome",
+            "name-placeholder": "Nome da aplicação",
+            "login": "Login",
+            "login-placeholder": "Login/Usuário",
+            "show-login": "Mostrar/esconder login",
+            "password": "Senha",
+            "password-placeholder": "********",
+            "show-password": "Mostrar/esconder senha",
+            "url": "URL",
+            "url-placeholder": "Ex: https://www.facebook.com.br",
+            "description": "Descrição",
+            "description-placeholder": ""
+        }
+    },
+    "documents": {
+        "title": "Documentos"
+    },
+    "bank-accounts": {
+        "title": "Contas bancárias"
+    },
+    "credit-cards": {
+        "title": "Cartões de Crédito"
+    },
+    "bitcoin-wallet": {
+        "title": "Carteira de Bitcoins"
+    },
+    "notes": {
+        "title": "Notas"
+    }
+}
