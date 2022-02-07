@@ -2,7 +2,7 @@
 import Modal from "../shared/Modal.vue";
 import { IPassword } from "../../repositories/passwords/IPassword";
 import { ref, reactive } from "@vue/reactivity";
-import { FormHTMLAttributes, Ref } from "vue";
+import { FormHTMLAttributes, onMounted, Ref } from "vue";
 import PasswordRepository from "../../repositories/passwords/PasswordRepository";
 import LoadingScript from "../../scripts/LoadingScript";
 
@@ -15,9 +15,12 @@ const password : Readonly<IPassword> = reactive({
   password: '',
   url: ''
 });
+const firstInput : Ref<HTMLElement> = ref(null);
 const formSubmit : Ref<HTMLElement> = ref(null);
 const isShowingLogin : Ref<Boolean> = ref(false);
 const isShowingPassword : Ref<Boolean> = ref(false);
+
+onMounted(() => { firstInput.value.focus(); });
 const handleClose = () => { emit("close"); };
 const sendForm = () => { formSubmit.value.click(); };
 const handleSave = (e: Event) => {
@@ -55,6 +58,7 @@ const handleSave = (e: Event) => {
         </div>
         <div class="md:w-2/3">
           <input
+            ref="firstInput"
             class="
               bg-gray-200
               appearance-none
@@ -93,6 +97,7 @@ const handleSave = (e: Event) => {
           >
             {{ $t('passwords.form.login') }}
             <button
+              type="button"
               @click="isShowingLogin = !isShowingLogin"
               :title="$t('passwords.form.show-login')"
             >
@@ -148,6 +153,7 @@ const handleSave = (e: Event) => {
           >
             {{ $t('passwords.form.password') }}
             <button
+              type="button"
               @click="isShowingPassword = !isShowingPassword"
               :title="$t('passwords.form.show-password')"
             >

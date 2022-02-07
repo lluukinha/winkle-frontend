@@ -2,17 +2,19 @@
 import Modal from "../shared/Modal.vue";
 import { IPassword } from "../../repositories/passwords/IPassword";
 import { ref, reactive } from "@vue/reactivity";
-import { Ref } from "vue";
+import { onMounted, Ref } from "vue";
 import PasswordRepository from "../../repositories/passwords/PasswordRepository";
 import LoadingScript from "../../scripts/LoadingScript";
 const props = defineProps<{ password: IPassword }>();
 const emit = defineEmits(["close", "save"]);
 
+const firstInput : Ref<HTMLElement> = ref(null);
 const formSubmit : Ref<HTMLElement> = ref(null);
 const updatedPassword : Readonly<IPassword> = reactive(JSON.parse(JSON.stringify(props.password)));
 const isShowingLogin : Ref<Boolean> = ref(false);
 const isShowingPassword : Ref<Boolean> = ref(false);
 
+onMounted(() => { firstInput.value.focus(); });
 const copy = (text: string): void => { navigator.clipboard.writeText(text); };
 const sendForm = () => { formSubmit.value.click(); };
 const handleClose = () => { emit("close"); };
@@ -50,6 +52,7 @@ const handleSave = (e: Event) => {
         </div>
         <div class="md:w-2/3">
           <input
+            ref="firstInput"
             class="
               bg-gray-200
               appearance-none
@@ -91,6 +94,7 @@ const handleSave = (e: Event) => {
               class="ml-2"
               @click="copy(updatedPassword.login)"
               :title="$t('passwords.copy-login')"
+              type="button"
             >
               <!-- copy icon -->
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -101,6 +105,7 @@ const handleSave = (e: Event) => {
             <button
               @click="isShowingLogin = !isShowingLogin"
               :title="$t('passwords.form.show-login')"
+              type="button"
             >
               <!-- EYE ICON -->
               <svg v-if="!isShowingLogin" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -157,6 +162,7 @@ const handleSave = (e: Event) => {
               class="ml-2"
               @click="copy(updatedPassword.password)"
               :title="$t('passwords.copy-password')"
+              type="button"
             >
               <!-- copy icon -->
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -167,6 +173,7 @@ const handleSave = (e: Event) => {
             <button
               @click="isShowingPassword = !isShowingPassword"
               :title="$t('passwords.form.show-password')"
+              type="button"
             >
               <!-- EYE ICON -->
               <svg v-if="!isShowingPassword" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

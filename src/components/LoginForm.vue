@@ -3,18 +3,19 @@ import { reactive /* , ref */ } from "vue";
 import router from "../router";
 import LoginRepository from "../repositories/login/LoginRepository";
 import { ILoginInfo } from "../repositories/login/ILoginInfo";
+import LoadingScript from "../scripts/LoadingScript";
 // const email = ref(""); -- USE REF TO SINGLE VALUES AND REACTIVE TO OBJECTS
 // const password = ref("");
 const loginForm = reactive({ email: '', password: '' });
 
 const doLogin = (e: Event) => {
   e.preventDefault();
+
+  LoadingScript.setLoading(true);
   LoginRepository.doLogin(loginForm)
-    .then((data: ILoginInfo) => {
-      console.log(data);
-      router.push({ name: 'dashboard' });
-    })
-    .catch((error) => { console.log({ error }); });
+    .then(() => { router.push({ name: 'dashboard' }); })
+    .catch((error) => { console.log({ error }); })
+    .finally(() => { LoadingScript.setLoading(false); });
 }
 
 const handleUserLoggedIn = () => {
@@ -41,6 +42,7 @@ handleUserLoggedIn();
         type="email"
         placeholder="mike@gmail.com"
         v-model="loginForm.email"
+        required
       />
     </div>
 
@@ -74,6 +76,7 @@ handleUserLoggedIn();
         type="password"
         placeholder="Enter your password"
         v-model="loginForm.password"
+        required
       />
     </div>
     <div class="mt-10">

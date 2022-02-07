@@ -23,12 +23,12 @@ const handleRemove = () => {
 </script>
 
 <template>
+<!--  md:w-2/4 lg:w-1/3 lg:mr-4 -->
   <div
-    tabindex="0"
-    aria-label="card 1"
     class="
       focus:outline-none
-      lg:w-4/12 lg:mr-7 lg:mb-0
+      w-full
+      md:w-80 md:mx-2
       mb-7
       bg-white
       p-6
@@ -43,24 +43,25 @@ const handleRemove = () => {
         </div>
       </div>
       <div class="flex items-start justify-between w-full">
-        <div class="pl-3 w-full" @click="handleEdit()">
+        <div class="pl-3 w-44" @click="handleEdit()">
           <p
-            tabindex="0"
             class="
               focus:outline-none
               text-xl
               font-medium
               leading-5
               text-gray-800
+              truncate
             "
           >
             {{ password.name }}
           </p>
-          <span
-            class="focus:outline-none text-sm leading-normal pt-2 text-gray-500"
+          <p
+            class="text-sm leading-normal pt-2 text-gray-500 truncate"
+            :title="password.url"
           >
             {{ password.url }}
-          </span>
+          </p>
         </div>
         <a v-if="password.url" :title="$t('passwords.open-url')" target="_blank" :href="password.url">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
