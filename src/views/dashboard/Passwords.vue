@@ -7,7 +7,10 @@ import LoadingScript from "../../scripts/LoadingScript";
 import EditPasswordModal from "../../components/password/EditPasswordModal.vue";
 import PasswordCard from "../../components/password/PasswordCard.vue";
 import CreatePasswordModal from "../../components/password/CreatePasswordModal.vue";
+import { showNotification } from "../../scripts/NotificationScript";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 const passwords: Ref<IPassword[]> = ref([]);
 const editingPassword: Ref<IPassword | null> = ref(null);
 const isCreating: Ref<boolean> = ref(false);
@@ -34,17 +37,20 @@ const getPasswords = () => {
 const includePasswordInList = (password: IPassword) => {
   passwords.value.push(password);
   isCreating.value = false;
+  showNotification(t('passwords.created'), password.name, 'success');
 };
 
 const changePasswordInList = (password: IPassword) => {
   const index = passwords.value.findIndex((p) => p.id === password.id);
   passwords.value[index] = password;
   editingPassword.value = null;
+  showNotification(t('passwords.updated'), password.name, 'success');
 };
 
 const removePasswordFromList = (passwordId: number) => {
   const index = passwords.value.findIndex((p) => Number(p.id) === passwordId);
   passwords.value.splice(index, 1);
+  showNotification(t('passwords.removed'), '', 'success');
 };
 
 getPasswords();

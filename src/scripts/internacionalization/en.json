@@ -4,6 +4,11 @@
     "remove": "Remove",
     "search": "Search",
     "passwords": {
+        "copied": "Text copied",
+        "copied-description": "Something was inserted on your clipboard",
+        "created": "Password created",
+        "updated": "Password updated",
+        "removed": "Password removed",
         "login": "login",
         "password": "password",
         "title": "Passwords",

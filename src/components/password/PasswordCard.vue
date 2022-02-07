@@ -4,10 +4,15 @@ import { computed } from "@vue/runtime-core";
 import { IPassword } from "../../repositories/passwords/IPassword";
 import PasswordRepository from "../../repositories/passwords/PasswordRepository";
 import LoadingScript from "../../scripts/LoadingScript";
+import { showNotification } from "../../scripts/NotificationScript";
+
 const { t } = useI18n();
+const copy = (text: string): void => {
+  navigator.clipboard.writeText(text);
+  showNotification(t('passwords.copied'),t('passwords.copied-description'),'success');
+};
 const props = defineProps<{ password: IPassword }>();
 const emit = defineEmits(["edit", "remove"]);
-const copy = (text: string): void => { navigator.clipboard.writeText(text); };
 const initial = computed(() => props.password.name.charAt(0).toUpperCase());
 const handleEdit = () => { emit("edit", props.password); };
 const handleRemove = () => {
@@ -23,7 +28,6 @@ const handleRemove = () => {
 </script>
 
 <template>
-<!--  md:w-2/4 lg:w-1/3 lg:mr-4 -->
   <div
     class="
       focus:outline-none

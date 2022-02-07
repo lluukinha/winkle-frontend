@@ -4,6 +4,11 @@
     "remove": "Remover",
     "search": "Pesquisar",
     "passwords": {
+        "copied": "Texto copiado",
+        "copied-description": "Algo foi inserido na sua área de transferencia",
+        "created": "Senha criada",
+        "updated": "Senha atualizada",
+        "removed": "Senha removida",
         "login": "login",
         "password": "senha",
         "title": "Senhas",
