@@ -39,7 +39,7 @@ onMounted(() => {
           focus:outline-none focus:border-indigo-500
         "
         type="email"
-        :placeholder="$t('login.email-placeholder')"
+        placeholder="lucas@winkle.com.br"
         v-model="loginForm.email"
         required
       />
