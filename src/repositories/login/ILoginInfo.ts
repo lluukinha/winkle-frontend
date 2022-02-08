@@ -3,4 +3,5 @@ export interface ILoginInfo {
   expires_in: number;
   last_login: string;
   token_type: string;
+  login: string;
 }

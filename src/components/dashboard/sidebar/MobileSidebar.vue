@@ -3,7 +3,7 @@ import { ref } from "vue";
 import SidebarIcon from "./SidebarIcon.vue";
 import { ISidebarItem } from "./ISidebarItem";
 
-defineProps<{ items: ISidebarItem[] }>()
+defineProps<{ items: ISidebarItem[], userLogin: string }>()
 const isOpen = ref(true);
 </script>
 
@@ -12,7 +12,7 @@ const isOpen = ref(true);
     aria-label="Close sidebar"
     :class="{ 'ml-64': isOpen }"
     class="
-      md:hidden
+      sm:hidden
       h-10
       w-10
       bg-gray-800
@@ -84,51 +84,24 @@ const isOpen = ref(true);
         </li>
       </ul>
     </div>
-    <div class="px-8 border-t border-gray-700">
-      <ul class="w-full flex items-center justify-between bg-gray-800">
-        <li class="cursor-pointer text-white pt-5 pb-3">
-          <button
-            aria-label="show notifications"
-            class="focus:outline-none focus:ring-2 rounded focus:ring-gray-300"
+    <div class="py-4 px-8 border-t border-gray-700">
+      <ul class="mr-2">
+        <li
+          class="
+            w-full
+            cursor-pointer
+            flex flex-col
+            items-end
+            text-gray-200
+          "
+        >
+          <span class="text-sm">{{ userLogin }}</span>
+          <router-link
+            class="text-xs text-gray-400 hover:text-gray-200 cursor-pointer"
+            :to="{ name: 'logout' }"
           >
-            <img
-              src="https://tuk-cdn.s3.amazonaws.com/can-uploader/light_with_icons_at_bottom-svg3.svg"
-              alt="notifications"
-            />
-          </button>
-        </li>
-        <li class="cursor-pointer text-white pt-5 pb-3">
-          <button
-            aria-label="open chats"
-            class="focus:outline-none focus:ring-2 rounded focus:ring-gray-300"
-          >
-            <img
-              src="https://tuk-cdn.s3.amazonaws.com/can-uploader/light_with_icons_at_bottom-svg4.svg"
-              alt="chat"
-            />
-          </button>
-        </li>
-        <li class="cursor-pointer text-white pt-5 pb-3">
-          <button
-            aria-label="open settings"
-            class="focus:outline-none focus:ring-2 rounded focus:ring-gray-300"
-          >
-            <img
-              src="https://tuk-cdn.s3.amazonaws.com/can-uploader/light_with_icons_at_bottom-svg5.svg"
-              alt="settings"
-            />
-          </button>
-        </li>
-        <li class="cursor-pointer text-white pt-5 pb-3">
-          <button
-            aria-label="open logs"
-            class="focus:outline-none focus:ring-2 rounded focus:ring-gray-300"
-          >
-            <img
-              src="https://tuk-cdn.s3.amazonaws.com/can-uploader/light_with_icons_at_bottom-svg6.svg"
-              alt="drawer"
-            />
-          </button>
+            {{ $t('logout') }}
+          </router-link>
         </li>
       </ul>
     </div>

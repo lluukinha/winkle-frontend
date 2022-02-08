@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import LoginForm from "../components/LoginForm.vue";
+import LoginForm from "../components/login/LoginForm.vue";
 import WinkleImg from "../components/shared/WinkleImg.vue";
 </script>
 
@@ -66,11 +66,11 @@ import WinkleImg from "../components/shared/WinkleImg.vue";
             xl:text-5xl xl:text-bold
           "
         >
-          Log in
+          {{ $t('login.login') }}
         </h2>
         <div class="mt-12">
           <LoginForm />
-          <div
+          <!-- div
             class="
               mt-12
               text-sm
@@ -82,7 +82,7 @@ import WinkleImg from "../components/shared/WinkleImg.vue";
             <a class="cursor-pointer text-indigo-600 hover:text-indigo-800"
               >Sign up</a
             >
-          </div>
+          </div -->
         </div>
       </div>
     </div>

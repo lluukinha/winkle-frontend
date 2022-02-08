@@ -85,7 +85,7 @@ const handleSave = (e: Event) => {
               pr-4
               flex
               items-center
-              justify-end
+              justify-center md:justify-end
             "
             for="inline-full-login"
           >
@@ -148,12 +148,10 @@ const handleSave = (e: Event) => {
               text-gray-500
               font-bold
               md:text-right
-              mb-1
-              md:mb-0
+              mb-1 md:mb-0
               pr-4
-              flex
-              items-center
-              justify-end
+              flex items-center
+              justify-center md:justify-end
             "
             for="inline-password"
           >

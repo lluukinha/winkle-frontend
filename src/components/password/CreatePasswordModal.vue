@@ -91,7 +91,7 @@ const handleSave = (e: Event) => {
               pr-4
               flex
               items-center
-              justify-end
+              justify-center md:justify-end
             "
             for="inline-full-login"
           >
@@ -147,7 +147,7 @@ const handleSave = (e: Event) => {
               pr-4
               flex
               items-center
-              justify-end
+              justify-center md:justify-end
             "
             for="inline-password"
           >

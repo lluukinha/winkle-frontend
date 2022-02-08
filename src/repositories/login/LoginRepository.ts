@@ -1,3 +1,4 @@
+import router from '../../router';
 import { PublicRepository, Repository } from '../_Repository';
 import { ILoginForm } from "./ILoginForm";
 import { ILoginInfo } from "./ILoginInfo";
@@ -8,19 +9,23 @@ const loginData = () : ILoginInfo | null => {
   return !info ? null : JSON.parse(info);
 };
 
-const setLoginInfo = (loginInfo: ILoginInfo) : void => {
-  loginInfo.last_login = JSON.stringify(new Date());
-  localStorage.setItem('login', JSON.stringify(loginInfo));
-}
-
 const removeLoginInfo = () : void => localStorage.removeItem('login');
 
 const doLogin = async (loginForm: ILoginForm): Promise<ILoginInfo> => {
   const url = import.meta.env.VITE_BACKEND_URL;
   const { data } = await PublicRepository.post(`${url}/api/auth/login`, loginForm);
-  setLoginInfo(data);
+  data.last_login = new Date();
+  data.login = loginForm.email;
+  setTimeoutToLogout(data.expires_in);
+  localStorage.setItem('login', JSON.stringify(data));
   return data;
 }
+
+const setTimeoutToLogout = (expiration: number) => {
+  // 1000 = 1 second
+  const expiresIn = 1000 * expiration;
+  setTimeout(() => { router.push({ name: 'logout' }); }, expiresIn);
+};
 
 const loginTimeout = () : boolean => {
   const login = loginData();
@@ -35,7 +40,6 @@ const loginTimeout = () : boolean => {
 const canUseLoginInfo = () : boolean => loginInfo !== null && !loginTimeout();
 
 export default {
-  setLoginInfo,
   doLogin,
   loginTimeout,
   removeLoginInfo,

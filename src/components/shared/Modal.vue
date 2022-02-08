@@ -37,12 +37,13 @@ const handleSave = () => { emit('save'); }
         rounded-xl
         shadow-lg
         bg-white
+        max-h-[calc(100vh-2rem)]
       "
     >
       <!--content-->
       <div class="">
         <!--body-->
-        <div class="text-center p-2 flex-auto justify-center">
+        <div class="text-center p-2 flex-auto justify-center overflow-y-auto max-h-[70vh]">
           <slot></slot>
         </div>
         <!--footer-->

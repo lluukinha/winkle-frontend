@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { reactive /* , ref */ } from "vue";
-import router from "../router";
-import LoginRepository from "../repositories/login/LoginRepository";
-import { ILoginInfo } from "../repositories/login/ILoginInfo";
-import LoadingScript from "../scripts/LoadingScript";
-// const email = ref(""); -- USE REF TO SINGLE VALUES AND REACTIVE TO OBJECTS
-// const password = ref("");
+import { onMounted, reactive, ref, Ref } from "vue";
+import router from "../../router";
+import LoginRepository from "../../repositories/login/LoginRepository";
+import LoadingScript from "../../scripts/LoadingScript";
+
+const firstInput : Ref<HTMLElement> = ref(null);
 const loginForm = reactive({ email: '', password: '' });
 
 const doLogin = (e: Event) => {
@@ -18,20 +17,20 @@ const doLogin = (e: Event) => {
     .finally(() => { LoadingScript.setLoading(false); });
 }
 
-const handleUserLoggedIn = () => {
-  if (LoginRepository.canUseLoginInfo()) router.push('/dashboard');
-};
-
-handleUserLoggedIn();
+onMounted(() => {
+  firstInput.value.focus();
+  if (LoginRepository.canUseLoginInfo()) router.push({ name: 'dashboard' });
+})
 </script>
 
 <template>
   <form @submit="doLogin">
     <div class="text-left">
       <div class="text-sm font-bold text-gray-700 tracking-wide">
-        Email Address
+        {{ $t('login.email') }}
       </div>
       <input
+        ref="firstInput"
         class="
           w-full
           text-lg
@@ -40,7 +39,7 @@ handleUserLoggedIn();
           focus:outline-none focus:border-indigo-500
         "
         type="email"
-        placeholder="mike@gmail.com"
+        :placeholder="$t('login.email-placeholder')"
         v-model="loginForm.email"
         required
       />
@@ -49,9 +48,9 @@ handleUserLoggedIn();
     <div class="mt-8">
       <div class="flex justify-between items-center">
         <div class="text-sm font-bold text-gray-700 tracking-wide">
-          Password
+          {{ $t('login.password') }}
         </div>
-        <div>
+        <!-- div>
           <a
             class="
               text-xs
@@ -63,7 +62,7 @@ handleUserLoggedIn();
           >
             Forgot Password?
           </a>
-        </div>
+        </div -->
       </div>
       <input
         class="
@@ -74,7 +73,7 @@ handleUserLoggedIn();
           focus:outline-none focus:border-indigo-500
         "
         type="password"
-        placeholder="Enter your password"
+        :placeholder="$t('login.password-placeholder')"
         v-model="loginForm.password"
         required
       />
@@ -94,7 +93,7 @@ handleUserLoggedIn();
           shadow-lg
         "
       >
-        Log In
+        {{ $t('login.enter') }}
       </button>
     </div>
   </form>

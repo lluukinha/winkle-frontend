@@ -3,6 +3,15 @@
     "save": "Salvar",
     "remove": "Remover",
     "search": "Pesquisar",
+    "logout": "sair",
+    "login": {
+        "login": "Log in",
+        "enter": "Entrar",
+        "email": "Endereço de Email",
+        "email-placeholder": "lucas@winkle.com.br",
+        "password": "Senha",
+        "password-placeholder": "Entre com sua senha"
+    },
     "passwords": {
         "copied": "Texto copiado",
         "copied-description": "Algo foi inserido na sua área de transferencia",

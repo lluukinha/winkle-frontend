@@ -3,17 +3,12 @@ import router from "../router";
 import LoginRepository from "../repositories/login/LoginRepository";
 
 import Sidebar from "../components/dashboard/Sidebar.vue";
+import { onMounted } from "@vue/runtime-core";
 
-const mount = () : void => {
-  if (!LoginRepository.canUseLoginInfo) {
-    router.push("/login");
-    return;
-  }
-
+onMounted(() => {
+  if (!LoginRepository.canUseLoginInfo) router.push({ name: 'login' });
   if (router.currentRoute.value.name === 'dashboard') router.push({ name: 'dashboard-passwords' });
-};
-
-mount();
+});
 </script>
 
 <template>

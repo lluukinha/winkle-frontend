@@ -3,6 +3,15 @@
     "save": "Save",
     "remove": "Remove",
     "search": "Search",
+    "logout": "logout",
+    "login": {
+        "login": "Log in",
+        "enter": "Log in",
+        "email": "Email Address",
+        "email-placeholder": "lucas@winkle.com.br",
+        "password": "Password",
+        "password-placeholder": "Enter your password"
+    },
     "passwords": {
         "copied": "Text copied",
         "copied-description": "Something was inserted on your clipboard",

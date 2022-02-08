@@ -5,15 +5,14 @@ import router from "../../../router";
 
 import SidebarIcon from "./SidebarIcon.vue";
 
-defineProps<{ items: ISidebarItem[] }>()
+defineProps<{ items: ISidebarItem[], userLogin: string }>();
 const isOpen = ref(true);
 const currentRoute = router.currentRoute.value.name;
-const checkRoute = (route: string) : boolean => route === currentRoute;
+const checkRoute = (route: string): boolean => route === currentRoute;
 </script>
 
 <template>
   <!-- Sidebar starts -->
-  <!-- Remove class [ hidden ] and replace [ sm:flex ] with [ flex ] -->
   <div
     class="
       w-64
@@ -21,11 +20,9 @@ const checkRoute = (route: string) : boolean => route === currentRoute;
       sm:relative
       bg-gray-800
       shadow
-      md:h-screen
-      flex-col
+      h-screen
       justify-between
-      hidden
-      sm:flex
+      hidden sm:flex sm:flex-col
     "
   >
     <div class="px-8">
@@ -45,16 +42,11 @@ const checkRoute = (route: string) : boolean => route === currentRoute;
       </div>
       <ul class="mt-10">
         <li
-          class="flex
-            w-full
-            justify-between
-            cursor-pointer
-            items-center
-            mb-6"
+          class="flex w-full justify-between cursor-pointer items-center mb-6"
           :class="{
-            'text-gray-200' : checkRoute(item.route) && !item.disabled,
-            'text-gray-400' : !checkRoute(item.route) && !item.disabled,
-            'hover:text-gray-200' : !checkRoute(item.route) && !item.disabled,
+            'text-gray-200': checkRoute(item.route) && !item.disabled,
+            'text-gray-400': !checkRoute(item.route) && !item.disabled,
+            'hover:text-gray-200': !checkRoute(item.route) && !item.disabled,
             'text-gray-600': item.disabled,
             'cursor-not-allowed': item.disabled,
           }"
@@ -68,57 +60,27 @@ const checkRoute = (route: string) : boolean => route === currentRoute;
             <SidebarIcon :icon="item.icon" />
             <span class="text-sm ml-2">{{ item.name }}</span>
           </router-link>
-          <!-- div class="py-1 px-3 bg-gray-600 rounded text-gray-300 flex items-center justify-center text-xs">
-            5
-          </div -->
         </li>
       </ul>
     </div>
-    <div class="px-8 border-t border-gray-700">
-      <ul class="w-full flex items-center justify-between bg-gray-800">
-        <li class="cursor-pointer text-white pt-5 pb-3">
-          <button
-            aria-label="show notifications"
-            class="focus:outline-none focus:ring-2 rounded focus:ring-gray-300"
+    <div class="py-4 px-6 border-t border-gray-700">
+      <ul class="mr-2">
+        <li
+          class="
+            w-full
+            cursor-pointer
+            flex flex-col
+            items-end
+            text-gray-200
+          "
+        >
+          <span class="text-sm">{{ userLogin }}</span>
+          <router-link
+            class="text-xs text-gray-400 hover:text-gray-200 cursor-pointer"
+            :to="{ name: 'logout' }"
           >
-            <img
-              src="https://tuk-cdn.s3.amazonaws.com/can-uploader/light_with_icons_at_bottom-svg3.svg"
-              alt="notifications"
-            />
-          </button>
-        </li>
-        <li class="cursor-pointer text-white pt-5 pb-3">
-          <button
-            aria-label="open chats"
-            class="focus:outline-none focus:ring-2 rounded focus:ring-gray-300"
-          >
-            <img
-              src="https://tuk-cdn.s3.amazonaws.com/can-uploader/light_with_icons_at_bottom-svg4.svg"
-              alt="chat"
-            />
-          </button>
-        </li>
-        <li class="cursor-pointer text-white pt-5 pb-3">
-          <button
-            aria-label="open settings"
-            class="focus:outline-none focus:ring-2 rounded focus:ring-gray-300"
-          >
-            <img
-              src="https://tuk-cdn.s3.amazonaws.com/can-uploader/light_with_icons_at_bottom-svg5.svg"
-              alt="settings"
-            />
-          </button>
-        </li>
-        <li class="cursor-pointer text-white pt-5 pb-3">
-          <button
-            aria-label="open logs"
-            class="focus:outline-none focus:ring-2 rounded focus:ring-gray-300"
-          >
-            <img
-              src="https://tuk-cdn.s3.amazonaws.com/can-uploader/light_with_icons_at_bottom-svg6.svg"
-              alt="drawer"
-            />
-          </button>
+            {{ $t('logout') }}
+          </router-link>
         </li>
       </ul>
     </div>
