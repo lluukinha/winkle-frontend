@@ -8,15 +8,15 @@ import LoadingScript from "../../scripts/LoadingScript";
 const props = defineProps<{ password: IPassword }>();
 const emit = defineEmits(["close", "save"]);
 
-const firstInput : Ref<HTMLElement> = ref(null);
-const formSubmit : Ref<HTMLElement> = ref(null);
+const firstInput : Ref<HTMLElement | null> = ref(null);
+const formSubmit : Ref<HTMLElement | null> = ref(null);
 const updatedPassword : Readonly<IPassword> = reactive(JSON.parse(JSON.stringify(props.password)));
 const isShowingLogin : Ref<Boolean> = ref(false);
 const isShowingPassword : Ref<Boolean> = ref(false);
 
-onMounted(() => { firstInput.value.focus(); });
+onMounted(() => { firstInput.value?.focus(); });
 const copy = (text: string): void => { navigator.clipboard.writeText(text); };
-const sendForm = () => { formSubmit.value.click(); };
+const sendForm = () => { formSubmit.value?.click(); };
 const handleClose = () => { emit("close"); };
 const handleSave = (e: Event) => {
   e.preventDefault();

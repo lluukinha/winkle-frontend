@@ -4,7 +4,7 @@ import router from "../../router";
 import LoginRepository from "../../repositories/login/LoginRepository";
 import LoadingScript from "../../scripts/LoadingScript";
 
-const firstInput : Ref<HTMLElement> = ref(null);
+const firstInput : Ref<HTMLElement | null> = ref(null);
 const loginForm = reactive({ email: '', password: '' });
 
 const doLogin = (e: Event) => {
@@ -18,7 +18,7 @@ const doLogin = (e: Event) => {
 }
 
 onMounted(() => {
-  firstInput.value.focus();
+  firstInput.value?.focus();
   if (LoginRepository.canUseLoginInfo()) router.push({ name: 'dashboard' });
 })
 </script>

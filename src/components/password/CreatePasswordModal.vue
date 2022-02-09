@@ -15,14 +15,14 @@ const password : Readonly<IPassword> = reactive({
   password: '',
   url: ''
 });
-const firstInput : Ref<HTMLElement> = ref(null);
-const formSubmit : Ref<HTMLElement> = ref(null);
+const firstInput : Ref<HTMLElement | null> = ref(null);
+const formSubmit : Ref<HTMLElement | null> = ref(null);
 const isShowingLogin : Ref<Boolean> = ref(false);
 const isShowingPassword : Ref<Boolean> = ref(false);
 
-onMounted(() => { firstInput.value.focus(); });
+onMounted(() => { firstInput.value?.focus(); });
 const handleClose = () => { emit("close"); };
-const sendForm = () => { formSubmit.value.click(); };
+const sendForm = () => { formSubmit.value?.click(); };
 const handleSave = (e: Event) => {
   e.preventDefault();
   LoadingScript.setLoading(true);

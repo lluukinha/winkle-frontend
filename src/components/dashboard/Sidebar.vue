@@ -4,9 +4,11 @@ import DefaultSidebar from './sidebar/DefaultSidebar.vue';
 import MobileSidebar from './sidebar/MobileSidebar.vue';
 import { ISidebarItem } from './sidebar/ISidebarItem';
 import { useI18n } from 'vue-i18n';
+import { ILoginInfo } from "../../repositories/login/ILoginInfo";
 const { t } = useI18n();
 
-const userLogin = LoginRepository.loginData()?.login;
+const loginData : ILoginInfo | null = LoginRepository.loginData();
+const userLogin = loginData ? loginData.login : '';
 
 const items : ISidebarItem[] = [
   { name: t('passwords.title'), icon: 'passwords', route: 'dashboard-passwords', disabled: false },
