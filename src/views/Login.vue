@@ -9,7 +9,7 @@ import WinkleImg from "../components/shared/WinkleImg.vue";
       <div
         class="
           py-12
-          bg-indigo-100
+          bg-gray-100
           lg:bg-white
           flex
           justify-center
@@ -19,7 +19,7 @@ import WinkleImg from "../components/shared/WinkleImg.vue";
         <div class="cursor-pointer flex items-center">
           <div>
             <svg
-              class="w-10 text-indigo-500"
+              class="w-10 text-gray-500"
               xmlns="http://www.w3.org/2000/svg"
               xmlns:xlink="http://www.w3.org/1999/xlink"
               version="1.1"
@@ -42,7 +42,7 @@ import WinkleImg from "../components/shared/WinkleImg.vue";
             </svg>
           </div>
           <div
-            class="text-2xl text-indigo-800 tracking-wide ml-2 font-semibold"
+            class="text-2xl text-gray-800 tracking-wide ml-2 font-semibold"
           >
             winkle
           </div>
@@ -60,7 +60,7 @@ import WinkleImg from "../components/shared/WinkleImg.vue";
       >
         <h2
           class="
-            text-center text-4xl text-indigo-900
+            text-center text-4xl text-gray-800
             font-display font-semibold
             lg:text-left
             xl:text-5xl xl:text-bold

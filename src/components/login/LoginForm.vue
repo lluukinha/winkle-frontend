@@ -36,7 +36,7 @@ onMounted(() => {
           text-lg
           py-2
           border-b border-gray-300
-          focus:outline-none focus:border-indigo-500
+          focus:outline-none focus:border-gray-500
         "
         type="email"
         placeholder="lucas@winkle.com.br"
@@ -70,7 +70,7 @@ onMounted(() => {
           text-lg
           py-2
           border-b border-gray-300
-          focus:outline-none focus:border-indigo-500
+          focus:outline-none focus:border-gray-500
         "
         type="password"
         :placeholder="$t('login.password-placeholder')"
@@ -81,7 +81,7 @@ onMounted(() => {
     <div class="mt-10">
       <button
         class="
-          bg-indigo-500
+          bg-gray-600
           text-gray-100
           p-4
           w-full
@@ -89,7 +89,7 @@ onMounted(() => {
           tracking-wide
           font-semibold font-display
           focus:outline-none focus:shadow-outline
-          hover:bg-indigo-600
+          hover:bg-gray-800
           shadow-lg
         "
       >

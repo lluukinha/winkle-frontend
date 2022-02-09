@@ -9,7 +9,6 @@ const isOpen = ref(true);
 
 <template>
   <button
-    aria-label="Close sidebar"
     :class="{ 'ml-64': isOpen }"
     class="
       sm:hidden
