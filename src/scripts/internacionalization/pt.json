@@ -13,6 +13,7 @@
     "api-errors": {
         "title": "Ocorreu um erro",
         "already-exists": "Este { param } já existe no sistema",
+        "unauthenticated": "A sessão expirou",
         "params": {
             "name": "nome",
             "password": "senha",
@@ -52,7 +53,7 @@
         "open-url": "Abrir url em uma nova aba",
         "form": {
             "name": "Nome",
-            "name-placeholder": "Nome da aplicação",
+            "name-placeholder": "Ex: Facebook do Marcelo",
             "login": "Login",
             "login-placeholder": "Login/Usuário",
             "show-login": "Mostrar/esconder login",

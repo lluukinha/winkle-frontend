@@ -4,6 +4,25 @@
     "remove": "Remove",
     "search": "Search",
     "logout": "logout",
+
+    "text-copied": "Text copied",
+    "text-copied-description": "Text was copied to your clipboard",
+    "text-copy-error": "Error copying text",
+    "text-copy-error-description": "Your browser is not allowing to copy",
+
+    "api-errors": {
+        "title": "An error occurred",
+        "already-exists": "{ param } already exists",
+        "unauthenticated": "Session expired",
+        "params": {
+            "name": "name",
+            "password": "password",
+            "login": "login",
+            "user": "user",
+            "email": "email"
+        }
+    },
+
     "login": {
         "login": "Log in",
         "enter": "Log in",
@@ -13,6 +32,7 @@
         "login-failed": "Login failed",
         "user-not-found": "User not found with this email and password"
     },
+
     "passwords": {
         "empty-list": "No passwords were found, but you can create your first",
         "clicking-here": "clicking here",
