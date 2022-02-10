@@ -38,7 +38,15 @@ const checkRoute = (route: string): boolean => route === currentRoute;
             d="M13.5 22.1c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05zM0 38.3c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05z"
           />
         </svg>
-        <span class="font-semibold text-xl tracking-tight">Winkle</span>
+        <div class="flex flex-col items-start">
+          <span class="font-semibold text-xl tracking-tight">Winkle</span>
+          <span
+            class="text-left font-extralight text-xs text-gray-400 w-32 truncate"
+            :title="userLogin"
+          >
+            {{ userLogin }}
+          </span>
+        </div>
       </div>
       <ul class="mt-10">
         <li
@@ -64,22 +72,18 @@ const checkRoute = (route: string): boolean => route === currentRoute;
       </ul>
     </div>
     <div class="py-4 px-6 border-t border-gray-700">
-      <ul class="mr-2">
+      <ul>
         <li
-          class="
-            w-full
-            cursor-pointer
-            flex flex-col
-            items-end
-            text-gray-200
-          "
+          class="flex w-full justify-between cursor-pointer items-center text-gray-400 hover:text-gray-200"
         >
-          <span class="text-sm">{{ userLogin }}</span>
           <router-link
-            class="text-xs text-gray-400 hover:text-gray-200 cursor-pointer"
+            class="flex items-center focus:outline-none"
             :to="{ name: 'logout' }"
           >
-            {{ $t('logout') }}
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+            <span class="text-sm ml-2">{{ $t('logout') }}</span>
           </router-link>
         </li>
       </ul>

@@ -5,6 +5,7 @@ import MobileSidebar from './sidebar/MobileSidebar.vue';
 import { ISidebarItem } from './sidebar/ISidebarItem';
 import { useI18n } from 'vue-i18n';
 import { ILoginInfo } from "../../repositories/login/ILoginInfo";
+import SidebarScript from "../../scripts/SidebarScript";
 const { t } = useI18n();
 
 const loginData : ILoginInfo | null = LoginRepository.loginData();
@@ -22,5 +23,5 @@ const items : ISidebarItem[] = [
 
 <template>
   <DefaultSidebar :items="items" :userLogin="userLogin" />
-  <MobileSidebar :items="items" :userLogin="userLogin" />
+  <MobileSidebar :items="items" :userLogin="userLogin" :isOpen="SidebarScript.isOpen.value" />
 </template>

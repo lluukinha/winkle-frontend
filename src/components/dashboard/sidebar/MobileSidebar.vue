@@ -3,41 +3,15 @@ import { ref } from "vue";
 import SidebarIcon from "./SidebarIcon.vue";
 import { ISidebarItem } from "./ISidebarItem";
 
-defineProps<{ items: ISidebarItem[], userLogin: string }>()
-const isOpen = ref(true);
+defineProps<{ items: ISidebarItem[], userLogin: string, isOpen: boolean }>()
 </script>
 
 <template>
-  <button
-    :class="{ 'ml-64': isOpen }"
-    class="
-      sm:hidden
-      h-10
-      w-10
-      bg-gray-800
-      absolute
-      mt-16
-      flex
-      items-center
-      shadow
-      rounded-tr rounded-br
-      justify-center
-      cursor-pointer
-      text-white
-    "
-    @click="isOpen = !isOpen"
-  >
-    <svg v-if="isOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-    </svg>
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" v-else>
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-    </svg>
-  </button>
   <div
-    :class="{ hidden: !isOpen }"
+    :class="{ 'w-0': !isOpen, 'w-64': isOpen }"
     class="
-      w-64
+      transition-all
+      duration-150
       z-40
       absolute
       bg-gray-800
@@ -46,13 +20,10 @@ const isOpen = ref(true);
       flex-col
       justify-between
       sm:hidden
-      transition
-      duration-150
-      ease-in-out
       flex
     "
   >
-    <div class="px-8">
+    <div class="px-8" v-if="isOpen">
       <div class="flex items-center flex-shrink-0 text-white mr-6 mt-8">
         <svg
           class="fill-current h-8 w-8 mr-2"
@@ -83,7 +54,7 @@ const isOpen = ref(true);
         </li>
       </ul>
     </div>
-    <div class="py-4 px-8 border-t border-gray-700">
+    <div class="py-4 px-8 border-t border-gray-700" v-if="isOpen">
       <ul class="mr-2">
         <li
           class="
