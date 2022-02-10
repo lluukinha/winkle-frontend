@@ -7,7 +7,24 @@ const count = ref(0)
 </script>
 
 <template>
-  <h1>{{ msg }}</h1>
+   <router-link
+    :to="{ name: 'login' }"
+    class="
+      inline-block
+      text-sm
+      px-4
+      py-2
+      leading-none
+      border
+      rounded
+    text-white border-white
+      hover:border-transparent hover:text-teal-500 hover:bg-gray-500
+      mt-4 lg:mt-0
+    bg-gray-800
+    "
+  >
+    Login
+  </router-link>
 
   <p>
     Recommended IDE setup:
