@@ -12,6 +12,9 @@
         "password-placeholder": "Enter your password"
     },
     "passwords": {
+        "empty-list": "No passwords were found, but you can create your first",
+        "clicking-here": "clicking here",
+        "empty-filtered-list": "Nothing was found using \"{filter}\" as search key",
         "copied": "Text copied",
         "copied-description": "Something was inserted on your clipboard",
         "created": "Password created",

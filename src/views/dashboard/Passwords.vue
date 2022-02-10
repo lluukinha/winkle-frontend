@@ -102,7 +102,23 @@ getPasswords();
   </div>
   <hr />
 
-  <div class="flex items-center justify-center w-full mt-4 flex-wrap">
+  <div
+    class="mt-2 text-gray-400"
+    v-if="filteredPasswords.length === 0"
+  >
+    <p v-if="filter.length === 0">
+      {{ $t('passwords.empty-list') }}
+      <span
+        class="hover:text-gray-500 cursor-pointer"
+        @click="isCreating = true"
+      >
+        {{ $t('passwords.clicking-here') }}
+      </span>
+    </p>
+    <p v-if="filter.length > 0">{{ $t('passwords.empty-filtered-list', { filter }) }}</p>
+  </div>
+
+  <div class="flex items-center justify-center w-full mt-4 flex-wrap" v-else>
     <PasswordCard
       v-for="password in filteredPasswords"
       :key="password.id"

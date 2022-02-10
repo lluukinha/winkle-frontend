@@ -12,6 +12,9 @@
         "password-placeholder": "Entre com sua senha"
     },
     "passwords": {
+        "empty-list": "Nenhuma senha foi encontrada, mas você pode criar sua primeira",
+        "clicking-here": "clicando aqui",
+        "empty-filtered-list": "Não encontrei nada usando \"{filter}\" como chave",
         "copied": "Texto copiado",
         "copied-description": "Algo foi inserido na sua área de transferencia",
         "created": "Senha criada",
