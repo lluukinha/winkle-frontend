@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import LoadingScript from '../../scripts/LoadingScript';
+import WinkleScripts from "../../scripts/WinkleScripts";
 </script>
 
 <template>
   <div
-    v-if="LoadingScript.isLoading.value"
+    v-if="WinkleScripts.isLoading.value"
     class="
       min-w-screen
       h-screen

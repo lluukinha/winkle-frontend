@@ -1,16 +1,12 @@
 <script setup lang="ts">
-import { useI18n  } from "vue-i18n";
 import { computed } from "@vue/runtime-core";
 import { IPassword } from "../../repositories/passwords/IPassword";
 import PasswordRepository from "../../repositories/passwords/PasswordRepository";
-import LoadingScript from "../../scripts/LoadingScript";
-import { showNotification } from "../../scripts/NotificationScript";
+import WinkleScripts from "../../scripts/WinkleScripts";
+import i18n from "../../scripts/internacionalization/i18n";
+import showErrorMessage from "../../scripts/ErrorLogs";
 
-const { t } = useI18n();
-const copy = (text: string): void => {
-  navigator.clipboard.writeText(text);
-  showNotification(t('passwords.copied'),t('passwords.copied-description'),'success');
-};
+const { t } = i18n.element.global;
 const props = defineProps<{ password: IPassword }>();
 const emit = defineEmits(["edit", "remove"]);
 const initial = computed(() => props.password.name.charAt(0).toUpperCase());
@@ -19,11 +15,11 @@ const handleRemove = () => {
   const willRemove = confirm(t('passwords.remove-confirm'));
   if (!willRemove) return;
 
-  LoadingScript.setLoading(true);
+  WinkleScripts.setLoading(true);
   PasswordRepository.removePassword(Number(props.password.id))
     .then(() => { emit("remove", Number(props.password.id)); })
-    .catch((errors) => { console.log(errors); })
-    .finally(() => { LoadingScript.setLoading(false); });
+    .catch(showErrorMessage)
+    .finally(() => { WinkleScripts.setLoading(false); });
 };
 </script>
 
@@ -89,7 +85,7 @@ const handleRemove = () => {
             rounded-full
             flex items-center
           "
-          @click="copy(password.login)"
+          @click="WinkleScripts.copyText(password.login)"
           :title="$t('passwords.copy-login')"
           v-if="password.login"
         >
@@ -110,7 +106,7 @@ const handleRemove = () => {
             flex
             items-center
           "
-          @click="copy(password.password)"
+          @click="WinkleScripts.copyText(password.password)"
           :title="$t('passwords.copy-password')"
           v-if="password.password"
         >

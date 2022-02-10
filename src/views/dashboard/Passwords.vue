@@ -2,15 +2,17 @@
 import { computed, Ref, ref } from "vue";
 import { IPassword } from "../../repositories/passwords/IPassword";
 import PasswordRepository from "../../repositories/passwords/PasswordRepository";
-import LoadingScript from "../../scripts/LoadingScript";
+import WinkleScripts from "../../scripts/WinkleScripts";
 
 import EditPasswordModal from "../../components/password/EditPasswordModal.vue";
 import PasswordCard from "../../components/password/PasswordCard.vue";
 import CreatePasswordModal from "../../components/password/CreatePasswordModal.vue";
-import { showNotification } from "../../scripts/NotificationScript";
-import { useI18n } from "vue-i18n";
 
-const { t } = useI18n();
+import { showNotification } from "../../scripts/NotificationScript";
+import i18n from "../../scripts/internacionalization/i18n";
+import showErrorMessage from "../../scripts/ErrorLogs";
+
+const { t } = i18n.element.global;
 const passwords: Ref<IPassword[]> = ref([]);
 const editingPassword: Ref<IPassword | null> = ref(null);
 const isCreating: Ref<boolean> = ref(false);
@@ -21,16 +23,14 @@ const filteredPasswords = computed(() => {
 });
 
 const getPasswords = () => {
-  LoadingScript.setLoading(true);
+  WinkleScripts.setLoading(true);
   PasswordRepository.getPasswords()
     .then((passwordList: IPassword[]) => {
       passwords.value = passwordList;
     })
-    .catch((errors) => {
-      console.log(errors);
-    })
+    .catch(showErrorMessage)
     .finally(() => {
-      LoadingScript.setLoading(false);
+      WinkleScripts.setLoading(false);
     });
 };
 

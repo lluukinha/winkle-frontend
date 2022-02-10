@@ -2,19 +2,31 @@
 import { onMounted, reactive, ref, Ref } from "vue";
 import router from "../../router";
 import LoginRepository from "../../repositories/login/LoginRepository";
-import LoadingScript from "../../scripts/LoadingScript";
+import WinkleScripts from "../../scripts/WinkleScripts";
+import { AxiosError } from "axios";
+import { showError } from "../../scripts/NotificationScript";
+import i18n from "../../scripts/internacionalization/i18n";
 
+const { t } = i18n.element.global;
 const firstInput : Ref<HTMLElement | null> = ref(null);
 const loginForm = reactive({ email: '', password: '' });
 
 const doLogin = (e: Event) => {
   e.preventDefault();
 
-  LoadingScript.setLoading(true);
+  WinkleScripts.setLoading(true);
   LoginRepository.doLogin(loginForm)
     .then(() => { router.push({ name: 'dashboard' }); })
-    .catch((error) => { console.log({ error }); })
-    .finally(() => { LoadingScript.setLoading(false); });
+    .catch((e: AxiosError) => {
+      const failed : boolean = e.response?.status === 401
+        && e.response?.statusText === 'Unauthorized';
+      if (failed) {
+        showError(t('login.login-failed'), t('login.user-not-found'));
+      } else {
+        console.log(e.response);
+      }
+    })
+    .finally(() => { WinkleScripts.setLoading(false); });
 }
 
 onMounted(() => {

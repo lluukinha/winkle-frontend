@@ -9,7 +9,9 @@
         "enter": "Log in",
         "email": "Email Address",
         "password": "Password",
-        "password-placeholder": "Enter your password"
+        "password-placeholder": "Enter your password",
+        "login-failed": "Login failed",
+        "user-not-found": "User not found with this email and password"
     },
     "passwords": {
         "empty-list": "No passwords were found, but you can create your first",

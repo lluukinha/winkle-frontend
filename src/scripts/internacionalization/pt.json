@@ -4,19 +4,38 @@
     "remove": "Remover",
     "search": "Pesquisar",
     "logout": "sair",
+
+    "text-copied": "Texto copiado",
+    "text-copied-description": "O texto foi copiado e enviado para sua área de transferencia",
+    "text-copy-error": "Erro ao copiar",
+    "text-copy-error-description": "Seu navegador não deu permissão para copiar o texto",
+
+    "api-errors": {
+        "title": "Ocorreu um erro",
+        "already-exists": "Este { param } já existe no sistema",
+        "params": {
+            "name": "nome",
+            "password": "senha",
+            "login": "login",
+            "user": "usuário",
+            "email": "email"
+        }
+    },
+
     "login": {
         "login": "Log in",
         "enter": "Entrar",
         "email": "Endereço de Email",
         "password": "Senha",
-        "password-placeholder": "Entre com sua senha"
+        "password-placeholder": "Entre com sua senha",
+        "login-failed": "Falha ao efetuar login",
+        "user-not-found": "Nenhum usuário foi encontrado com este email e senha"
     },
+
     "passwords": {
         "empty-list": "Nenhuma senha foi encontrada, mas você pode criar sua primeira",
         "clicking-here": "clicando aqui",
         "empty-filtered-list": "Não encontrei nada usando \"{filter}\" como chave",
-        "copied": "Texto copiado",
-        "copied-description": "Algo foi inserido na sua área de transferencia",
         "created": "Senha criada",
         "updated": "Senha atualizada",
         "removed": "Senha removida",

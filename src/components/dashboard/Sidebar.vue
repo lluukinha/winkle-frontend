@@ -3,11 +3,11 @@ import LoginRepository from "../../repositories/login/LoginRepository";
 import DefaultSidebar from './sidebar/DefaultSidebar.vue';
 import MobileSidebar from './sidebar/MobileSidebar.vue';
 import { ISidebarItem } from './sidebar/ISidebarItem';
-import { useI18n } from 'vue-i18n';
 import { ILoginInfo } from "../../repositories/login/ILoginInfo";
 import SidebarScript from "../../scripts/SidebarScript";
-const { t } = useI18n();
+import i18n from "../../scripts/internacionalization/i18n";
 
+const { t } = i18n.element.global;
 const loginData : ILoginInfo | null = LoginRepository.loginData();
 const userLogin = loginData ? loginData.login : '';
 

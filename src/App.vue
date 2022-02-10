@@ -9,7 +9,7 @@ import Loading from "./components/shared/Loading.vue";
 <template>
   <router-view></router-view>
   <Loading />
-  <notifications position="bottom right" />
+  <notifications position="top center" />
 </template>
 
 

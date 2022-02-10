@@ -4,7 +4,8 @@ import { IPassword } from "../../repositories/passwords/IPassword";
 import { ref, reactive } from "@vue/reactivity";
 import { FormHTMLAttributes, onMounted, Ref } from "vue";
 import PasswordRepository from "../../repositories/passwords/PasswordRepository";
-import LoadingScript from "../../scripts/LoadingScript";
+import WinkleScripts from "../../scripts/WinkleScripts";
+import showErrorMessage from "../../scripts/ErrorLogs";
 
 const emit = defineEmits(["close", "save"]);
 const password : Readonly<IPassword> = reactive({
@@ -25,11 +26,11 @@ const handleClose = () => { emit("close"); };
 const sendForm = () => { formSubmit.value?.click(); };
 const handleSave = (e: Event) => {
   e.preventDefault();
-  LoadingScript.setLoading(true);
+  WinkleScripts.setLoading(true);
   PasswordRepository.createPassword(password)
     .then((newPass : IPassword) => { emit("save", newPass); })
-    .catch(() => { console.log('something went wrong'); })
-    .finally(() => { LoadingScript.setLoading(false); });
+    .catch(showErrorMessage)
+    .finally(() => { WinkleScripts.setLoading(false); });
 };
 </script>
 
