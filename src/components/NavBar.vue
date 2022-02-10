@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-// defineProps<{ msg: string }>()
-const isEnabled = ref(false);
+import LoginRepository from '../repositories/login/LoginRepository';
+import SidebarScript from '../scripts/SidebarScript';
+const isEnabled = ref(SidebarScript.isOpen.value);
+const loginData = LoginRepository.loginData();
 </script>
 
 <template>
-  <nav class="flex items-center justify-between flex-wrap bg-teal-500 p-6">
+  <nav class="flex items-center justify-between flex-wrap bg-gray-800 p-6">
     <div class="flex items-center flex-shrink-0 text-white mr-6">
       <svg
         class="fill-current h-8 w-8 mr-2"
@@ -33,7 +35,7 @@ const isEnabled = ref(false);
           border-teal-400
           hover:text-white hover:border-white
         "
-        @click="isEnabled = !isEnabled"
+        @click="SidebarScript.toggleSidebar(!SidebarScript.isOpen.value)"
       >
         <svg
           class="fill-current h-3 w-3"
@@ -47,7 +49,7 @@ const isEnabled = ref(false);
     </div>
     <div :class="{ hidden: !isEnabled } " class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
       <div class="text-sm lg:flex-grow">
-        <a
+        <!-- a
           href="#responsive-header"
           class="
             block
@@ -84,10 +86,11 @@ const isEnabled = ref(false);
           "
         >
           Blog
-        </a>
+        </a -->
       </div>
       <div>
         <router-link
+          v-if="!loginData"
           to="/login"
           class="
             inline-block
