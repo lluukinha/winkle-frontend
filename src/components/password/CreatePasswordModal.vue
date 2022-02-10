@@ -8,7 +8,7 @@ import WinkleScripts from "../../scripts/WinkleScripts";
 import showErrorMessage from "../../scripts/ErrorLogs";
 
 const emit = defineEmits(["close", "save"]);
-const password : Readonly<IPassword> = reactive({
+const password : Ref<IPassword> = ref({
   type: 'password',
   name: '',
   description: '',
@@ -26,11 +26,22 @@ const handleClose = () => { emit("close"); };
 const sendForm = () => { formSubmit.value?.click(); };
 const handleSave = (e: Event) => {
   e.preventDefault();
+
+  const { url } = password.value;
+  if (!url.startsWith('http')) password.value.url = `https://${url}`;
+
   WinkleScripts.setLoading(true);
-  PasswordRepository.createPassword(password)
+  PasswordRepository.createPassword(password.value)
     .then((newPass : IPassword) => { emit("save", newPass); })
     .catch(showErrorMessage)
     .finally(() => { WinkleScripts.setLoading(false); });
+};
+
+const selectedUrl : Ref<string> = ref('Outro');
+const changeUrl = (e: Event) => {
+  const urlType = WinkleScripts.urlTypes.find(u => u.name === selectedUrl.value);
+  const newUrl = urlType ? urlType.url : '';
+  password.value.url = newUrl;
 };
 </script>
 
@@ -211,7 +222,7 @@ const handleSave = (e: Event) => {
           </label>
         </div>
         <div class="md:w-2/3">
-          <input
+          <select
             class="
               bg-gray-200
               appearance-none
@@ -224,10 +235,39 @@ const handleSave = (e: Event) => {
               leading-tight
               focus:outline-none focus:bg-white focus:border-purple-500
             "
+            id="url-select"
+            v-model="selectedUrl"
+            @change="changeUrl"
+          >
+            <option
+              v-for="url in WinkleScripts.urlTypes"
+              :key="url.name"
+              :value="url.name"
+            >
+              {{ url.name }}
+            </option>
+          </select>
+
+          <input
+            class="
+              bg-gray-200
+              appearance-none
+              border-2 border-gray-200
+              rounded
+              w-full
+              py-2
+              px-4
+              text-gray-700
+              leading-tight
+              focus:outline-none focus:bg-white focus:border-purple-500
+              mt-2
+            "
             id="inline-full-url"
             type="text"
             v-model="password.url"
             :placeholder="$t('passwords.form.url-placeholder')"
+            ref="urlInput"
+            :readonly="selectedUrl !== 'Outro'"
           />
         </div>
       </div>

@@ -14,4 +14,27 @@ const copyText = async (text: string): Promise<void> => {
   }
 };
 
-export default { isLoading, setLoading, copyText }
+interface UrlType {
+  name: string;
+  url: string;
+};
+
+const urlTypes : UrlType[] = [
+  { name: 'Outro', url: '' },
+  { name: 'Anchor', url: 'https://anchor.fm/' },
+  { name: 'Amazon', url: 'https://www.amazon.com.br/' },
+  { name: 'Disney+', url: 'https://www.disneyplus.com/pt-br' },
+  { name: 'Facebook', url: 'https://www.facebook.com.br' },
+  { name: 'HBO Max', url: 'https://www.hbomax.com/br/pt' },
+  { name: 'Hotmart', url: 'https://www.hotmart.com/pt-BR' },
+  { name: 'Instagram', url: 'https://www.instagram.com/' },
+  { name: 'ICloud', url: 'https://www.icloud.com/' },
+  { name: 'Mercado Livre', url: 'https://www.mercadolivre.com.br/' },
+  { name: 'Netflix', url: 'https://www.netflix.com/' },
+  { name: 'Spotify', url: 'https://www.spotify.com/' },
+  { name: 'Star Plus', url: 'https://www.starplus.com/' },
+  { name: 'Twitter', url: 'https://twitter.com/' },
+  { name: 'Youtube', url: 'https://www.youtube.com/' }
+];
+
+export default { isLoading, setLoading, copyText, urlTypes }

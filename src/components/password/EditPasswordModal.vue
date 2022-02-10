@@ -11,32 +11,35 @@ const emit = defineEmits(["close", "save"]);
 
 const firstInput: Ref<HTMLElement | null> = ref(null);
 const formSubmit: Ref<HTMLElement | null> = ref(null);
-const updatedPassword: Readonly<IPassword> = reactive(
-  JSON.parse(JSON.stringify(props.password))
-);
+const updatedPassword: Ref<IPassword> = ref(JSON.parse(JSON.stringify(props.password)));
 const isShowingLogin: Ref<Boolean> = ref(false);
 const isShowingPassword: Ref<Boolean> = ref(false);
 
 onMounted(() => {
+  const urlFromList = WinkleScripts.urlTypes.find(t => t.url === updatedPassword.value.url);
+  selectedUrl.value = urlFromList ? urlFromList.name : 'Outro';
   firstInput.value?.focus();
 });
-const sendForm = () => {
-  formSubmit.value?.click();
-};
-const handleClose = () => {
-  emit("close");
-};
+const sendForm = () => { formSubmit.value?.click(); };
+const handleClose = () => { emit("close"); };
 const handleSave = (e: Event) => {
   e.preventDefault();
+
+  const { url } = updatedPassword.value;
+  if (!url.startsWith('http')) updatedPassword.value.url = `https://${url}`;
+
   WinkleScripts.setLoading(true);
-  PasswordRepository.updatePassword(updatedPassword)
-    .then((newPass: IPassword) => {
-      emit("save", newPass);
-    })
+  PasswordRepository.updatePassword(updatedPassword.value)
+    .then((newPass: IPassword) => { emit("save", newPass); })
     .catch(showErrorMessage)
-    .finally(() => {
-      WinkleScripts.setLoading(false);
-    });
+    .finally(() => { WinkleScripts.setLoading(false); });
+};
+
+const selectedUrl : Ref<string> = ref('');
+const changeUrl = (e: Event) => {
+  const urlType = WinkleScripts.urlTypes.find(u => u.name === selectedUrl.value);
+  const newUrl = urlType ? urlType.url : '';
+  updatedPassword.value.url = newUrl;
 };
 </script>
 
@@ -321,7 +324,7 @@ const handleSave = (e: Event) => {
           </label>
         </div>
         <div class="md:w-2/3">
-          <input
+          <select
             class="
               bg-gray-200
               appearance-none
@@ -334,10 +337,37 @@ const handleSave = (e: Event) => {
               leading-tight
               focus:outline-none focus:bg-white focus:border-purple-500
             "
+            id="url-select"
+            v-model="selectedUrl"
+            @change="changeUrl"
+          >
+            <option
+              v-for="url in WinkleScripts.urlTypes"
+              :key="url.name"
+              :value="url.name"
+            >
+              {{ url.name }}
+            </option>
+          </select>
+          <input
+            class="
+              bg-gray-200
+              appearance-none
+              border-2 border-gray-200
+              rounded
+              w-full
+              py-2
+              px-4
+              text-gray-700
+              leading-tight
+              focus:outline-none focus:bg-white focus:border-purple-500
+              mt-2
+            "
             id="inline-full-url"
             type="text"
             v-model="updatedPassword.url"
             :placeholder="$t('passwords.form.url-placeholder')"
+            :readonly="selectedUrl !== 'Outro'"
           />
         </div>
       </div>
