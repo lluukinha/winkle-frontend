@@ -16,8 +16,8 @@ const items : ISidebarItem[] = [
   /* { name: t('documents.title'), icon: 'documents', route: 'dashboard-documents', disabled: true },
   { name: t('bank-accounts.title'), icon: 'bank-accounts', route: 'dashboard-bankaccounts', disabled: true },
   { name: t('credit-cards.title'), icon: 'credit-cards', route: 'dashboard-creditcards', disabled: true },
-  { name: t('bitcoin-wallet.title'), icon: 'wallet', route: 'dashboard-wallet', disabled: true },
-  { name: t('notes.title'), icon: 'notes', route: 'dashboard-notes', disabled: true }, */
+  { name: t('bitcoin-wallet.title'), icon: 'wallet', route: 'dashboard-wallet', disabled: true }, */
+  { name: t('notes.title'), icon: 'notes', route: 'dashboard-notes', disabled: true },
 ];
 </script>
 

@@ -2,8 +2,7 @@
     "cancel": "Cancelar",
     "save": "Salvar",
     "remove": "Remover",
-    "search": "Pesquisar",
-    "logout": "sair",
+    "logout": "Sair",
 
     "text-copied": "Texto copiado",
     "text-copied-description": "O texto foi copiado e enviado para sua área de transferencia",
@@ -34,6 +33,7 @@
     },
 
     "passwords": {
+        "search": "Pesquise por nome ou parte do nome",
         "empty-list": "Nenhuma senha foi encontrada, mas você pode criar sua primeira",
         "clicking-here": "clicando aqui",
         "empty-filtered-list": "Não encontrei nada usando \"{filter}\" como chave",

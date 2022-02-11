@@ -71,7 +71,13 @@ const handleRemove = () => {
       </div>
     </div>
     <div class="px-2 mt-4">
-      <div tabindex="0" class="focus:outline-none flex justify-between">
+      <div
+        class="focus:outline-none flex"
+        :class="{
+          'justify-between': password.password || password.login,
+          'justify-end': !password.password && !password.login
+        }"
+      >
         <button
           class="
             py-2

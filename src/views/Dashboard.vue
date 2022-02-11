@@ -17,11 +17,12 @@ onMounted(() => {
 
 <template>
   <NavBar class="fixed w-full z-50 md:hidden" />
-  <div class="flex flex-no-wrap bg-gray-100">
+  <div class="w-screen bg-gray-400 flex justify-center">
+  <div class="container flex justify-center">
     <Sidebar v-if="isLoaded" />
-    <!-- Remove class [ h-64 ] when adding a card block -->
-    <div class="container mx-auto py-10 md:w-4/5 w-full h-screen px-6 overflow-auto mt-16 md:mt-0">
+    <div class="p-10 bg-gray-50 h-screen pt-28 md:pt-10 w-full">
       <router-view></router-view>
     </div>
+  </div>
   </div>
 </template>

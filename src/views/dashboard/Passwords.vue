@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, Ref, ref } from "vue";
+import { onMounted, computed, Ref, ref } from "vue";
 import { IPassword } from "../../repositories/passwords/IPassword";
 import PasswordRepository from "../../repositories/passwords/PasswordRepository";
 import WinkleScripts from "../../scripts/WinkleScripts";
@@ -17,6 +17,8 @@ const passwords: Ref<IPassword[]> = ref([]);
 const editingPassword: Ref<IPassword | null> = ref(null);
 const isCreating: Ref<boolean> = ref(false);
 const filter : Ref<string> = ref('');
+const header : Ref<HTMLElement | null> = ref(null);
+const contentHeight = computed(() => (header.value?.clientHeight || 0) - 20);
 const filteredPasswords = computed(() => {
   if (!filter.value || filter.value === '') return passwords.value;
   return passwords.value.filter(p => p.name.search(filter.value) > -1 || p.url.search(filter.value) > -1);
@@ -53,7 +55,7 @@ const removePasswordFromList = (passwordId: number) => {
   showNotification(t('passwords.removed'), '', 'success');
 };
 
-getPasswords();
+onMounted(() => { getPasswords(); });
 </script>
 
 <template>
@@ -68,39 +70,57 @@ getPasswords();
     @close="isCreating = false"
     @save="includePasswordInList"
   />
-  <button
-    class="
-      py-2 px-3
-      text-xs leading-3
-      rounded-full
-      text-gray-700 bg-gray-300 hover:bg-gray-400
-      shadow
-      flex items-center
-      fixed bottom-6 right-6
-    "
-    type="button"
-    @click="isCreating = true"
-    :title="$t('passwords.create')"
-  >
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-    </svg>
-  </button>
-  <div class="header text-left flex justify-between mb-4 items-center">
-    <div>
-      <h1 class="text-2xl">{{ $t('passwords.title') }}</h1>
-      <h2 class="text-md">{{ $t('passwords.description') }}</h2>
+  <div class="header border-b pb-4 border-gray-300" ref="header">
+    <div class="header-top flex justify-between mb-2">
+      <h1 class="text-2xl font-bold">{{ $t('passwords.title') }}</h1>
+      <div class="flex border-b items-center ml-10">
+        <label for="search-input">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </label>
+        <input
+          id="search-input"
+          type="text"
+          class="
+            ml-4
+            bg-gray-50
+            border border-none border-b-2
+            focus:border-none
+            w-full lg:w-72
+            !outline-none
+          "
+          v-model="filter"
+          :placeholder="$t('passwords.search')"
+        />
+      </div>
     </div>
-    <div>
-      <input
-        type="text"
-        class="rounded w-full text-center bg-gray-50 border focus:border-gray-100 p-2"
-        v-model="filter"
-        :placeholder="$t('search')"
-      />
+    <div class="header-bottom flex justify-between items-center text-left">
+      <h2 class="text-md">{{ $t('passwords.description') }}</h2>
+      <div class="ml-4">
+        <button
+          class="
+            bg-gray-500 hover:bg-gray-700
+            text-gray-200
+            py-1 px-4
+            border border-gray-200
+            rounded
+            shadow
+          "
+          @click="isCreating = true"
+          :title="$t('passwords.create')"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
+        </button>
+      </div>
     </div>
   </div>
-  <hr />
+  <div
+    class="overflow-auto"
+    :style="{ height: `calc(100% - (${contentHeight}px))` }"
+  >
 
   <div
     class="mt-2 text-gray-400"
@@ -126,5 +146,6 @@ getPasswords();
       @edit="editingPassword = password"
       @remove="removePasswordFromList"
     />
+  </div>
   </div>
 </template>
