@@ -28,7 +28,8 @@ const handleSave = (e: Event) => {
   e.preventDefault();
 
   const { url } = password.value;
-  if (!url.startsWith('http')) password.value.url = `https://${url}`;
+  const willChange : boolean = url.trim().length > 0 && !url.startsWith('http');
+  if (willChange) password.value.url = `https://${url}`;
 
   WinkleScripts.setLoading(true);
   PasswordRepository.createPassword(password.value)
