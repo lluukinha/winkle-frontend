@@ -46,9 +46,11 @@ onMounted(() => {
         class="
           w-full
           text-lg
-          py-2
+          p-2
           border-b border-gray-300
-          focus:outline-none focus:border-gray-500
+          focus:outline-none focus:border-gray-200
+          bg-gray-100
+          rounded
         "
         type="email"
         placeholder="lucas@winkle.com.br"
@@ -80,9 +82,11 @@ onMounted(() => {
         class="
           w-full
           text-lg
-          py-2
+          p-2
           border-b border-gray-300
-          focus:outline-none focus:border-gray-500
+          focus:outline-none focus:border-gray-200
+          bg-gray-100
+          rounded
         "
         type="password"
         :placeholder="$t('login.password-placeholder')"

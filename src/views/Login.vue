@@ -4,8 +4,9 @@ import WinkleImg from "../components/shared/WinkleImg.vue";
 </script>
 
 <template>
-  <div class="lg:flex">
-    <div class="lg:w-1/2 xl:max-w-screen-sm">
+<div class="h-screen w-screen flex justify-center bg-gray-300">
+  <div class="lg:flex container">
+    <div class="lg:w-1/2 xl:max-w-screen-sm bg-white h-screen">
       <div
         class="
           py-12
@@ -92,7 +93,6 @@ import WinkleImg from "../components/shared/WinkleImg.vue";
         lg:flex
         items-center
         justify-center
-        bg-indigo-100
         flex-1
         h-screen
       "
@@ -103,6 +103,7 @@ import WinkleImg from "../components/shared/WinkleImg.vue";
         <WinkleImg />
       </div>
     </div>
+  </div>
   </div>
 </template>
 
