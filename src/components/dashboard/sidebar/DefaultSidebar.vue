@@ -5,13 +5,18 @@ import router from "../../../router";
 
 import SidebarIcon from "./SidebarIcon.vue";
 
-defineProps<{ items: ISidebarItem[], userLogin: string }>();
+const props = defineProps<{ items: ISidebarItem[], userLogin: string, userName: string }>();
 const isOpen = ref(true);
 const currentRoute = computed(() => router.currentRoute.value.name);
 const topEl : Ref<HTMLElement | null> = ref(null);
 const userEl : Ref<HTMLElement | null> = ref(null);
 const footerEl : Ref<HTMLElement | null> = ref(null);
-
+const initials = computed(() => {
+  const words = props.userName.split(' ');
+  const lastIndex = words.length - 1;
+  if (lastIndex === 0) return words[0].charAt(0);
+  return `${words[0].charAt(0)}${words[lastIndex].charAt(0)}`;
+});
 const menuHeight = computed(() => {
   const topHeight = topEl.value?.clientHeight || 0;
   const userHeight = userEl.value?.clientHeight || 0;
@@ -39,7 +44,12 @@ const menuHeight = computed(() => {
         </div>
       </div>
       <div ref="userEl" class="flex justify-center flex-col items-center">
-        <div class="mb-4 rounded-full bg-white w-20 h-20 flex items-center justify-center text-3xl">LS</div>
+        <div
+          :title="userName"
+          class="mb-4 rounded-full bg-white w-20 h-20 flex items-center justify-center text-3xl"
+        >
+          {{ initials }}
+        </div>
         <span
           class="font-extralight text-sm text-gray-400 truncate w-64"
           :title="userLogin"

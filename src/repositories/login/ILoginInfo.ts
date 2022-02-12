@@ -4,4 +4,5 @@ export interface ILoginInfo {
   last_login: string;
   token_type: string;
   login: string;
+  user: string;
 }

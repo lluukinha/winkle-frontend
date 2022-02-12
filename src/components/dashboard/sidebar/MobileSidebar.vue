@@ -5,7 +5,13 @@ import { ISidebarItem } from "./ISidebarItem";
 import router from "../../../router";
 import SidebarScript from "../../../scripts/SidebarScript";
 
-defineProps<{ items: ISidebarItem[], userLogin: string, isOpen: boolean }>();
+const props = defineProps<{ items: ISidebarItem[], userLogin: string, userName: string, isOpen: boolean }>();
+const initials = computed(() => {
+  const words = props.userName.split(' ');
+  const lastIndex = words.length - 1;
+  if (lastIndex === 0) return words[0].charAt(0);
+  return `${words[0].charAt(0)}${words[lastIndex].charAt(0)}`;
+});
 const currentRoute = computed(() => router.currentRoute.value.name);
 const changeRoute = (newRoute: string) : void => {
   SidebarScript.toggleSidebar(false);
@@ -44,8 +50,11 @@ const menuHeight = computed(() => {
     <div class="px-8" v-if="isOpen">
 
       <div ref="userEl" class="flex justify-center flex-col items-center mt-10">
-        <div class="mb-4 rounded-full bg-white w-20 h-20 flex items-center justify-center text-3xl">
-          LS
+        <div
+          :title="userName"
+          class="mb-4 rounded-full bg-white w-20 h-20 flex items-center justify-center text-3xl"
+        >
+          {{ initials }}
         </div>
         <span
           class="font-extralight text-sm text-gray-400 w-full truncate"

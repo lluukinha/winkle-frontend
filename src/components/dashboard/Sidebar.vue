@@ -10,6 +10,7 @@ import i18n from "../../scripts/internacionalization/i18n";
 const { t } = i18n.element.global;
 const loginData : ILoginInfo | null = LoginRepository.loginData();
 const userLogin = loginData ? loginData.login : '';
+const userName = loginData ? loginData.user : '';
 
 const items : ISidebarItem[] = [
   { name: t('passwords.title'), icon: 'passwords', route: 'dashboard-passwords', disabled: false },
@@ -23,6 +24,15 @@ const items : ISidebarItem[] = [
 </script>
 
 <template>
-  <DefaultSidebar :items="items" :userLogin="userLogin" />
-  <MobileSidebar :items="items" :userLogin="userLogin" :isOpen="SidebarScript.isOpen.value" />
+  <DefaultSidebar
+    :items="items"
+    :userLogin="userLogin"
+    :userName="userName"
+  />
+  <MobileSidebar
+    :items="items"
+    :userLogin="userLogin"
+    :isOpen="SidebarScript.isOpen.value"
+    :userName="userName"
+  />
 </template>
