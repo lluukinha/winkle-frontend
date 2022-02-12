@@ -26,8 +26,7 @@ const menuHeight = computed(() => {
   const userHeight = userEl.value?.clientHeight || 0;
   const footerHeight = footerEl.value?.clientHeight || 0;
   const calc = userHeight + footerHeight + 100;
-  const isMobile = WinkleScripts.deviceType() == 'mobile';
-  return { height: `calc(100vh ${isMobile ? '- 5rem' : ''} - ${calc}px)` };
+  return { height: `calc(100vh - ${calc}px)` };
 });
 </script>
 
@@ -46,13 +45,15 @@ const menuHeight = computed(() => {
       justify-between
       sm:hidden
       flex
-      pt-20 md:pt-0
       `
     "
   >
     <div class="px-8" v-if="isOpen">
 
-      <div ref="userEl" class="flex justify-center flex-col items-center mt-10">
+      <div
+        ref="userEl"
+        class="flex justify-center flex-col items-center pt-28 md:pt-10"
+      >
         <div
           :title="userName"
           class="mb-4 rounded-full bg-white w-20 h-20 flex items-center justify-center text-3xl"

@@ -6,7 +6,7 @@ import NavBar from '../components/NavBar.vue';
 </script>
 
 <template>
-  <NavBar class="w-screen fixed" />
+  <NavBar class="w-screen" />
   <div class="w-full flex flex-col items-center pt-30 md:mt-10">
     <img alt="Vue logo" src="../assets/logo.png" />
     <HelloWorld msg="Hello vue" />

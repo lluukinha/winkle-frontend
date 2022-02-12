@@ -21,8 +21,7 @@ const header : Ref<HTMLElement | null> = ref(null);
 const contentHeight = computed(() => {
   const headerHeight = header.value?.clientHeight || 0;
   const hh = headerHeight - 20;
-  const mobileSize = WinkleScripts.deviceType() === 'mobile' ? '- 5rem' : '';
-  return { height: `calc(100% ${mobileSize} - (${hh}px))` };
+  return { height: `calc(100% - (${hh}px))` };
 });
 const filteredPasswords = computed(() => {
   if (!filter.value || filter.value === '') return passwords.value;
@@ -99,7 +98,10 @@ onMounted(() => { getPasswords(); });
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
     </svg>
   </button>
-  <div class="header border-b pb-4 border-gray-300 px-8" ref="header">
+  <div
+    class="header border-b pb-4 border-gray-300 px-8 pt-20 sm:pt-0"
+    ref="header"
+  >
     <div class="header-top flex justify-between mb-2">
       <h1 class="text-2xl font-bold">{{ $t('passwords.title') }}</h1>
       <div class="flex border-b items-center ml-10">
@@ -149,7 +151,7 @@ onMounted(() => { getPasswords(); });
       </div>
     </div -->
   </div>
-  <div class="overflow-auto px-8 pb-16 md:pb-0" :style="contentHeight">
+  <div class="overflow-auto px-8 pb-10 md:pb-0" :style="contentHeight">
     <div class="mt-2 text-gray-400" v-if="filteredPasswords.length === 0">
       <p v-if="filter.length === 0">
         {{ $t('passwords.empty-list') }}
