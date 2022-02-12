@@ -7,7 +7,7 @@ const loginData = LoginRepository.loginData();
 </script>
 
 <template>
-  <nav class="flex items-center justify-between flex-wrap bg-gray-800 p-6">
+  <nav id="navbar" class="flex items-center justify-between flex-wrap bg-gray-800 p-6">
     <div class="flex items-center flex-shrink-0 text-white mr-6">
       <svg
         class="fill-current h-8 w-8 mr-2"

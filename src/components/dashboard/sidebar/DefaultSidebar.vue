@@ -37,7 +37,7 @@ const menuHeight = computed(() => {
       <div ref="userEl" class="flex justify-center flex-col items-center">
         <div class="mb-4 rounded-full bg-white w-20 h-20 flex items-center justify-center text-3xl">LS</div>
         <span
-          class="font-extralight text-sm text-gray-400 w-32 truncate"
+          class="font-extralight text-sm text-gray-400 truncate w-64"
           :title="userLogin"
         >{{ userLogin }}</span>
       </div>
@@ -45,7 +45,9 @@ const menuHeight = computed(() => {
         class="mt-10 overflow-auto px-4"
         :style="{ height: `calc(100vh - (${menuHeight}px))` }"
       >
-        <li
+        <router-link
+          tag="li"
+          :to="{ name: !item.disabled ? item.route : currentRoute }"
           class="flex justify-between items-center w-full mb-2 rounded-md py-2 px-6"
           :class="{
             'bg-gray-700': currentRoute === item.route,
@@ -55,22 +57,21 @@ const menuHeight = computed(() => {
           v-for="item in items"
           :key="item.name"
         >
-          <router-link
-            class="flex items-center focus:outline-none"
-            :to="{ name: !item.disabled ? item.route : currentRoute }"
-          >
+          <div class="flex items-center focus:outline-none">
             <SidebarIcon :icon="item.icon" />
             <span class="text-sm ml-2">{{ item.name }}</span>
-          </router-link>
-        </li>
+          </div>
+        </router-link>
       </ul>
     </div>
     <div ref="footerEl" class="p-4 border-t border-gray-700">
       <ul>
-        <li
+        <router-link
+          tag="li"
+          :to="{ name: 'logout' }"
           class="flex justify-between items-center w-full cursor-pointer mb-2 text-gray-300 hover:bg-gray-700 rounded-md py-2 px-6"
         >
-          <router-link class="flex items-center focus:outline-none" :to="{ name: 'logout' }">
+          <div class="flex items-center focus:outline-none" >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="h-6 w-6"
@@ -86,8 +87,8 @@ const menuHeight = computed(() => {
               />
             </svg>
             <span class="text-sm ml-2">{{ $t('logout') }}</span>
-          </router-link>
-        </li>
+          </div>
+        </router-link>
       </ul>
     </div>
   </div>

@@ -33,7 +33,7 @@
     },
 
     "passwords": {
-        "search": "Pesquise por nome ou parte do nome",
+        "search": "Pesquise",
         "empty-list": "Nenhuma senha foi encontrada, mas você pode criar sua primeira",
         "clicking-here": "clicando aqui",
         "empty-filtered-list": "Não encontrei nada usando \"{filter}\" como chave",

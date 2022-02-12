@@ -47,7 +47,7 @@ const changeUrl = (e: Event) => {
 <template>
   <Modal @close="handleClose()" @save="sendForm()">
     <h2 class="text-xl font-bold py-4">{{ $t("passwords.edit") }}</h2>
-    <form class="w-full" @submit="handleSave">
+    <form class="w-full" autocomplete="off" @submit="handleSave">
       <button type="submit" class="hidden" ref="formSubmit"></button>
       <div class="md:flex md:items-center mb-6">
         <div class="md:w-1/3">

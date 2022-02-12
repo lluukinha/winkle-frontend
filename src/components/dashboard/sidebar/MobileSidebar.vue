@@ -12,50 +12,52 @@ const changeRoute = (newRoute: string) : void => {
   router.push({ name: newRoute });
 };
 
-const topEl : Ref<HTMLElement | null> = ref(null);
+const navbarTop : Ref<number> = ref(0);
 const userEl : Ref<HTMLElement | null> = ref(null);
 const footerEl : Ref<HTMLElement | null> = ref(null);
 
 const menuHeight = computed(() => {
-  const topHeight = topEl.value?.clientHeight || 0;
   const userHeight = userEl.value?.clientHeight || 0;
   const footerHeight = footerEl.value?.clientHeight || 0;
-  return topHeight  + userHeight + footerHeight + 150;
+  return userHeight + footerHeight + navbarTop.value;
+});
+
+onMounted(() => {
+  const el = document.getElementById('navbar');
+  navbarTop.value = el?.clientHeight || 0;
 });
 </script>
 
 <template>
   <div
-    :class="{ 'w-0': !isOpen, 'w-screen': isOpen }"
-    class="
+    :class="`
+      ${!isOpen ? 'w-0' : 'w-screen'}
       transition-all
       duration-100
       z-40
       absolute
       bg-gray-800
       shadow
-      h-screen
       flex-col
       justify-between
       sm:hidden
       flex
+      h-[calc(100vh-${navbarTop}px)]
+      `
     "
   >
     <div class="px-8" v-if="isOpen">
-      <div ref="topEl" class="mt-24"></div>
-
-      <div ref="userEl" class="flex justify-center flex-col items-center">
-        <div class="mb-4 rounded-full bg-white w-20 h-20 flex items-center justify-center text-3xl">LS</div>
+      <div ref="userEl" class="flex justify-center flex-col items-center mt-10">
+        <div class="mb-4 rounded-full bg-white w-20 h-20 flex items-center justify-center text-3xl">
+          LS
+        </div>
         <span
-          class="font-extralight text-sm text-gray-400 w-32 truncate"
+          class="font-extralight text-sm text-gray-400 w-full truncate"
           :title="userLogin"
         >{{ userLogin }}</span>
       </div>
 
-      <ul
-        class="mt-8 overflow-y-auto"
-        :style="{ height: `calc(100vh - (${menuHeight}px))` }"
-      >
+      <ul :class="`mt-8 overflow-y-auto h-[calc(100vh-${menuHeight}px)]`">
         <li
           class="flex justify-between items-center w-full mb-2 rounded-md py-2 px-6"
           v-for="item in items"

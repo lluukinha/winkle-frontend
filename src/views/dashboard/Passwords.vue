@@ -18,11 +18,25 @@ const editingPassword: Ref<IPassword | null> = ref(null);
 const isCreating: Ref<boolean> = ref(false);
 const filter : Ref<string> = ref('');
 const header : Ref<HTMLElement | null> = ref(null);
-const contentHeight = computed(() => (header.value?.clientHeight || 0) - 20);
+const navbarHeight : Ref<number> = ref(0);
+const contentHeight = computed(() => {
+  const headerHeight = header.value?.clientHeight || 0;
+  return headerHeight + navbarHeight.value - 20;
+});
 const filteredPasswords = computed(() => {
   if (!filter.value || filter.value === '') return passwords.value;
-  return passwords.value.filter(p => p.name.search(filter.value) > -1 || p.url.search(filter.value) > -1);
+  return passwords.value
+    .filter((p) => {
+      const containsName = p.name.toLowerCase().search(filter.value.toLowerCase()) > -1;
+      const containsUrl = p.url.toLowerCase().search(filter.value.toLowerCase()) > -1;
+      return containsName || containsUrl;
+    });
 });
+
+onMounted(() => {
+  const el = document.getElementById('navbar');
+  navbarHeight.value = el?.clientHeight || 0;
+})
 
 const getPasswords = () => {
   WinkleScripts.setLoading(true);
@@ -70,7 +84,7 @@ onMounted(() => { getPasswords(); });
     @close="isCreating = false"
     @save="includePasswordInList"
   />
-  <div class="header border-b pb-4 border-gray-300" ref="header">
+  <div class="header border-b pb-4 border-gray-300 px-8" ref="header">
     <div class="header-top flex justify-between mb-2">
       <h1 class="text-2xl font-bold">{{ $t('passwords.title') }}</h1>
       <div class="flex border-b items-center ml-10">
@@ -87,11 +101,12 @@ onMounted(() => { getPasswords(); });
             bg-gray-50
             border border-none border-b-2
             focus:border-none
-            w-full lg:w-72
+            w-20 lg:w-72
             !outline-none
           "
           v-model="filter"
           :placeholder="$t('passwords.search')"
+          autocomplete="off"
         />
       </div>
     </div>
@@ -102,7 +117,7 @@ onMounted(() => { getPasswords(); });
           class="
             bg-gray-500 hover:bg-gray-700
             text-gray-200
-            py-1 px-4
+            py-1 px-2
             border border-gray-200
             rounded
             shadow
@@ -118,7 +133,7 @@ onMounted(() => { getPasswords(); });
     </div>
   </div>
   <div
-    class="overflow-auto"
+    class="overflow-auto px-8"
     :style="{ height: `calc(100% - (${contentHeight}px))` }"
   >
 

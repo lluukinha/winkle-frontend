@@ -16,13 +16,15 @@ onMounted(() => {
 </script>
 
 <template>
-  <NavBar class="fixed w-full z-50 md:hidden" />
   <div class="w-screen bg-gray-400 flex justify-center">
-  <div class="container flex justify-center">
-    <Sidebar v-if="isLoaded" />
-    <div class="p-10 bg-gray-50 h-screen pt-28 md:pt-10 w-full">
-      <router-view></router-view>
+    <div class="w-full flex flex-col items-center">
+      <NavBar class="w-full md:hidden" />
+      <div class="container flex justify-center">
+        <Sidebar v-if="isLoaded" />
+        <div class="bg-gray-50 h-screen py-6 md:py-10 w-full container">
+          <router-view></router-view>
+        </div>
+      </div>
     </div>
-  </div>
   </div>
 </template>
