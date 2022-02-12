@@ -18,10 +18,10 @@ onMounted(() => {
 <template>
   <div class="w-screen bg-gray-400 flex justify-center">
     <div class="w-full flex flex-col items-center">
-      <NavBar class="w-full md:hidden" />
+      <NavBar class="z-50 w-full md:hidden" />
       <div class="w-full flex justify-center">
         <Sidebar v-if="isLoaded" />
-        <div class="bg-gray-50 h-screen py-6 md:py-10 w-full">
+        <div class="bg-gray-50 h-screen w-full mt-20 md:mt-0 pt-4">
           <router-view></router-view>
         </div>
       </div>

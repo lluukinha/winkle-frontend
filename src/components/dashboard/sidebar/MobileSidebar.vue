@@ -4,6 +4,7 @@ import SidebarIcon from "./SidebarIcon.vue";
 import { ISidebarItem } from "./ISidebarItem";
 import router from "../../../router";
 import SidebarScript from "../../../scripts/SidebarScript";
+import WinkleScripts from "../../../scripts/WinkleScripts";
 
 const props = defineProps<{ items: ISidebarItem[], userLogin: string, userName: string, isOpen: boolean }>();
 const initials = computed(() => {
@@ -25,14 +26,15 @@ const menuHeight = computed(() => {
   const userHeight = userEl.value?.clientHeight || 0;
   const footerHeight = footerEl.value?.clientHeight || 0;
   const calc = userHeight + footerHeight + 100;
-  return { height: `calc(100vh - 5rem - ${calc}px)` };
+  const isMobile = WinkleScripts.deviceType() == 'mobile';
+  return { height: `calc(100vh ${isMobile ? '- 5rem' : ''} - ${calc}px)` };
 });
 </script>
 
 <template>
   <div
     :class="`
-      ${isOpen ? 'h-[calc(100vh-5rem)]' : 'h-0' }
+      ${isOpen ? 'h-screen' : 'h-0' }
       w-screen
       transition-all
       duration-150

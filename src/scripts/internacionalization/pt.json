@@ -53,7 +53,7 @@
         "open-url": "Abrir url em uma nova aba",
         "form": {
             "name": "Nome",
-            "name-placeholder": "Ex: Facebook do Marcelo",
+            "name-placeholder": "Ex: Meu Facebook",
             "login": "Login",
             "login-placeholder": "Login/Usuário",
             "show-login": "Mostrar/esconder login",
