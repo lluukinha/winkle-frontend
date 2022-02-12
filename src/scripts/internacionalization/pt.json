@@ -80,5 +80,8 @@
     },
     "notes": {
         "title": "Notas"
+    },
+    "emails": {
+        "title": "E-mails"
     }
 }

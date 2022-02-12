@@ -21,9 +21,13 @@ const menuHeight = computed(() => {
 </script>
 
 <template>
-  <!-- Sidebar starts -->
   <div
-    class="w-80 bg-gray-800 shadow h-screen absolute hidden sm:relative sm:flex sm:flex-col sm:justify-between"
+    class="
+      w-80 h-screen
+    bg-gray-800
+      shadow absolute hidden
+      sm:relative sm:flex sm:flex-col sm:justify-between
+    "
   >
     <div>
       <div ref="topEl" class="flex items-center justify-center flex-shrink-0 text-white mr-6 pt-8 mb-6">
@@ -41,10 +45,7 @@ const menuHeight = computed(() => {
           :title="userLogin"
         >{{ userLogin }}</span>
       </div>
-      <ul
-        class="mt-10 overflow-auto px-4"
-        :style="{ height: `calc(100vh - (${menuHeight}px))` }"
-      >
+      <ul :class="`mt-10 overflow-auto px-4 h-[calc(100vh-(${menuHeight}px))]`">
         <router-link
           tag="li"
           :to="{ name: !item.disabled ? item.route : currentRoute }"

@@ -32,7 +32,7 @@ const handleRemove = () => {
       mb-7
       bg-white
       p-6
-      shadow
+      shadow-lg
       rounded
     "
   >

@@ -12,28 +12,24 @@ const changeRoute = (newRoute: string) : void => {
   router.push({ name: newRoute });
 };
 
-const navbarTop : Ref<number> = ref(0);
 const userEl : Ref<HTMLElement | null> = ref(null);
 const footerEl : Ref<HTMLElement | null> = ref(null);
 
 const menuHeight = computed(() => {
   const userHeight = userEl.value?.clientHeight || 0;
   const footerHeight = footerEl.value?.clientHeight || 0;
-  return userHeight + footerHeight + navbarTop.value;
-});
-
-onMounted(() => {
-  const el = document.getElementById('navbar');
-  navbarTop.value = el?.clientHeight || 0;
+  const calc = userHeight + footerHeight + 100;
+  return { height: `calc(100vh - 5rem - ${calc}px)` };
 });
 </script>
 
 <template>
   <div
     :class="`
-      ${!isOpen ? 'w-0' : 'w-screen'}
+      ${isOpen ? 'h-[calc(100vh-5rem)]' : 'h-0' }
+      w-screen
       transition-all
-      duration-100
+      duration-150
       z-40
       absolute
       bg-gray-800
@@ -42,11 +38,11 @@ onMounted(() => {
       justify-between
       sm:hidden
       flex
-      h-[calc(100vh-${navbarTop}px)]
       `
     "
   >
     <div class="px-8" v-if="isOpen">
+
       <div ref="userEl" class="flex justify-center flex-col items-center mt-10">
         <div class="mb-4 rounded-full bg-white w-20 h-20 flex items-center justify-center text-3xl">
           LS
@@ -57,7 +53,7 @@ onMounted(() => {
         >{{ userLogin }}</span>
       </div>
 
-      <ul :class="`mt-8 overflow-y-auto h-[calc(100vh-${menuHeight}px)]`">
+      <ul class="mt-8 overflow-y-auto" :style="menuHeight">
         <li
           class="flex justify-between items-center w-full mb-2 rounded-md py-2 px-6"
           v-for="item in items"

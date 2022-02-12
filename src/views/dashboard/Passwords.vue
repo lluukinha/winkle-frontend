@@ -18,10 +18,11 @@ const editingPassword: Ref<IPassword | null> = ref(null);
 const isCreating: Ref<boolean> = ref(false);
 const filter : Ref<string> = ref('');
 const header : Ref<HTMLElement | null> = ref(null);
-const navbarHeight : Ref<number> = ref(0);
 const contentHeight = computed(() => {
   const headerHeight = header.value?.clientHeight || 0;
-  return headerHeight + navbarHeight.value - 20;
+  const hh = headerHeight - 20;
+  const mobileSize = WinkleScripts.deviceType() === 'mobile' ? '- 5rem' : '';
+  return { height: `calc(100% ${mobileSize} - (${hh}px))` };
 });
 const filteredPasswords = computed(() => {
   if (!filter.value || filter.value === '') return passwords.value;
@@ -32,11 +33,6 @@ const filteredPasswords = computed(() => {
       return containsName || containsUrl;
     });
 });
-
-onMounted(() => {
-  const el = document.getElementById('navbar');
-  navbarHeight.value = el?.clientHeight || 0;
-})
 
 const getPasswords = () => {
   WinkleScripts.setLoading(true);
@@ -111,7 +107,9 @@ onMounted(() => { getPasswords(); });
       </div>
     </div>
     <div class="header-bottom flex justify-between items-center text-left">
-      <h2 class="text-md">{{ $t('passwords.description') }}</h2>
+      <div>
+        <!-- h2 class="text-md">{{ $t('passwords.description') }}</h2 -->
+      </div>
       <div class="ml-4">
         <button
           class="
@@ -132,35 +130,27 @@ onMounted(() => { getPasswords(); });
       </div>
     </div>
   </div>
-  <div
-    class="overflow-auto px-8"
-    :style="{ height: `calc(100% - (${contentHeight}px))` }"
-  >
+  <div class="overflow-auto px-8" :style="contentHeight">
+    <div class="mt-2 text-gray-400" v-if="filteredPasswords.length === 0">
+      <p v-if="filter.length === 0">
+        {{ $t('passwords.empty-list') }}
+        <span class="hover:text-gray-500 cursor-pointer" @click="isCreating = true">
+          {{ $t('passwords.clicking-here') }}
+        </span>
+      </p>
+      <p v-if="filter.length > 0">
+        {{ $t('passwords.empty-filtered-list', { filter }) }}
+      </p>
+    </div>
 
-  <div
-    class="mt-2 text-gray-400"
-    v-if="filteredPasswords.length === 0"
-  >
-    <p v-if="filter.length === 0">
-      {{ $t('passwords.empty-list') }}
-      <span
-        class="hover:text-gray-500 cursor-pointer"
-        @click="isCreating = true"
-      >
-        {{ $t('passwords.clicking-here') }}
-      </span>
-    </p>
-    <p v-if="filter.length > 0">{{ $t('passwords.empty-filtered-list', { filter }) }}</p>
-  </div>
-
-  <div class="flex items-center justify-center w-full mt-4 flex-wrap" v-else>
-    <PasswordCard
-      v-for="password in filteredPasswords"
-      :key="password.id"
-      :password="password"
-      @edit="editingPassword = password"
-      @remove="removePasswordFromList"
-    />
-  </div>
+    <div class="flex items-center justify-center w-full mt-4 flex-wrap" v-else>
+      <PasswordCard
+        v-for="password in filteredPasswords"
+        :key="password.id"
+        :password="password"
+        @edit="editingPassword = password"
+        @remove="removePasswordFromList"
+      />
+    </div>
   </div>
 </template>
