@@ -46,6 +46,7 @@ const menuHeight = computed(() => {
       justify-between
       sm:hidden
       flex
+      pt-20 md:pt-0
       `
     "
   >

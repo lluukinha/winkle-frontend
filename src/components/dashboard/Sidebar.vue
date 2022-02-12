@@ -34,6 +34,5 @@ const items : ISidebarItem[] = [
     :userLogin="userLogin"
     :isOpen="SidebarScript.isOpen.value"
     :userName="userName"
-    class="pt-20 md:pt-0"
   />
 </template>
