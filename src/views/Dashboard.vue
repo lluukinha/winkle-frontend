@@ -19,9 +19,9 @@ onMounted(() => {
   <div class="w-screen bg-gray-400 flex justify-center">
     <div class="w-full flex flex-col items-center">
       <NavBar class="w-full md:hidden" />
-      <div class="container flex justify-center">
+      <div class="w-full flex justify-center">
         <Sidebar v-if="isLoaded" />
-        <div class="bg-gray-50 h-screen py-6 md:py-10 w-full container">
+        <div class="bg-gray-50 h-screen py-6 md:py-10 w-full">
           <router-view></router-view>
         </div>
       </div>

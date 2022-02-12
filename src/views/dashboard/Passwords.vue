@@ -80,6 +80,25 @@ onMounted(() => { getPasswords(); });
     @close="isCreating = false"
     @save="includePasswordInList"
   />
+  <button
+    class="
+    bg-gray-500 hover:bg-gray-700
+    text-gray-200
+      py-2 px-2
+      border border-gray-200
+      rounded-full
+      shadow-lg
+      absolute
+      bottom-6 md:bottom-10
+      right-6 md:right-10
+    "
+    @click="isCreating = true"
+    :title="$t('passwords.create')"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+    </svg>
+  </button>
   <div class="header border-b pb-4 border-gray-300 px-8" ref="header">
     <div class="header-top flex justify-between mb-2">
       <h1 class="text-2xl font-bold">{{ $t('passwords.title') }}</h1>
@@ -106,9 +125,9 @@ onMounted(() => { getPasswords(); });
         />
       </div>
     </div>
-    <div class="header-bottom flex justify-between items-center text-left">
+    <!-- div class="header-bottom flex justify-between items-center text-left">
       <div>
-        <!-- h2 class="text-md">{{ $t('passwords.description') }}</h2 -->
+        <h2 class="text-md">{{ $t('passwords.description') }}</h2>
       </div>
       <div class="ml-4">
         <button
@@ -128,9 +147,9 @@ onMounted(() => { getPasswords(); });
           </svg>
         </button>
       </div>
-    </div>
+    </div -->
   </div>
-  <div class="overflow-auto px-8" :style="contentHeight">
+  <div class="overflow-auto px-8 pb-16 md:pb-0" :style="contentHeight">
     <div class="mt-2 text-gray-400" v-if="filteredPasswords.length === 0">
       <p v-if="filter.length === 0">
         {{ $t('passwords.empty-list') }}
