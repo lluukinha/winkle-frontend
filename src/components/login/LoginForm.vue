@@ -16,8 +16,8 @@ const doLogin = (e: Event) => {
 
   WinkleScripts.setLoading(true);
   LoginRepository.doLogin(loginForm)
-    .then(() => {
-      const master = prompt('Insira sua senha mestre');
+    .then(async () => {
+      const master = await prompt('Insira sua senha mestre');
       if (master) {
         LoginRepository.setMasterPassword(master);
         router.push({ name: 'dashboard' });
