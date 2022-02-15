@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, computed, Ref, ref } from "vue";
+import { onBeforeMount, onMounted, computed, Ref, ref } from "vue";
 import { IPassword } from "../../repositories/passwords/IPassword";
 import PasswordRepository from "../../repositories/passwords/PasswordRepository";
 import WinkleScripts from "../../scripts/WinkleScripts";
@@ -11,6 +11,8 @@ import CreatePasswordModal from "../../components/password/CreatePasswordModal.v
 import { showNotification } from "../../scripts/NotificationScript";
 import i18n from "../../scripts/internacionalization/i18n";
 import showErrorMessage from "../../scripts/ErrorLogs";
+import LoginRepository from "../../repositories/login/LoginRepository";
+import router from "../../router";
 
 const { t } = i18n.element.global;
 const passwords: Ref<IPassword[]> = ref([]);
@@ -64,6 +66,10 @@ const removePasswordFromList = (passwordId: number) => {
   showNotification(t('passwords.removed'), '', 'success');
 };
 
+onBeforeMount(() => {
+  const available = LoginRepository.canUseLoginInfo();
+  if (!available) router.push({ name: 'logout' });
+})
 onMounted(() => { getPasswords(); });
 </script>
 
