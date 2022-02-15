@@ -25,7 +25,10 @@ const createPassword = async (p : IPassword) : Promise<IPassword | void> => {
   if (p.password.length > 0) p.password = AES.aesEncrypt(p.password, master);
 
   const { data } = await Repository.post(`/passwords`, p);
-  return data.data;
+  const ps: IPassword = data.data;
+  if (ps.login.length > 0) ps.login = AES.aesDecrypt(ps.login, master);
+  if (ps.password.length > 0) ps.password = AES.aesDecrypt(ps.password, master);
+  return ps;
 };
 
 const updatePassword = async (p : IPassword) : Promise<IPassword | void> => {
@@ -35,7 +38,10 @@ const updatePassword = async (p : IPassword) : Promise<IPassword | void> => {
   if (p.password.length > 0) p.password = AES.aesEncrypt(p.password, master);
 
   const { data } = await Repository.put(`/passwords/${p.id}`, p);
-  return data.data;
+  const ps: IPassword = data.data;
+  if (ps.login.length > 0) ps.login = AES.aesDecrypt(ps.login, master);
+  if (ps.password.length > 0) ps.password = AES.aesDecrypt(ps.password, master);
+  return ps;
 };
 
 const removePassword = async (passwordId: number) : Promise<boolean> => {

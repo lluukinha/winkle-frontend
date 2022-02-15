@@ -99,7 +99,7 @@ onMounted(() => { getPasswords(); });
     </svg>
   </button>
   <div
-    class="header border-b pb-4 border-gray-300 px-8 pt-20 sm:pt-0"
+    class="header border-b pb-4 border-gray-300 px-8 pt-20 md:pt-0"
     ref="header"
   >
     <div class="header-top flex justify-between mb-2">
