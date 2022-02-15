@@ -12,7 +12,10 @@ const loginData = () : ILoginInfo | null => {
   return !info ? null : JSON.parse(info);
 };
 
-const removeLoginInfo = () : void => localStorage.removeItem('login');
+const removeLoginInfo = () : void => {
+  localStorage.removeItem('login');
+  localStorage.removeItem('masterPassword');
+}
 
 const doLogin = async (loginForm: ILoginForm): Promise<ILoginInfo> => {
   const url = import.meta.env.VITE_BACKEND_URL;
