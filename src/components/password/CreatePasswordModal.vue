@@ -35,7 +35,9 @@ const handleSave = (e: Event) => {
 
   WinkleScripts.setLoading(true);
   PasswordRepository.createPassword(password.value)
-    .then((newPass : IPassword) => { emit("save", newPass); })
+    .then((newPass : IPassword | void) => {
+      if (newPass) emit("save", newPass);
+    })
     .catch(showErrorMessage)
     .finally(() => { WinkleScripts.setLoading(false); });
 };

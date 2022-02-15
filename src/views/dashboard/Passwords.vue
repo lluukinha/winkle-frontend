@@ -36,8 +36,8 @@ const filteredPasswords = computed(() => {
 const getPasswords = () => {
   WinkleScripts.setLoading(true);
   PasswordRepository.getPasswords()
-    .then((passwordList: IPassword[]) => {
-      passwords.value = passwordList;
+    .then((passwordList: IPassword[] | void) => {
+      if (passwordList) passwords.value = passwordList;
     })
     .catch(showErrorMessage)
     .finally(() => {
