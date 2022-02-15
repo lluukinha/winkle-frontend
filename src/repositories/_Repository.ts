@@ -8,14 +8,13 @@ const PublicRepository = axios.create();
 const Repository = axios.create({
   baseURL: `${import.meta.env.VITE_BACKEND_URL}/api/`,
   headers: {
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
+    Accept: 'application/json', 'Content-Type': 'application/json',
   },
 });
 
 // Interceptors for Non Public Repository
 Repository.interceptors.request.use(async (config: AxiosRequestConfig) => {
-  const isJwtExpired = !LoginRepository.canUseLoginInfo;
+  const isJwtExpired = !LoginRepository.canUseLoginInfo();
   if (isJwtExpired) return;
   const login = LoginRepository.loginData();
   if (login && config.headers) config.headers.Authorization = `Bearer ${login.access_token}`;

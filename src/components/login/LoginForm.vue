@@ -33,12 +33,12 @@ const doLogin = (e: Event) => {
       }
     })
     .finally(() => { WinkleScripts.setLoading(false); });
-}
+};
 
 onMounted(() => {
   firstInput.value?.focus();
   if (LoginRepository.canUseLoginInfo()) router.push({ name: 'dashboard' });
-})
+});
 </script>
 
 <template>

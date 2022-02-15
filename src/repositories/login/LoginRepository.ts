@@ -47,6 +47,7 @@ const loginTimeout = () : boolean => {
     const secondsFromT1ToT2 = dif / 1000;
     const secondsBetweenDates = Math.abs(secondsFromT1ToT2);
     setTimeoutToLogout(secondsBetweenDates);
+    console.log('running timeout, logout in ' + secondsBetweenDates + ' seconds');
   }
 
   return false;

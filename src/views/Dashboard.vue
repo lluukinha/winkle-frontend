@@ -4,12 +4,16 @@ import LoginRepository from "../repositories/login/LoginRepository";
 
 import Sidebar from "../components/dashboard/Sidebar.vue";
 import NavBar from "../components/NavBar.vue";
-import { onMounted, ref } from "@vue/runtime-core";
+import { onBeforeMount, onMounted, ref } from "@vue/runtime-core";
 
 const isLoaded = ref(false);
 
+onBeforeMount(() => {
+  const available = LoginRepository.canUseLoginInfo();
+  if (!available) router.push({ name: 'logout' });
+});
+
 onMounted(() => {
-  if (!LoginRepository.canUseLoginInfo) router.push({ name: 'login' });
   if (router.currentRoute.value.name === 'dashboard') router.push({ name: 'dashboard-passwords' });
   isLoaded.value = true;
 });

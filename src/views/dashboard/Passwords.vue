@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeMount, onMounted, computed, Ref, ref } from "vue";
+import { onMounted, computed, Ref, ref } from "vue";
 import { IPassword } from "../../repositories/passwords/IPassword";
 import PasswordRepository from "../../repositories/passwords/PasswordRepository";
 import WinkleScripts from "../../scripts/WinkleScripts";
@@ -66,10 +66,6 @@ const removePasswordFromList = (passwordId: number) => {
   showNotification(t('passwords.removed'), '', 'success');
 };
 
-onBeforeMount(() => {
-  const available = LoginRepository.canUseLoginInfo();
-  if (!available) router.push({ name: 'logout' });
-})
 onMounted(() => { getPasswords(); });
 </script>
 
