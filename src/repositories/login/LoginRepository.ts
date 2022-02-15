@@ -39,11 +39,21 @@ const loginTimeout = () : boolean => {
 
 const canUseLoginInfo = () : boolean => loginInfo !== null && !loginTimeout();
 
+const setMasterPassword = (password: string) : void => {
+  localStorage.setItem('masterPassword', password);
+};
+
+const getMasterPassword = () : string | null => {
+  return localStorage.getItem('masterPassword');
+}
+
 export default {
   doLogin,
   loginTimeout,
   removeLoginInfo,
   loginInfo,
   loginData,
-  canUseLoginInfo
+  canUseLoginInfo,
+  setMasterPassword,
+  getMasterPassword,
 }

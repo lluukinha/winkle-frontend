@@ -16,7 +16,13 @@ const doLogin = (e: Event) => {
 
   WinkleScripts.setLoading(true);
   LoginRepository.doLogin(loginForm)
-    .then(() => { router.push({ name: 'dashboard' }); })
+    .then(() => {
+      const master = prompt('Insira sua senha mestre');
+      if (master) {
+        LoginRepository.setMasterPassword(master);
+        router.push({ name: 'dashboard' });
+      }
+    })
     .catch((e: AxiosError) => {
       const failed : boolean = e.response?.status === 401
         && e.response?.statusText === 'Unauthorized';

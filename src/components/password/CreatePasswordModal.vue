@@ -6,6 +6,8 @@ import { FormHTMLAttributes, onMounted, Ref } from "vue";
 import PasswordRepository from "../../repositories/passwords/PasswordRepository";
 import WinkleScripts from "../../scripts/WinkleScripts";
 import showErrorMessage from "../../scripts/ErrorLogs";
+import AES from "../../scripts/AES";
+import LoginRepository from "../../repositories/login/LoginRepository";
 
 const emit = defineEmits(["close", "save"]);
 const password : Ref<IPassword> = ref({
