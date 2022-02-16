@@ -32,13 +32,15 @@ const handleRemove = () => {
       mb-7
       bg-white
       p-6
+      border
       shadow-lg
-      rounded
+      rounded-lg
+      transition-all hover:scale-105
     "
   >
-    <div class="flex items-center border-b border-gray-200 pb-6 text-left cursor-pointer">
+    <div class="flex items-center border-b border-gray-300 pb-6 text-left cursor-pointer">
       <div @click="handleEdit()">
-        <div class="avatar w-12 h-12 rounded-full bg-gray-300 shadow flex items-center justify-center text-xl">
+        <div class="avatar w-12 h-12 rounded-full bg-gray-300 shadow-lg flex items-center justify-center text-xl">
           {{ initial }}
         </div>
       </div>

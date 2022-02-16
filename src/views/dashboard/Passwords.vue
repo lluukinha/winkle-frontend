@@ -13,25 +13,36 @@ import i18n from "../../scripts/internacionalization/i18n";
 import showErrorMessage from "../../scripts/ErrorLogs";
 import LoginRepository from "../../repositories/login/LoginRepository";
 import router from "../../router";
+import DashboardHeader from "../../components/shared/DashboardHeader.vue";
+import DashboardContainer from "../../components/shared/DashboardContainer.vue";
 
 const { t } = i18n.element.global;
 const passwords: Ref<IPassword[]> = ref([]);
 const editingPassword: Ref<IPassword | null> = ref(null);
 const isCreating: Ref<boolean> = ref(false);
-const filter : Ref<string> = ref('');
-const header : Ref<HTMLElement | null> = ref(null);
+const filter: Ref<string> = ref("");
+const header: Ref<HTMLElement | null> = ref(null);
 const contentHeight = computed(() => {
   const headerHeight = header.value?.clientHeight || 0;
   const hh = headerHeight - 20;
   return { height: `calc(100% - (${hh}px))` };
 });
 const filteredPasswords = computed(() => {
-  if (!filter.value || filter.value === '') return passwords.value;
-  return passwords.value
+  let list: IPassword[];
+
+  if (!filter.value || filter.value === "") list = passwords.value;
+  list = passwords.value
     .filter((p) => {
-      const containsName = p.name.toLowerCase().search(filter.value.toLowerCase()) > -1;
-      const containsUrl = p.url.toLowerCase().search(filter.value.toLowerCase()) > -1;
+      const filterValue = filter.value.toLowerCase();
+      const containsName = p.name.toLowerCase().search(filterValue) > -1;
+      const containsUrl = p.url.toLowerCase().search(filterValue) > -1;
       return containsName || containsUrl;
+    });
+
+    return list.sort((a: IPassword, b: IPassword) => {
+      if (a.name > b.name) return 1;
+      if (a.name < b.name) return -1;
+      return 0;
     });
 });
 
@@ -50,23 +61,25 @@ const getPasswords = () => {
 const includePasswordInList = (password: IPassword) => {
   passwords.value.push(password);
   isCreating.value = false;
-  showNotification(t('passwords.created'), password.name, 'success');
+  showNotification(t("passwords.created"), password.name, "success");
 };
 
 const changePasswordInList = (password: IPassword) => {
   const index = passwords.value.findIndex((p) => p.id === password.id);
   passwords.value[index] = password;
   editingPassword.value = null;
-  showNotification(t('passwords.updated'), password.name, 'success');
+  showNotification(t("passwords.updated"), password.name, "success");
 };
 
 const removePasswordFromList = (passwordId: number) => {
   const index = passwords.value.findIndex((p) => Number(p.id) === passwordId);
   passwords.value.splice(index, 1);
-  showNotification(t('passwords.removed'), '', 'success');
+  showNotification(t("passwords.removed"), "", "success");
 };
 
-onMounted(() => { getPasswords(); });
+onMounted(() => {
+  getPasswords();
+});
 </script>
 
 <template>
@@ -81,88 +94,54 @@ onMounted(() => { getPasswords(); });
     @close="isCreating = false"
     @save="includePasswordInList"
   />
-  <button
+  <!-- button
     class="
-    bg-gray-500 hover:bg-gray-700
-    text-gray-200
-      py-2 px-2
+      bg-gray-500
+      hover:bg-gray-700
+      text-gray-200
+      py-2
+      px-2
       border border-gray-200
       rounded-full
       shadow-lg
       absolute
-      bottom-6 md:bottom-10
-      right-6 md:right-10
+      bottom-6
+      md:bottom-10
+      right-6
+      md:right-10
     "
     @click="isCreating = true"
     :title="$t('passwords.create')"
   >
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-8 w-8"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+      />
     </svg>
-  </button>
-  <div
-    class="header border-b pb-4 border-gray-300 px-8 pt-20 md:pt-0"
-    ref="header"
-  >
-    <div class="header-top flex justify-between mb-2">
-      <h1 class="text-2xl font-bold">{{ $t('passwords.title') }}</h1>
-      <div class="flex border-b items-center ml-10">
-        <label for="search-input">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-        </label>
-        <input
-          id="search-input"
-          type="text"
-          class="
-            ml-4
-            bg-gray-50
-            border border-none border-b-2
-            focus:border-none
-            w-20 lg:w-72
-            !outline-none
-          "
-          v-model="filter"
-          :placeholder="$t('passwords.search')"
-          autocomplete="off"
-        />
-      </div>
-    </div>
-    <!-- div class="header-bottom flex justify-between items-center text-left">
-      <div>
-        <h2 class="text-md">{{ $t('passwords.description') }}</h2>
-      </div>
-      <div class="ml-4">
-        <button
-          class="
-            bg-gray-500 hover:bg-gray-700
-            text-gray-200
-            py-1 px-2
-            border border-gray-200
-            rounded
-            shadow
-          "
-          @click="isCreating = true"
-          :title="$t('passwords.create')"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-          </svg>
-        </button>
-      </div>
-    </div -->
-  </div>
-  <div class="overflow-auto px-8 pb-10 md:pb-0" :style="contentHeight">
+  </button -->
+  <DashboardHeader ref="header" @search="filter = $event" />
+  <DashboardContainer :style="contentHeight">
     <div class="mt-2 text-gray-400" v-if="filteredPasswords.length === 0">
       <p v-if="filter.length === 0">
-        {{ $t('passwords.empty-list') }}
-        <span class="hover:text-gray-500 cursor-pointer" @click="isCreating = true">
-          {{ $t('passwords.clicking-here') }}
+        {{ $t("passwords.empty-list") }}
+        <span
+          class="hover:text-gray-500 cursor-pointer"
+          @click="isCreating = true"
+        >
+          {{ $t("passwords.clicking-here") }}
         </span>
       </p>
       <p v-if="filter.length > 0">
-        {{ $t('passwords.empty-filtered-list', { filter }) }}
+        {{ $t("passwords.empty-filtered-list", { filter }) }}
       </p>
     </div>
 
@@ -174,6 +153,42 @@ onMounted(() => { getPasswords(); });
         @edit="editingPassword = password"
         @remove="removePasswordFromList"
       />
+      <div
+        class="
+          w-full
+          md:w-80 md:mx-2
+          mb-7
+          transition-all
+          duration-200
+          h-40
+          flex
+          justify-center
+          items-center
+        "
+      >
+        <button
+          class="
+            w-16
+            h-16
+            rounded-full
+            bg-gray-200
+            border
+            shadow-lg
+            flex
+            justify-center
+            items-center
+            transition-all
+            duration-200
+            hover:scale-110
+          "
+          @click="isCreating = true"
+          :title="$t('passwords.create')"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+        </button>
+      </div>
     </div>
-  </div>
+  </DashboardContainer>
 </template>

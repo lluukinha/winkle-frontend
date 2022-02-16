@@ -25,7 +25,7 @@ onMounted(() => {
       <NavBar class="z-50 w-full sm:hidden" />
       <div class="w-full flex justify-center">
         <Sidebar v-if="isLoaded" />
-        <div class="bg-gray-50 h-screen w-full pt-4">
+        <div class="bg-gray-50 h-screen w-full">
           <router-view></router-view>
         </div>
       </div>
