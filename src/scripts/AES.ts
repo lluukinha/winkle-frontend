@@ -247,8 +247,8 @@ const encrypt = (plaintext: string, password: string, nBits: number) : string =>
   // generate key schedule - an expansion of the key into distinct Key Rounds for each round
   const keySchedule: number[][] = keyExpansion(key);
 
-  const blockCount: number = Math.ceil(plaintext.length/blockSize);
-  const ciphertxt: number[] | string[] = new Array(blockCount);  // ciphertext as array of strings
+  const blockCount = Math.ceil(plaintext.length/blockSize);
+  const ciphertxt = new Array(blockCount);  // ciphertext as array of strings
 
   for (let b=0; b < blockCount; b++) {
     // set counter (block #) in last 8 bytes of counter block (leaving nonce in 1st 8 bytes)
@@ -259,7 +259,7 @@ const encrypt = (plaintext: string, password: string, nBits: number) : string =>
     const cipherCntr: number[] = cipher(counterBlock, keySchedule);  // -- encrypt counter block --
 
     // block size is reduced on final block
-    const blockLength: number = b<blockCount-1 ? blockSize : (plaintext.length-1)%blockSize+1;
+    const blockLength: number = b < blockCount - 1 ? blockSize : (plaintext.length-1) % blockSize + 1;
     const cipherChar = new Array(blockLength);
 
     for (let i=0; i<blockLength; i++) {  // -- xor plaintext with ciphered counter char-by-char --
@@ -344,14 +344,69 @@ const decrypt = (ciphertext: string, password: string, nBits: number) => {
   return plaintext;
 }
 
-const aesEncrypt = (text: string, key: string) : string => encrypt(text, key, 256);
-const aesDecrypt = (text: string, key: string) : string => decrypt(text, key, 256);
-const aesEncryptUTF8 = (text: string, key: string) : string => encrypt(encodeURI(text), encodeURI(key), 256);
-const aesDecryptUTF8 = (text: string, key: string) : string => decodeURI(decrypt(text, encodeURI(key), 256));
+const keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+
+const encode64 = (input: string) : string => {
+  input = input + '';
+  let output = "";
+  let chr1, chr2, chr3;
+  let enc1, enc2, enc3, enc4;
+  let i = 0;
+
+  do {
+     chr1 = input.charCodeAt(i++);
+     chr2 = input.charCodeAt(i++);
+     chr3 = input.charCodeAt(i++);
+
+     enc1 = chr1 >> 2;
+     enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+     enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+     enc4 = chr3 & 63;
+
+     if (isNaN(chr2)) {
+        enc3 = enc4 = 64;
+     } else if (isNaN(chr3)) {
+        enc4 = 64;
+     }
+
+     output = output + keyStr.charAt(enc1) + keyStr.charAt(enc2) + keyStr.charAt(enc3) + keyStr.charAt(enc4);
+  } while (i < input.length);
+  return output;
+}
+
+const decode64 = (input: string) : string => {
+  input = input + '';
+  let output = "";
+  let chr1, chr2, chr3;
+  let enc1, enc2, enc3, enc4;
+  let i = 0;
+
+  // remove all characters that are not A-Z, a-z, 0-9, +, /, or =
+  input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+
+  do {
+     enc1 = keyStr.indexOf(input.charAt(i++));
+     enc2 = keyStr.indexOf(input.charAt(i++));
+     enc3 = keyStr.indexOf(input.charAt(i++));
+     enc4 = keyStr.indexOf(input.charAt(i++));
+
+     chr1 = (enc1 << 2) | (enc2 >> 4);
+     chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+     chr3 = ((enc3 & 3) << 6) | enc4;
+
+     output = output + String.fromCharCode(chr1);
+
+     if (enc3 != 64) output = output + String.fromCharCode(chr2);
+     if (enc4 != 64) output = output + String.fromCharCode(chr3);
+  } while (i < input.length);
+
+  return output;
+}
+
+const aesEncrypt = (text: string, key: string) : string => encode64(encrypt(text, key, 256));
+const aesDecrypt = (text: string, key: string) : string => decrypt(decode64(text), key, 256);
 
 export default {
   aesEncrypt,
   aesDecrypt,
-  aesEncryptUTF8,
-  aesDecryptUTF8
 }

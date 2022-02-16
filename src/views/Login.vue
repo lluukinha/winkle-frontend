@@ -1,118 +1,113 @@
 <script setup lang="ts">
-import LoginForm from "../components/login/LoginForm.vue";
-import WinkleImg from "../components/shared/WinkleImg.vue";
+import { onBeforeMount, onMounted, Ref, ref } from "vue";
+import LoginScreen from "../components/login/LoginScreen.vue";
+import LoginRepository from "../repositories/login/LoginRepository";
+import router from "../router";
+import showErrorMessage from "../scripts/ErrorLogs";
+import { showError } from "../scripts/NotificationScript";
+import WinkleScripts from "../scripts/WinkleScripts";
+
+const loggedIn: Ref<boolean> = ref(false);
+const systemOk: Ref<boolean> = ref(false);
+const masterPassword: Ref<string> = ref('');
+const failedCounter: Ref<number> = ref(0);
+const masterInput: Ref<HTMLElement | null> = ref(null);
+
+onBeforeMount(() => {
+  const masterPass = LoginRepository.getMasterPassword();
+
+  if (LoginRepository.canUseLoginInfo()) {
+    if (masterPass != null) router.push({ name: 'dashboard' });
+    if (masterPass == null) loggedIn.value = true;
+  }
+});
+
+onMounted(() => { masterInput.value?.focus(); });
+
+const loginFinished = () => {
+  loggedIn.value = true;
+  setTimeout(() => { masterInput.value?.focus(); }, 500);
+};
+
+const setMasterPassword = () : void => {
+  systemOk.value = true;
+  setTimeout(() => {
+    LoginRepository.setMasterPassword(masterPassword.value);
+    router.push({ name: 'dashboard' });
+  }, 300);
+};
+
+const invalidMasterPassword = () => {
+  showError('Erro', 'Senha mestre está incorreta.');
+  masterPassword.value = '';
+  failedCounter.value += 1;
+  if (failedCounter.value === 3) {
+    LoginRepository.removeLoginInfo();
+    loggedIn.value = false;
+  }
+};
+
+const checkMasterPassword = (e: Event) => {
+  e.preventDefault();
+
+  WinkleScripts.setLoading(true);
+  LoginRepository.checkMasterPassword(masterPassword.value)
+    .then((result: boolean) => {
+      if (!result) {
+        invalidMasterPassword();
+        return;
+      }
+
+      setMasterPassword();
+    })
+    .catch(showErrorMessage)
+    .finally(() => { WinkleScripts.setLoading(false); })
+};
 </script>
 
 <template>
-<div class="h-screen w-screen flex justify-center bg-gray-300">
-  <div class="lg:flex container">
-    <div class="lg:w-1/2 xl:max-w-screen-sm bg-white h-screen">
-      <div
-        class="
-          py-12
-          bg-gray-100
-          lg:bg-white
-          flex
-          justify-center
-          lg:justify-start lg:px-12
-        "
-      >
-        <div class="cursor-pointer flex items-center">
-          <div>
-            <svg
-              class="w-10 text-gray-500"
-              xmlns="http://www.w3.org/2000/svg"
-              xmlns:xlink="http://www.w3.org/1999/xlink"
-              version="1.1"
-              id="Layer_1"
-              x="0px"
-              y="0px"
-              viewBox="0 0 225 225"
-              style="enable-background: new 0 0 225 225"
-              xml:space="preserve"
-            >
-              <g transform="matrix( 1, 0, 0, 1, 0,0) ">
-                <g>
-                  <path
-                    id="Layer0_0_1_STROKES"
-                    class="st0"
-                    d="M173.8,151.5l13.6-13.6 M35.4,89.9l29.1-29 M89.4,34.9v1 M137.4,187.9l-0.6-0.4     M36.6,138.7l0.2-0.2 M56.1,169.1l27.7-27.6 M63.8,111.5l74.3-74.4 M87.1,188.1L187.6,87.6 M110.8,114.5l57.8-57.8"
-                  />
-                </g>
-              </g>
-            </svg>
-          </div>
-          <div
-            class="text-2xl text-gray-800 tracking-wide ml-2 font-semibold"
-          >
-            winkle
-          </div>
-        </div>
-      </div>
-      <div
-        class="
-          mt-10
-          px-12
-          sm:px-24
-          md:px-48
-          lg:px-12 lg:mt-16
-          xl:px-24 xl:max-w-2xl
-        "
-      >
-        <h2
-          class="
-            text-center text-4xl text-gray-800
-            font-display font-semibold
-            lg:text-left
-            xl:text-5xl xl:text-bold
-          "
-        >
-          {{ $t('login.login') }}
-        </h2>
-        <div class="mt-12">
-          <LoginForm />
-          <!-- div
-            class="
-              mt-12
-              text-sm
-              font-display font-semibold
-              text-gray-700 text-center
-            "
-          >
-            Don't have an account ?
-            <a class="cursor-pointer text-indigo-600 hover:text-indigo-800"
-              >Sign up</a
-            >
-          </div -->
-        </div>
-      </div>
+  <LoginScreen
+    v-if="!loggedIn"
+    @loginFinished="loginFinished()"
+  />
+  <div class="w-screen h-screen bg-gray-300" v-if="loggedIn">
+    <div
+      class="bg-gradient-to-b from-cyan-700 to-gray-500 transition-all duration-300"
+      :class="{
+        'h-[35vh]': !systemOk,
+        'h-0': systemOk,
+      }"
+    >
     </div>
     <div
-      class="
-        hidden
-        lg:flex
-        items-center
-        justify-center
-        flex-1
-        h-screen
-      "
+      class="bg-gradient-to-b from-gray-800 to-gray-700 pt-10 transition-all duration-300 w-screen"
+      :class="{
+        'h-[65vh]': !systemOk,
+        'h-0 fixed bottom-0': systemOk
+      }"
     >
-      <div
-        class="max-w-xs transform duration-200 hover:scale-110 cursor-pointer"
-      >
-        <WinkleImg />
+      <div class="flex flex-col justify-center">
+        <h2 class="text-2xl uppercase font-bold text-gray-100 drop-shadow-lg">
+          Insira sua senha mestre:
+        </h2>
+        <div class="mt-4">
+          <form @submit="checkMasterPassword">
+          <input
+            ref="masterInput"
+            class="rounded rounded-tr-none rounded-br-none p-2 bg-gray-200 focus:bg-gray-50"
+            type="password"
+            v-model="masterPassword"
+            required
+          />
+          <button class="bg-gray-200 rounded rounded-tl-none rounded-bl-none p-2">
+            Entrar
+          </button>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
   </div>
 </template>
 
 <style scoped>
-.st0 {
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 20;
-  stroke-linecap: round;
-  stroke-miterlimit: 3;
-}
 </style>

@@ -7,6 +7,7 @@ import { AxiosError } from "axios";
 import { showError } from "../../scripts/NotificationScript";
 import i18n from "../../scripts/internacionalization/i18n";
 
+const emit = defineEmits(["loginFinished"]);
 const { t } = i18n.element.global;
 const firstInput : Ref<HTMLElement | null> = ref(null);
 const loginForm = reactive({ email: '', password: '' });
@@ -16,12 +17,15 @@ const doLogin = (e: Event) => {
 
   WinkleScripts.setLoading(true);
   LoginRepository.doLogin(loginForm)
-    .then(async () => {
+    .then(() => {
+      emit('loginFinished');
+      /*
       const master = await prompt('Insira sua senha mestre');
       if (master) {
         LoginRepository.setMasterPassword(master);
         router.push({ name: 'dashboard' });
       }
+      */
     })
     .catch((e: AxiosError) => {
       const failed : boolean = e.response?.status === 401
@@ -35,10 +39,7 @@ const doLogin = (e: Event) => {
     .finally(() => { WinkleScripts.setLoading(false); });
 };
 
-onMounted(() => {
-  firstInput.value?.focus();
-  if (LoginRepository.canUseLoginInfo()) router.push({ name: 'dashboard' });
-});
+onMounted(() => { firstInput.value?.focus(); });
 </script>
 
 <template>

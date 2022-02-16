@@ -57,7 +57,7 @@ const loginTimeout = () : boolean => {
 };
 
 const canUseLoginInfo = () : boolean => {
-  return loginInfo !== null && !loginTimeout() && getMasterPassword() != null;
+  return loginInfo !== null && !loginTimeout();
 };
 
 const setMasterPassword = (password: string) : void => {
@@ -68,6 +68,11 @@ const getMasterPassword = () : string | null => {
   return localStorage.getItem('masterPassword');
 }
 
+const checkMasterPassword = async (master: string) : Promise<boolean> => {
+  const { data } = await Repository.post('/auth/checkMasterPassword', { master });
+  return data;
+};
+
 export default {
   doLogin,
   loginTimeout,
@@ -77,4 +82,5 @@ export default {
   canUseLoginInfo,
   setMasterPassword,
   getMasterPassword,
+  checkMasterPassword,
 }
