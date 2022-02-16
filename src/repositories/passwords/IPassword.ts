@@ -6,4 +6,5 @@ export interface IPassword {
   password: string;
   type: string;
   url: string;
+  folderId: string;
 }

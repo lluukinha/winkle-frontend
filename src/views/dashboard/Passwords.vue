@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, computed, Ref, ref } from "vue";
 import { IPassword } from "../../repositories/passwords/IPassword";
+import { IFolder } from "../../repositories/passwords/IFolder";
 import PasswordRepository from "../../repositories/passwords/PasswordRepository";
 import WinkleScripts from "../../scripts/WinkleScripts";
 
@@ -17,16 +18,27 @@ import DashboardHeader from "../../components/shared/DashboardHeader.vue";
 import DashboardContainer from "../../components/shared/DashboardContainer.vue";
 
 const { t } = i18n.element.global;
+
 const passwords: Ref<IPassword[]> = ref([]);
+const folders: Ref<IFolder[]> = ref([]);
+const emptyFolderIsOpen: Ref<boolean> = ref(true);
+
 const editingPassword: Ref<IPassword | null> = ref(null);
 const isCreating: Ref<boolean> = ref(false);
 const filter: Ref<string> = ref("");
 const header: Ref<HTMLElement | null> = ref(null);
+
 const contentHeight = computed(() => {
   const headerHeight = header.value?.clientHeight || 0;
   const hh = headerHeight - 20;
   return { height: `calc(100% - (${hh}px))` };
 });
+
+const passwordsWithoutFolder = computed(() => {
+  return filteredPasswords.value
+    .filter((p: IPassword) => !p.folderId || p.folderId === '');
+});
+
 const filteredPasswords = computed(() => {
   let list: IPassword[];
 
@@ -46,16 +58,13 @@ const filteredPasswords = computed(() => {
     });
 });
 
-const getPasswords = () => {
+const getData = async () => {
   WinkleScripts.setLoading(true);
-  PasswordRepository.getPasswords()
-    .then((passwordList: IPassword[] | void) => {
-      if (passwordList) passwords.value = passwordList;
-    })
-    .catch(showErrorMessage)
-    .finally(() => {
-      WinkleScripts.setLoading(false);
-    });
+  const foldersList = await PasswordRepository.getFolders();
+  const passwordsList = await PasswordRepository.getPasswords();
+  passwords.value = passwordsList;
+  folders.value = foldersList;
+  WinkleScripts.setLoading(false);
 };
 
 const includePasswordInList = (password: IPassword) => {
@@ -77,9 +86,7 @@ const removePasswordFromList = (passwordId: number) => {
   showNotification(t("passwords.removed"), "", "success");
 };
 
-onMounted(() => {
-  getPasswords();
-});
+onMounted(() => { getData(); });
 </script>
 
 <template>
@@ -94,7 +101,7 @@ onMounted(() => {
     @close="isCreating = false"
     @save="includePasswordInList"
   />
-  <!-- button
+  <button
     class="
       bg-gray-500
       hover:bg-gray-700
@@ -127,7 +134,7 @@ onMounted(() => {
         d="M12 6v6m0 0v6m0-6h6m-6 0H6"
       />
     </svg>
-  </button -->
+  </button>
   <DashboardHeader ref="header" @search="filter = $event" />
   <DashboardContainer :style="contentHeight">
     <div class="mt-2 text-gray-400" v-if="filteredPasswords.length === 0">
@@ -145,7 +152,66 @@ onMounted(() => {
       </p>
     </div>
 
-    <div class="flex items-center justify-center w-full mt-4 flex-wrap" v-else>
+    <div v-else>
+      <div class="w-full mt-4">
+        <div
+          class="border-b border-gray-400 w-full text-left uppercase select-none cursor-pointer"
+          @click="emptyFolderIsOpen = !emptyFolderIsOpen"
+        >
+          <button>
+            <svg v-if="!emptyFolderIsOpen" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+            <svg v-if="emptyFolderIsOpen" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button> Sem categoria ({{ passwordsWithoutFolder.length }})
+        </div>
+        <div
+          class="flex items-center flex-wrap w-full mt-4"
+          v-show="emptyFolderIsOpen"
+        >
+          <PasswordCard
+            v-for="password in passwordsWithoutFolder"
+            :key="password.id"
+            :password="password"
+            @edit="editingPassword = password"
+            @remove="removePasswordFromList"
+          />
+        </div>
+      </div>
+
+      <div class="w-full mt-4" v-for="folder in folders" :key="folder.id">
+        <div
+          class="border-b border-gray-400 w-full text-left uppercase select-none cursor-pointer"
+          @click="folder.isOpen = !folder.isOpen"
+        >
+          <button>
+            <svg v-if="!folder.isOpen" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+            <svg v-if="folder.isOpen" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button> {{ folder.name }} ({{ filteredPasswords.filter(p => p.folderId === folder.id).length }})
+        </div>
+        <div
+          class="flex items-center flex-wrap w-full mt-4"
+          v-show="folder.isOpen"
+        >
+          <PasswordCard
+            v-for="password in filteredPasswords.filter(p => p.folderId === folder.id)"
+            :key="password.id"
+            :password="password"
+            @edit="editingPassword = password"
+            @remove="removePasswordFromList"
+          />
+        </div>
+      </div>
+
+    </div>
+
+    <!-- div class="flex items-center justify-center w-full mt-4 flex-wrap" v-else>
       <PasswordCard
         v-for="password in filteredPasswords"
         :key="password.id"
@@ -189,6 +255,6 @@ onMounted(() => {
           </svg>
         </button>
       </div>
-    </div>
+    </div -->
   </DashboardContainer>
 </template>
