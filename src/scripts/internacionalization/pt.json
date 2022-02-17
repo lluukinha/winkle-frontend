@@ -51,6 +51,7 @@
         "remove": "Remover senha",
         "remove-confirm": "Tem certeza que deseja remover esta senha?",
         "open-url": "Abrir url em uma nova aba",
+        "without-folder": "SEM CATEGORIA",
         "form": {
             "name": "Nome",
             "name-placeholder": "Ex: Meu Facebook",
