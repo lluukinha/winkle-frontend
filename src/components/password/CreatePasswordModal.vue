@@ -23,25 +23,28 @@ const password : Ref<IPassword> = ref({
   folder: { id: '', name: '' }
 });
 
-const foldersList = computed(() => {
-  const folderName = password.value.folder.name;
-  return JSON.parse(JSON.stringify(props.folders))
-    .filter((folder: IFolder) => {
-      return folder.name.toUpperCase().search(folderName.toUpperCase()) > -1
-    });
-});
+const clearSelectedFolder = () => {
+  password.value.folder = { id: '', name: '' };
+}
 
-const selectFolder = (folder: IFolder) => {
-  password.value.folder = folder;
-};
-
-const hideFolders = () => {
-  setTimeout(() => { isShowingFolders.value = false }, 100);
-};
-
-const isShowingFolders: Ref<boolean> = ref(false);
+const folderIsInput: Ref<boolean> = ref(props.folders.length === 0);
 const folderInput: Ref<HTMLElement | null> = ref(null);
-const foldersDropdown: Ref<HTMLElement | null> = ref(null);
+const folderSelect: Ref<HTMLElement | null> = ref(null);
+
+const changeFolder = (e: Event) => {
+  if (password.value.folder.name === "other-folder") {
+    clearSelectedFolder();
+    folderIsInput.value = true;
+    setTimeout(() => { folderInput.value?.focus(); }, 300);
+  }
+};
+
+const transformFolderInDropdown = () => {
+  clearSelectedFolder();
+  folderIsInput.value = false;
+  setTimeout(() => { folderSelect.value?.focus(); }, 300);
+};
+
 const firstInput : Ref<HTMLElement | null> = ref(null);
 const formSubmit : Ref<HTMLElement | null> = ref(null);
 const isShowingLogin : Ref<Boolean> = ref(false);
@@ -57,22 +60,42 @@ const handleSave = (e: Event) => {
   const willChange : boolean = url.trim().length > 0 && !url.startsWith('http');
   if (willChange) password.value.url = `https://${url}`;
 
+  const folderName = password.value.folder.name;
+  if (folderName !== '') {
+    const currentFolder = props.folders
+      .find((f: IFolder) => f.name.toUpperCase() === folderName.toUpperCase());
+    password.value.folder.id = currentFolder?.id || '';
+  }
+
   WinkleScripts.setLoading(true);
   PasswordRepository.createPassword(password.value)
     .then((newPassword : IPassword) => {
-      console.log({ password: password.value, newPassword });
-      const event = {
-        newPassword,
-        willReloadFolders: password.value.folder.name !== ''
-      };
+      const event = { newPassword, willReloadFolders: folderName !== '' };
       emit("save", event);
     })
     .catch(showErrorMessage)
     .finally(() => { WinkleScripts.setLoading(false); });
 };
 
-const selectedUrl : Ref<string> = ref('Outro');
+const urlSelect: Ref<HTMLElement | null> = ref(null);
+const urlInput: Ref<HTMLElement | null> = ref(null);
+const selectedUrl: Ref<string> = ref('');
+const selectedUrlAsInput: Ref<boolean> = ref(false);
+
+const transformUrlInDropdown = () => {
+  selectedUrlAsInput.value = false;
+  selectedUrl.value = '';
+  setTimeout(() => { urlSelect.value?.focus(); }, 300);
+}
+
 const changeUrl = (e: Event) => {
+  selectedUrlAsInput.value = selectedUrl.value === "other";
+  if (selectedUrl.value === "other") {
+    password.value.url = 'http://';
+    setTimeout(() => { urlInput.value?.focus(); }, 300);
+    return;
+  }
+
   const urlType = WinkleScripts.urlTypes.find(u => u.name === selectedUrl.value);
   const newUrl = urlType ? urlType.url : '';
   password.value.url = newUrl;
@@ -257,6 +280,7 @@ const changeUrl = (e: Event) => {
         </div>
         <div class="md:w-2/3">
           <select
+            ref="urlSelect"
             class="
               bg-gray-200
               appearance-none
@@ -272,7 +296,14 @@ const changeUrl = (e: Event) => {
             id="url-select"
             v-model="selectedUrl"
             @change="changeUrl"
+            v-show="!selectedUrlAsInput"
           >
+            <option value="" disabled>
+              {{ $t('passwords.form.select') }}
+            </option>
+            <option value="other">
+              {{ $t('passwords.form.url-select-other') }}
+            </option>
             <option
               v-for="url in WinkleScripts.urlTypes"
               :key="url.name"
@@ -282,27 +313,37 @@ const changeUrl = (e: Event) => {
             </option>
           </select>
 
-          <input
-            class="
-              bg-gray-200
-              appearance-none
-              border-2 border-gray-200
-              rounded
-              w-full
-              py-2
-              px-4
+          <div v-show="selectedUrlAsInput" class="flex">
+            <input
+              class="
+                bg-gray-200
+                appearance-none
+                border-2 border-gray-200
+                rounded rounded-tr-none rounded-br-none
+                w-full
+                py-2 px-4
               text-gray-700
-              leading-tight
-              focus:outline-none focus:bg-white focus:border-purple-500
-              mt-2
-            "
-            id="inline-full-url"
-            type="text"
-            v-model="password.url"
-            :placeholder="$t('passwords.form.url-placeholder')"
-            ref="urlInput"
-            :readonly="selectedUrl !== 'Outro'"
-          />
+                leading-tight
+                focus:outline-none focus:bg-white focus:border-purple-500
+              "
+              id="inline-full-url"
+              type="text"
+              v-model="password.url"
+              :placeholder="$t('passwords.form.url-placeholder')"
+              ref="urlInput"
+              :readonly="selectedUrl !== 'other'"
+            />
+            <button
+              type="button"
+              @click="transformUrlInDropdown()"
+              class="bg-gray-200 py-2 px-4 rounded rounded-tl-none rounded-bl-none"
+              :title="$t('passwords.form.url-back-button-title')"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -324,10 +365,9 @@ const changeUrl = (e: Event) => {
           </label>
         </div>
         <div class="md:w-2/3">
-          <input
-            ref="folderInput"
+          <select
             class="
-              bg-gray-200
+            bg-gray-200
               appearance-none
               border-2 border-gray-200
               rounded
@@ -338,28 +378,57 @@ const changeUrl = (e: Event) => {
               leading-tight
               focus:outline-none focus:bg-white focus:border-purple-500
             "
-            id="inline-full-folder"
-            type="text"
-            v-model="password.folder.name"
-            :placeholder="$t('passwords.form.folder-placeholder')"
-            @focus="isShowingFolders = true"
-            @blur="hideFolders()"
-          />
+            @change="changeFolder"
+            v-show="!folderIsInput"
+            v-model="password.folder"
+            ref="folderSelect"
+          >
+            <option :value="{ id: '', name: '' }" disabled>
+              {{ $t('passwords.form.select') }}
+            </option>
+            <option :value="{ id: '', name: 'other-folder' }">
+              {{ $t('passwords.form.folder-select-other') }}
+            </option>
+            <option
+              v-for="folder in folders" :key="folder.id"
+              :value="folder.name"
+              >
+              {{ folder.name.toUpperCase() }}
+            </option>
+          </select>
+          <div v-if="folderIsInput" class="flex">
+            <input
+              ref="folderInput"
+              class="
+                uppercase
+                bg-gray-200
+                appearance-none
+                border-2 border-gray-200
+                rounded
+                w-full
+                py-2 px-4
+                text-gray-700
+                leading-tight
+                focus:outline-none focus:bg-white focus:border-purple-500
+              "
+              id="inline-full-folder"
+              type="text"
+              v-model="password.folder.name"
+              :placeholder="$t('passwords.form.folder-placeholder')"
+            />
+            <button
+              v-if="folders.length > 0"
+              type="button"
+              @click="transformFolderInDropdown()"
+              class="bg-gray-200 py-2 px-4 rounded rounded-tl-none rounded-bl-none"
+              :title="$t('passwords.form.url-back-button-title')"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+              </svg>
+            </button>
+          </div>
         </div>
-      </div>
-      <div
-        ref="foldersDropdown"
-        class="w-48 border bg-gray-50 absolute rounded shadow-lg -mt-6 md:ml-40 text-left"
-        v-if="isShowingFolders"
-      >
-        <ul>
-          <li
-            v-for="folder in foldersList"
-            :key="folder.id"
-            class="py-2 px-4 hover:bg-indigo-200 cursor-pointer"
-            @click="selectFolder(folder)"
-          >{{ folder.name }}</li>
-        </ul>
       </div>
 
       <div class="md:flex md:items-center mb-6">

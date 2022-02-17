@@ -31,7 +31,6 @@ interface UrlType {
 };
 
 const urlTypes : UrlType[] = [
-  { name: 'Outro', url: '' },
   { name: 'Anchor', url: 'https://anchor.fm/' },
   { name: 'Amazon', url: 'https://www.amazon.com.br/' },
   { name: 'Disney+', url: 'https://www.disneyplus.com/pt-br' },
