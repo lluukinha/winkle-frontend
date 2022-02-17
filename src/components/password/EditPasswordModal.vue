@@ -21,7 +21,7 @@ const handleSave = (updatedPassword: IPassword) => {
   WinkleScripts.setLoading(true);
   PasswordRepository.updatePassword(updatedPassword)
     .then((newPassword: IPassword) => {
-      const willReloadFolders = updatedPassword.folder.id !== updatedPassword.folderId;
+      const willReloadFolders = updatedPassword.folder.id !== newPassword.folder.id;
       const event = { newPassword, willReloadFolders };
       emit("save", event);
     })
