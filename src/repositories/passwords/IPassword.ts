@@ -1,3 +1,5 @@
+import { IFolder } from "./IFolder";
+
 export interface IPassword {
   description: string;
   id?: string;
@@ -7,4 +9,5 @@ export interface IPassword {
   type: string;
   url: string;
   folderId: string;
+  folder: IFolder
 }

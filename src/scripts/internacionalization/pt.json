@@ -60,10 +60,12 @@
             "password": "Senha",
             "password-placeholder": "********",
             "show-password": "Mostrar/esconder senha",
-            "url": "URL",
+            "url": "URL/Link",
             "url-placeholder": "Ex: https://www.facebook.com.br",
             "description": "Descrição",
-            "description-placeholder": ""
+            "description-placeholder": "",
+            "folder": "Pasta/Categoria",
+            "folder-placeholder": "Sem categoria"
         }
     },
     "documents": {

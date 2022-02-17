@@ -14,7 +14,6 @@ const Repository = axios.create({
 
 // Interceptors for Non Public Repository
 Repository.interceptors.request.use(async (config: AxiosRequestConfig) => {
-  console.log({ config });
   const isJwtExpired = !LoginRepository.canUseLoginInfo();
   if (isJwtExpired) return;
   const login = LoginRepository.loginData();
@@ -23,7 +22,6 @@ Repository.interceptors.request.use(async (config: AxiosRequestConfig) => {
 });
 
 Repository.interceptors.response.use(undefined, (error) => {
-  console.log({ error });
   if (error.response.status === 401) router.push({ name: 'logout' });
   return Promise.reject(error);
 });

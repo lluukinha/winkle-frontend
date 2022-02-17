@@ -2,13 +2,15 @@
 import Modal from "../shared/Modal.vue";
 import { IPassword } from "../../repositories/passwords/IPassword";
 import { ref, reactive } from "@vue/reactivity";
-import { FormHTMLAttributes, onMounted, Ref } from "vue";
+import { computed, FormHTMLAttributes, onMounted, Ref } from "vue";
 import PasswordRepository from "../../repositories/passwords/PasswordRepository";
 import WinkleScripts from "../../scripts/WinkleScripts";
 import showErrorMessage from "../../scripts/ErrorLogs";
 import AES from "../../scripts/AES";
 import LoginRepository from "../../repositories/login/LoginRepository";
+import { IFolder } from "../../repositories/passwords/IFolder";
 
+const props = defineProps<{ folders: IFolder[] }>();
 const emit = defineEmits(["close", "save"]);
 const password : Ref<IPassword> = ref({
   type: 'password',
@@ -16,8 +18,30 @@ const password : Ref<IPassword> = ref({
   description: '',
   login: '',
   password: '',
-  url: ''
+  url: '',
+  folderId: '',
+  folder: { id: '', name: '' }
 });
+
+const foldersList = computed(() => {
+  const folderName = password.value.folder.name;
+  return JSON.parse(JSON.stringify(props.folders))
+    .filter((folder: IFolder) => {
+      return folder.name.toUpperCase().search(folderName.toUpperCase()) > -1
+    });
+});
+
+const selectFolder = (folder: IFolder) => {
+  password.value.folder = folder;
+};
+
+const hideFolders = () => {
+  setTimeout(() => { isShowingFolders.value = false }, 100);
+};
+
+const isShowingFolders: Ref<boolean> = ref(false);
+const folderInput: Ref<HTMLElement | null> = ref(null);
+const foldersDropdown: Ref<HTMLElement | null> = ref(null);
 const firstInput : Ref<HTMLElement | null> = ref(null);
 const formSubmit : Ref<HTMLElement | null> = ref(null);
 const isShowingLogin : Ref<Boolean> = ref(false);
@@ -35,8 +59,13 @@ const handleSave = (e: Event) => {
 
   WinkleScripts.setLoading(true);
   PasswordRepository.createPassword(password.value)
-    .then((newPass : IPassword | void) => {
-      if (newPass) emit("save", newPass);
+    .then((newPassword : IPassword) => {
+      console.log({ password: password.value, newPassword });
+      const event = {
+        newPassword,
+        willReloadFolders: password.value.folder.name !== ''
+      };
+      emit("save", event);
     })
     .catch(showErrorMessage)
     .finally(() => { WinkleScripts.setLoading(false); });
@@ -275,6 +304,62 @@ const changeUrl = (e: Event) => {
             :readonly="selectedUrl !== 'Outro'"
           />
         </div>
+      </div>
+
+      <div class="md:flex md:items-center mb-6">
+        <div class="md:w-1/3">
+          <label
+            class="
+              block
+              text-gray-500
+              font-bold
+              md:text-right
+              mb-1
+              md:mb-0
+              pr-4
+            "
+            for="inline-full-folder"
+          >
+            {{ $t("passwords.form.folder") }}
+          </label>
+        </div>
+        <div class="md:w-2/3">
+          <input
+            ref="folderInput"
+            class="
+              bg-gray-200
+              appearance-none
+              border-2 border-gray-200
+              rounded
+              w-full
+              py-2
+              px-4
+              text-gray-700
+              leading-tight
+              focus:outline-none focus:bg-white focus:border-purple-500
+            "
+            id="inline-full-folder"
+            type="text"
+            v-model="password.folder.name"
+            :placeholder="$t('passwords.form.folder-placeholder')"
+            @focus="isShowingFolders = true"
+            @blur="hideFolders()"
+          />
+        </div>
+      </div>
+      <div
+        ref="foldersDropdown"
+        class="w-48 border bg-gray-50 absolute rounded shadow-lg -mt-6 md:ml-40 text-left"
+        v-if="isShowingFolders"
+      >
+        <ul>
+          <li
+            v-for="folder in foldersList"
+            :key="folder.id"
+            class="py-2 px-4 hover:bg-indigo-200 cursor-pointer"
+            @click="selectFolder(folder)"
+          >{{ folder.name }}</li>
+        </ul>
       </div>
 
       <div class="md:flex md:items-center mb-6">

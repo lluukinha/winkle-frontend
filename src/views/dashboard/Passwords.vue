@@ -58,6 +58,13 @@ const filteredPasswords = computed(() => {
     });
 });
 
+const loadFolders = async () => {
+  WinkleScripts.setLoading(true);
+  const foldersList = await PasswordRepository.getFolders();
+  folders.value = foldersList;
+  WinkleScripts.setLoading(false);
+};
+
 const getData = async () => {
   WinkleScripts.setLoading(true);
   const foldersList = await PasswordRepository.getFolders();
@@ -67,23 +74,32 @@ const getData = async () => {
   WinkleScripts.setLoading(false);
 };
 
-const includePasswordInList = (password: IPassword) => {
-  passwords.value.push(password);
+interface PasswordIncluded {
+  newPassword: IPassword;
+  willReloadFolders: boolean;
+}
+
+const includePasswordInList = (e: PasswordIncluded) => {
+  console.log({e});
+  passwords.value.push(e.newPassword);
   isCreating.value = false;
-  showNotification(t("passwords.created"), password.name, "success");
+  showNotification(t("passwords.created"), e.newPassword.name, "success");
+  if (e.willReloadFolders) loadFolders();
 };
 
-const changePasswordInList = (password: IPassword) => {
-  const index = passwords.value.findIndex((p) => p.id === password.id);
-  passwords.value[index] = password;
+const changePasswordInList = (e: PasswordIncluded) => {
+  const index = passwords.value.findIndex((p) => p.id === e.newPassword.id);
+  passwords.value[index] = e.newPassword;
   editingPassword.value = null;
-  showNotification(t("passwords.updated"), password.name, "success");
+  showNotification(t("passwords.updated"), e.newPassword.name, "success");
+  if (e.willReloadFolders) loadFolders();
 };
 
 const removePasswordFromList = (passwordId: number) => {
   const index = passwords.value.findIndex((p) => Number(p.id) === passwordId);
   passwords.value.splice(index, 1);
   showNotification(t("passwords.removed"), "", "success");
+  loadFolders();
 };
 
 onMounted(() => { getData(); });
@@ -93,11 +109,13 @@ onMounted(() => { getData(); });
   <EditPasswordModal
     v-if="editingPassword"
     :password="editingPassword"
+    :folders="folders"
     @close="editingPassword = null"
     @save="changePasswordInList"
   />
   <CreatePasswordModal
     v-if="isCreating"
+    :folders="folders"
     @close="isCreating = false"
     @save="includePasswordInList"
   />
@@ -135,7 +153,7 @@ onMounted(() => { getData(); });
       />
     </svg>
   </button>
-  <DashboardHeader ref="header" @search="filter = $event" />
+  <DashboardHeader :title="$t('passwords.title')" ref="header" @search="filter = $event" />
   <DashboardContainer :style="contentHeight">
     <div class="mt-2 text-gray-400" v-if="filteredPasswords.length === 0">
       <p v-if="filter.length === 0">
