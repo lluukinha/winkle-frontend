@@ -30,8 +30,7 @@ const header: Ref<HTMLElement | null> = ref(null);
 
 const contentHeight = computed(() => {
   const headerHeight = header.value?.clientHeight || 0;
-  const hh = headerHeight - 20;
-  return { height: `calc(100% - (${hh}px))` };
+  return { height: `calc(100% - (${headerHeight}px))` };
 });
 
 const passwordsWithoutFolder = computed(() => {
@@ -80,7 +79,6 @@ interface PasswordIncluded {
 }
 
 const includePasswordInList = (e: PasswordIncluded) => {
-  console.log({e});
   passwords.value.push(e.newPassword);
   isCreating.value = false;
   showNotification(t("passwords.created"), e.newPassword.name, "success");
@@ -153,7 +151,9 @@ onMounted(() => { getData(); });
       />
     </svg>
   </button>
-  <DashboardHeader :title="$t('passwords.title')" ref="header" @search="filter = $event" />
+  <div ref="header">
+    <DashboardHeader :title="$t('passwords.title')" @search="filter = $event" />
+  </div>
   <DashboardContainer :style="contentHeight">
     <div class="mt-2 text-gray-400" v-if="filteredPasswords.length === 0">
       <p v-if="filter.length === 0">
@@ -226,53 +226,6 @@ onMounted(() => { getData(); });
           />
         </div>
       </div>
-
     </div>
-
-    <!-- div class="flex items-center justify-center w-full mt-4 flex-wrap" v-else>
-      <PasswordCard
-        v-for="password in filteredPasswords"
-        :key="password.id"
-        :password="password"
-        @edit="editingPassword = password"
-        @remove="removePasswordFromList"
-      />
-      <div
-        class="
-          w-full
-          md:w-80 md:mx-2
-          mb-7
-          transition-all
-          duration-200
-          h-40
-          flex
-          justify-center
-          items-center
-        "
-      >
-        <button
-          class="
-            w-16
-            h-16
-            rounded-full
-            bg-gray-200
-            border
-            shadow-lg
-            flex
-            justify-center
-            items-center
-            transition-all
-            duration-200
-            hover:scale-110
-          "
-          @click="isCreating = true"
-          :title="$t('passwords.create')"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-          </svg>
-        </button>
-      </div>
-    </div -->
   </DashboardContainer>
 </template>
