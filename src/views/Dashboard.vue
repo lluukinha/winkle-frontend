@@ -3,7 +3,6 @@ import router from "../router";
 import LoginRepository from "../repositories/login/LoginRepository";
 
 import Sidebar from "../components/dashboard/Sidebar.vue";
-import NavBar from "../components/NavBar.vue";
 import { onBeforeMount, onMounted, ref } from "@vue/runtime-core";
 
 const isLoaded = ref(false);
@@ -22,7 +21,6 @@ onMounted(() => {
 <template>
   <div class="w-screen bg-gray-400 flex justify-center">
     <div class="w-full flex flex-col items-center">
-      <NavBar class="z-50 w-full sm:hidden" />
       <div class="w-full flex justify-center">
         <Sidebar v-if="isLoaded" />
         <div class="bg-gray-50 h-screen w-full">
