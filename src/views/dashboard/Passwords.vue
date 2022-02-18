@@ -53,9 +53,10 @@ const loadFolders = async () => {
 };
 
 const sortByName = (a: IPassword | IFolder, b: IPassword | IFolder) => {
-  if (a.name > b.name) return 1;
-  if (a.name < b.name) return -1;
-  return 0;
+  return a.name.localeCompare(b.name);
+  // if (a.name < b.name) return -1;
+  // if (a.name > b.name) return 1;
+  // return 0;
 };
 
 const getData = async () => {
@@ -87,6 +88,11 @@ const removePasswordFromList = (passwordId: number) => {
   passwords.value.splice(index, 1);
   showNotification(t('passwords.removed'), '', 'success');
   loadFolders();
+};
+
+const passwordsInFolder = (folderId: string) => {
+  return filteredPasswords.value
+    .filter(p => p.folder.id === folderId);
 };
 
 onMounted(() => getData());
@@ -188,11 +194,11 @@ onMounted(() => getData());
               <svg v-if="folder.isOpen" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
               </svg>
-            </button> {{ folder.name }}
+            </button> {{ folder.name }} ({{ passwordsInFolder(folder.id).length }})
           </div>
           <div class="flex items-center flex-wrap w-full mt-4" v-if="folder.isOpen">
             <PasswordCard
-              v-for="password in filteredPasswords.filter(p => p.folder.id === folder.id)"
+              v-for="password in passwordsInFolder(folder.id)"
               :key="password.id"
               :password="password"
               @edit="editingPassword = { ...password }"
