@@ -23,7 +23,7 @@ onMounted(() => {
     <div class="w-full flex flex-col items-center">
       <div class="w-full flex justify-center">
         <Sidebar v-if="isLoaded" />
-        <div class="bg-gray-50 h-screen w-full">
+        <div class="bg-gray-300 h-screen w-full">
           <router-view></router-view>
         </div>
       </div>

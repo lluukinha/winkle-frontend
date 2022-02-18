@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Ref, ref, watch } from "vue";
 import SidebarScript from "../../scripts/SidebarScript";
-defineProps<{ title: string }>();
+defineProps<{ title: string, showSearchBox: boolean }>();
 const emit = defineEmits(['search']);
 
 const filter: Ref<string> = ref('');
@@ -25,7 +25,10 @@ watch(filter, (currentValue) => { emit('search', currentValue); });
         </button>
         {{ title }}
       </h1>
-      <div class="flex border-b items-center ml-10 bg-gray-100 rounded-lg px-4 shadow">
+      <div
+        class="flex border-b items-center ml-10 bg-gray-100 rounded-lg px-4 shadow"
+        v-if="showSearchBox"
+      >
         <label for="search-input">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />

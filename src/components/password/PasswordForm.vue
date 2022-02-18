@@ -17,15 +17,15 @@ const password: Ref<IPassword> = ref({
   folder: { id: '', name: '' }
 });
 
-const formSubmit: Ref<HTMLElement | null> = ref(null);
+const formSubmit: Ref<HTMLElement | undefined> = ref();
 const folderIsInput: Ref<boolean> = ref(props.folders.length === 0);
-const folderInput: Ref<HTMLElement | null> = ref(null);
-const folderSelect: Ref<HTMLElement | null> = ref(null);
-const firstInput : Ref<HTMLElement | null> = ref(null);
+const folderInput: Ref<HTMLElement | undefined> = ref();
+const folderSelect: Ref<HTMLElement | undefined> = ref();
+const firstInput : Ref<HTMLElement | undefined> = ref();
 const isShowingLogin : Ref<Boolean> = ref(false);
 const isShowingPassword : Ref<Boolean> = ref(false);
-const urlSelect: Ref<HTMLElement | null> = ref(null);
-const urlInput: Ref<HTMLElement | null> = ref(null);
+const urlSelect: Ref<HTMLElement | undefined> = ref();
+const urlInput: Ref<HTMLElement | undefined> = ref();
 const selectedUrl: Ref<string> = ref('');
 const selectedUrlAsInput: Ref<boolean> = ref(false);
 
@@ -86,8 +86,8 @@ const changeUrl = (e: Event) => {
 };
 
 const handleSave = (e: Event) => {
-    e.preventDefault();
-    emit('save', password.value);
+  e.preventDefault();
+  emit('save', password.value);
 };
 
 const sendForm = () => { formSubmit.value?.click(); };

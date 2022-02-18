@@ -4,6 +4,7 @@ import Login from './views/Login.vue';
 import Logout from './views/Logout.vue';
 import Dashboard from './views/Dashboard.vue';
 import Passwords from './views/dashboard/Passwords.vue';
+import User from './views/dashboard/User.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -20,6 +21,11 @@ const router = createRouter({
           path: 'passwords',
           name: 'dashboard-passwords',
           component: Passwords,
+        },
+        {
+          path: 'user',
+          name: 'dashboard-user',
+          component: User,
         }
       ],
     }

@@ -47,4 +47,49 @@ const urlTypes : UrlType[] = [
   { name: 'Youtube', url: 'https://www.youtube.com/' }
 ];
 
-export default { isLoading, setLoading, copyText, urlTypes, deviceType }
+const timeSince = (date: Date) : string => {
+  const currentDateTime = (new Date()).getTime();
+  const seconds = Math.floor((currentDateTime - date.getTime()) / 1000);
+
+  let interval = seconds / 31536000;
+  if (interval > 1) {
+    const time = Math.floor(interval);
+    return t('time-convert.years', { time });
+  }
+
+  interval = seconds / 2592000;
+  if (interval > 1) {
+    const time = Math.floor(interval);
+    return t('time-convert.months', { time });
+  }
+
+  interval = seconds / 86400;
+  if (interval > 1) {
+    const time = Math.floor(interval);
+    return t('time-convert.days', { time });
+  }
+
+  interval = seconds / 3600;
+  if (interval > 1) {
+    const time = Math.floor(interval);
+    return t('time-convert.hours', { time });
+  }
+
+  interval = seconds / 60;
+  if (interval > 1) {
+    const time = Math.floor(interval);
+    return t('time-convert.minutes', { time });
+  }
+
+  const time = Math.floor(interval);
+  return t('time-convert.seconds', { time });
+}
+
+export default {
+  isLoading,
+  setLoading,
+  copyText,
+  urlTypes,
+  deviceType,
+  timeSince
+}

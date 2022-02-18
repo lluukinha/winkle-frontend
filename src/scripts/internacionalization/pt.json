@@ -3,6 +3,8 @@
     "save": "Salvar",
     "remove": "Remover",
     "logout": "Sair",
+    "created-at": "Criado em",
+    "last-update": "Ultima atualização",
 
     "text-copied": "Texto copiado",
     "text-copied-description": "O texto foi copiado e enviado para sua área de transferencia",
@@ -22,6 +24,15 @@
         }
     },
 
+    "time-convert": {
+        "years": "{time} ano(s) atrás",
+        "months": "{time} mes(es) atrás",
+        "days": "{time} dia(s) atrás",
+        "hours": "{time} hora(s) atrás",
+        "minutes": "{time} minuto(s) atrás",
+        "seconds": "{time} segundo(s) atrás"
+    },
+
     "login": {
         "login": "Log in",
         "enter": "Entrar",
@@ -30,6 +41,19 @@
         "password-placeholder": "Entre com sua senha",
         "login-failed": "Falha ao efetuar login",
         "user-not-found": "Nenhum usuário foi encontrado com este email e senha"
+    },
+
+    "user": {
+        "title": "Meus dados",
+        "created-at": "Conta criada",
+        "update-email-form": {
+          "email": "Novo email",
+          "email-placeholder": "novoemail@winkle.app",
+          "email-confirm": "Confirme",
+          "email-confirm-placeholder": "novoemail@winkle.app",
+          "password": "Senha",
+          "password-placeholder": "*******"
+        }
     },
 
     "passwords": {
