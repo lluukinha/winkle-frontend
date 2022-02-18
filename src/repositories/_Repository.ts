@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import router from '../router';
+import WinkleScripts from '../scripts/WinkleScripts';
 import LoginRepository from './login/LoginRepository';
 
 // Used for Public API calls
@@ -22,7 +23,10 @@ Repository.interceptors.request.use(async (config: AxiosRequestConfig) => {
 });
 
 Repository.interceptors.response.use(undefined, (error) => {
-  if (error.response.status === 401) router.push({ name: 'logout' });
+  if (error.response.status === 401) {
+    if (WinkleScripts.isLoading.value) WinkleScripts.setLoading(false);
+    router.push({ name: 'logout' });
+  }
   return Promise.reject(error);
 });
 
