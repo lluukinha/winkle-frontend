@@ -33,6 +33,10 @@ const contentHeight = computed(() => {
   return { height: `calc(100% - (${headerHeight}px))` };
 });
 
+const passwordsWithoutFolder = computed(() => {
+  return filteredPasswords.value.filter((p) => p.folder.id === '');
+});
+
 const filteredPasswords = computed(() => {
   const list = !filter.value || filter.value === ""
     ? passwords.value
@@ -152,7 +156,7 @@ onMounted(() => getData());
             <svg v-if="emptyFolderIsOpen" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
             </svg>
-          </button> {{ $t('passwords.without-folder') }}
+          </button> {{ $t('passwords.without-folder') }} ({{ passwordsWithoutFolder.length }})
         </div>
         <div class="flex items-center flex-wrap w-full mt-4" v-show="emptyFolderIsOpen">
           <div class="mt-2 text-gray-400" v-if="filteredPasswords.length === 0">
@@ -171,7 +175,7 @@ onMounted(() => getData());
           </div>
           <template v-else>
             <PasswordCard
-              v-for="password in filteredPasswords.filter((p) => p.folder.id === '')"
+              v-for="password in passwordsWithoutFolder"
               :key="password.id"
               :password="password"
               @edit="editingPassword = { ...password }"
