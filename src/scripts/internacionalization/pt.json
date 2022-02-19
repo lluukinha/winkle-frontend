@@ -1,4 +1,7 @@
 {
+    "wait": "Aguarde",
+    "not-redirected-message": "Se você não for redirecionado,",
+    "click-here": "clique aqui",
     "cancel": "Cancelar",
     "save": "Salvar",
     "remove": "Remover",
