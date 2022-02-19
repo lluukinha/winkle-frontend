@@ -10,6 +10,7 @@ import WinkleButton from '../../components/shared/WinkleButton.vue';
 import UpdateUserEmail from '../../components/user/UpdateUserEmail.vue';
 import { showSuccess } from '../../scripts/NotificationScript';
 import i18n from '../../scripts/internacionalization/i18n';
+import UpateUserPassword from '../../components/user/UpateUserPassword.vue';
 
 const header: Ref<HTMLElement | undefined> = ref();
 const contentHeight = computed(() => {
@@ -53,6 +54,11 @@ const userUpdated = (updatedUser: IUser) => {
   <UpdateUserEmail
     v-if="isUpdatingEmail"
     @close="isUpdatingEmail = false"
+    @save="userUpdated"
+  />
+  <UpateUserPassword
+    v-if="isUpdatingPassword"
+    @close="isUpdatingPassword = false"
     @save="userUpdated"
   />
   <div ref="header">
@@ -106,6 +112,7 @@ const userUpdated = (updatedUser: IUser) => {
             type="success"
             size="xl"
             class="w-full md:w-auto"
+            @click="isUpdatingPassword = true"
           >
             {{ $t('user.update-password') }}
           </WinkleButton>
@@ -115,6 +122,7 @@ const userUpdated = (updatedUser: IUser) => {
             size="xl"
             :disabled="!user.canUpdateMasterPassword"
             class="flex items-center w-full md:w-auto"
+            @click="isUpdatingMasterPassword = true"
           >
             {{ $t('user.update-master-password') }}
             <svg v-if="!user.canUpdateMasterPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-300 drop-shadow-lg" viewBox="0 0 20 20" fill="currentColor">

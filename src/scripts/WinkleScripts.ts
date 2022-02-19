@@ -81,8 +81,7 @@ const timeSince = (date: Date) : string => {
     return t('time-convert.minutes', { time });
   }
 
-  const time = Math.floor(interval);
-  return t('time-convert.seconds', { time });
+  return t('time-convert.seconds');
 }
 
 export default {

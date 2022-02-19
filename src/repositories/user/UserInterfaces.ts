@@ -16,8 +16,9 @@ interface IUpdateUserEmail {
 }
 
 interface IUpdatePassword {
-  oldPassword: string;
+  password: string;
   newPassword: string;
+  confirmNewPassword: string;
 }
 
 interface IUpdateMasterPassword {

@@ -16,6 +16,7 @@
         "already-exists": "Este { param } já existe no sistema",
         "unauthenticated": "A sessão expirou",
         "password-incorrect": "Senha incorreta",
+        "password-is-equal": "A senha enviada já está sendo utilizada",
         "params": {
             "name": "nome",
             "password": "senha",
@@ -31,7 +32,7 @@
         "days": "{time} dia(s) atrás",
         "hours": "{time} hora(s) atrás",
         "minutes": "{time} minuto(s) atrás",
-        "seconds": "{time} segundo(s) atrás"
+        "seconds": "segundos atrás"
     },
 
     "login": {
@@ -48,7 +49,8 @@
         "messages": {
             "updated": "Usuário atualizado",
             "updated-description": "{email} atualizado com sucesso",
-            "emails-dont-match": "Os emails não são iguais"
+            "emails-dont-match": "Os emails não são iguais",
+            "passwords-dont-match": "Senhas não conferem"
         },
         "title": "Meus dados",
         "created-at": "Conta criada",
@@ -57,11 +59,19 @@
         "update-master-password": "Atualizar Senha Mestre",
         "update-email-form": {
           "email": "Novo email",
-          "email-placeholder": "novoemail{'@'}winkle.app",
+          "email-placeholder": "Insira o novo email",
           "email-confirm": "Confirme",
-          "email-confirm-placeholder": "novoemail{'@'}winkle.app",
+          "email-confirm-placeholder": "Insira novamente",
           "password": "Senha",
-          "password-placeholder": "*******"
+          "password-placeholder": "Sua senha atual"
+        },
+        "update-password-form": {
+            "password": "Senha",
+            "password-placeholder": "Sua senha atual",
+            "new-password": "Nova senha",
+            "new-password-placeholder": "Insira a nova senha",
+            "confirm-new-password": "Confirme",
+            "confirm-new-password-placeholder": "Confirme a nova senha"
         }
     },
 
