@@ -2,6 +2,7 @@
     "wait": "Aguarde",
     "not-redirected-message": "Se você não for redirecionado,",
     "click-here": "clique aqui",
+    "enter": "Entrar",
     "cancel": "Cancelar",
     "save": "Salvar",
     "remove": "Remover",
@@ -46,7 +47,12 @@
         "password": "Senha",
         "password-placeholder": "Entre com sua senha",
         "login-failed": "Falha ao efetuar login",
-        "user-not-found": "Nenhum usuário foi encontrado com este email e senha"
+        "user-not-found": "Nenhum usuário foi encontrado com este email e senha",
+        "forgot-password": "Esqueceu sua senha?"
+    },
+
+    "master-password": {
+        "message": "Insira sua senha mestre"
     },
 
     "user": {

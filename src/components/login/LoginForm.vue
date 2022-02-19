@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref, Ref } from "vue";
-import router from "../../router";
 import LoginRepository from "../../repositories/login/LoginRepository";
 import WinkleScripts from "../../scripts/WinkleScripts";
 import { AxiosError } from "axios";
@@ -17,16 +16,7 @@ const doLogin = (e: Event) => {
 
   WinkleScripts.setLoading(true);
   LoginRepository.doLogin(loginForm)
-    .then(() => {
-      emit('loginFinished');
-      /*
-      const master = await prompt('Insira sua senha mestre');
-      if (master) {
-        LoginRepository.setMasterPassword(master);
-        router.push({ name: 'dashboard' });
-      }
-      */
-    })
+    .then(() => { emit('loginFinished'); })
     .catch((e: AxiosError) => {
       const failed : boolean = e.response?.status === 401
         && e.response?.statusText === 'Unauthorized';
@@ -71,19 +61,19 @@ onMounted(() => { firstInput.value?.focus(); });
         <div class="text-sm font-bold text-gray-700 tracking-wide">
           {{ $t('login.password') }}
         </div>
-        <!-- div>
+        <div>
           <a
             class="
               text-xs
               font-display font-semibold
-              text-indigo-600
-              hover:text-indigo-800
+              text-gray-600
+              hover:text-gray-800
               cursor-pointer
             "
           >
-            Forgot Password?
+            {{ $t('login.forgot-password') }}
           </a>
-        </div -->
+        </div>
       </div>
       <input
         class="
