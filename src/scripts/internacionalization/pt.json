@@ -17,6 +17,7 @@
         "unauthenticated": "A sessão expirou",
         "password-incorrect": "Senha incorreta",
         "password-is-equal": "A senha enviada já está sendo utilizada",
+        "master-password-incorrect": "Senha mestre incorreta",
         "params": {
             "name": "nome",
             "password": "senha",
@@ -50,7 +51,8 @@
             "updated": "Usuário atualizado",
             "updated-description": "{email} atualizado com sucesso",
             "emails-dont-match": "Os emails não são iguais",
-            "passwords-dont-match": "Senhas não conferem"
+            "passwords-dont-match": "Senhas não conferem",
+            "master-passwords-dont-match": "Novas senhas master não conferem"
         },
         "title": "Meus dados",
         "created-at": "Conta criada",
@@ -72,6 +74,16 @@
             "new-password-placeholder": "Insira a nova senha",
             "confirm-new-password": "Confirme",
             "confirm-new-password-placeholder": "Confirme a nova senha"
+        },
+        "update-master-password-form": {
+            "new-master-password": "Nova senha mestre",
+            "new-master-password-placeholder": "Insira a nova senha mestre",
+            "confirm-new-master-password": "Confirme",
+            "confirm-new-master-password-placeholder": "Confirme a nova senha mestre",
+            "old-master-password": "Atual senha mestre",
+            "old-master-password-placeholder": "Insira a senha mestre atual",
+            "password": "Senha",
+            "password-placeholder": "Sua senha atual"
         }
     },
 

@@ -25,6 +25,7 @@ interface IUpdateMasterPassword {
   password: string;
   oldMasterPassword: string;
   newMasterPassword: string;
+  confirmNewMasterPassword: string;
 }
 
 export {

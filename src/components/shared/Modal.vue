@@ -30,7 +30,7 @@ const handleSave = () => { emit('save'); }
     <div
       class="
         w-full
-        max-w-lg
+        max-w-xl
         p-4
         relative
         mx-auto

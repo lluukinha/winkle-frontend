@@ -11,6 +11,7 @@ import UpdateUserEmail from '../../components/user/UpdateUserEmail.vue';
 import { showSuccess } from '../../scripts/NotificationScript';
 import i18n from '../../scripts/internacionalization/i18n';
 import UpateUserPassword from '../../components/user/UpateUserPassword.vue';
+import UpdateUserMasterPassword from '../../components/user/UpdateUserMasterPassword.vue';
 
 const header: Ref<HTMLElement | undefined> = ref();
 const contentHeight = computed(() => {
@@ -59,6 +60,11 @@ const userUpdated = (updatedUser: IUser) => {
   <UpateUserPassword
     v-if="isUpdatingPassword"
     @close="isUpdatingPassword = false"
+    @save="userUpdated"
+  />
+  <UpdateUserMasterPassword
+    v-if="isUpdatingMasterPassword"
+    @close="isUpdatingMasterPassword = false"
     @save="userUpdated"
   />
   <div ref="header">
