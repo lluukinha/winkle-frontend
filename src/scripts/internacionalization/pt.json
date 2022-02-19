@@ -53,6 +53,8 @@
         "title": "Meus dados",
         "created-at": "Conta criada",
         "update-email": "Atualizar Email",
+        "update-password": "Atualizar Senha",
+        "update-master-password": "Atualizar Senha Mestre",
         "update-email-form": {
           "email": "Novo email",
           "email-placeholder": "novoemail{'@'}winkle.app",

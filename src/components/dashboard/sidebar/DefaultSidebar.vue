@@ -38,7 +38,11 @@ const menuHeight = computed(() => {
         </div>
       </div>
       <div ref="userEl" class="flex justify-center flex-col items-center">
-        <InitialsSquare :text="userName" class="mb-4" />
+        <InitialsSquare
+          :text="userName"
+          class="mb-4 cursor-pointer"
+          @click="$router.push({ name: 'dashboard-user' })"
+        />
         <router-link
           tag="div"
           class="

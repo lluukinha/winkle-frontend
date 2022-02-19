@@ -34,7 +34,7 @@ const handleSave = () => { emit('save'); }
         p-4
         relative
         mx-auto
-        my-auto
+        my-40
         rounded-xl
         shadow-lg
         bg-white
