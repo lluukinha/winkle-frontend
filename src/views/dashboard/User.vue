@@ -8,6 +8,8 @@ import { IUser } from '../../repositories/user/UserInterfaces';
 import InitialsSquare from '../../components/shared/InitialsSquare.vue';
 import WinkleButton from '../../components/shared/WinkleButton.vue';
 import UpdateUserEmail from '../../components/user/UpdateUserEmail.vue';
+import { showSuccess } from '../../scripts/NotificationScript';
+import i18n from '../../scripts/internacionalization/i18n';
 
 const header: Ref<HTMLElement | undefined> = ref();
 const contentHeight = computed(() => {
@@ -15,6 +17,7 @@ const contentHeight = computed(() => {
   return { height: `calc(100% - (${headerHeight}px))` };
 });
 
+const { t } = i18n.element.global;
 const user: Ref<IUser | undefined> = ref();
 const getUserData = async () => {
   WinkleScripts.setLoading(true);
@@ -32,13 +35,25 @@ onMounted(() => getUserData());
 const isUpdatingEmail: Ref<boolean> = ref(false);
 const isUpdatingPassword: Ref<boolean> = ref(false);
 const isUpdatingMasterPassword: Ref<boolean> = ref(false);
+
+const userUpdated = (updatedUser: IUser) => {
+  user.value = updatedUser;
+  isUpdatingEmail.value = false;
+  isUpdatingPassword.value = false;
+  isUpdatingMasterPassword.value = false;
+
+  showSuccess(
+    t('user.messages.updated'),
+    t('user.messages.updated-description', { email: updatedUser.email })
+  );
+};
 </script>
 
 <template>
   <UpdateUserEmail
     v-if="isUpdatingEmail"
     @close="isUpdatingEmail = false"
-    @save="user = $event"
+    @save="userUpdated"
   />
   <div ref="header">
     <DashboardHeader :title="$t('user.title')" :showSearchBox="false" />
@@ -84,7 +99,7 @@ const isUpdatingMasterPassword: Ref<boolean> = ref(false);
             class="w-full md:w-auto"
             @click="isUpdatingEmail = true"
           >
-            Atualizar Email
+            {{ $t('user.update-email') }}
           </WinkleButton>
 
           <WinkleButton
