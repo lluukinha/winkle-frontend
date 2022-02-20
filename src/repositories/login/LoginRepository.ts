@@ -1,5 +1,6 @@
 import { ref } from 'vue';
 import router from '../../router';
+import { IResetPassword } from '../user/UserInterfaces';
 import { PublicRepository, Repository } from '../_Repository';
 import { ILoginForm } from "./ILoginForm";
 import { ILoginInfo } from "./ILoginInfo";
@@ -27,8 +28,19 @@ const doLogin = async (loginForm: ILoginForm): Promise<ILoginInfo> => {
   return data;
 }
 
+const forgotPassword = async (email: string): Promise<boolean> => {
+  const url = import.meta.env.VITE_BACKEND_URL;
+  const { data } = await PublicRepository.post(`${url}/api/forgot-password`, { email });
+  return data.data;
+};
+
+const resetPassword = async (form: IResetPassword): Promise<boolean> => {
+  const url = import.meta.env.VITE_BACKEND_URL;
+  const { data } = await PublicRepository.post(`${url}/api/reset-password`, form);
+  return data.data;
+};
+
 const setTimeoutToLogout = (expiration: number) => {
-  // 1000 = 1 second
   const expiresIn = 1000 * expiration;
   isRunningTimeout.value = true;
   setTimeout(() => {
@@ -83,4 +95,6 @@ export default {
   setMasterPassword,
   getMasterPassword,
   checkMasterPassword,
+  forgotPassword,
+  resetPassword
 }

@@ -6,7 +6,7 @@ import { AxiosError } from "axios";
 import { showError } from "../../scripts/NotificationScript";
 import i18n from "../../scripts/internacionalization/i18n";
 
-const emit = defineEmits(["loginFinished"]);
+const emit = defineEmits(['loginFinished', 'forgot']);
 const { t } = i18n.element.global;
 const firstInput : Ref<HTMLElement | null> = ref(null);
 const loginForm = reactive({ email: '', password: '' });
@@ -62,7 +62,8 @@ onMounted(() => { firstInput.value?.focus(); });
           {{ $t('login.password') }}
         </div>
         <div>
-          <a
+          <span
+            @click="$emit('forgot')"
             class="
               text-xs
               font-display font-semibold
@@ -72,7 +73,7 @@ onMounted(() => { firstInput.value?.focus(); });
             "
           >
             {{ $t('login.forgot-password') }}
-          </a>
+          </span>
         </div>
       </div>
       <input

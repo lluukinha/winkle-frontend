@@ -28,9 +28,17 @@ interface IUpdateMasterPassword {
   confirmNewMasterPassword: string;
 }
 
+interface IResetPassword {
+  token: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
 export {
   IUser,
   IUpdateUserEmail,
   IUpdatePassword,
-  IUpdateMasterPassword
+  IUpdateMasterPassword,
+  IResetPassword
 }

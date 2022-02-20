@@ -2,6 +2,8 @@
     "wait": "Aguarde",
     "not-redirected-message": "Se você não for redirecionado,",
     "click-here": "clique aqui",
+    "go-back": "Voltar",
+    "i-remembered-my-password": "Acho que me lembrei da senha!",
     "enter": "Entrar",
     "cancel": "Cancelar",
     "save": "Salvar",
@@ -17,11 +19,14 @@
 
     "api-errors": {
         "title": "Ocorreu um erro",
+        "passwords-dont-match": "Senhas não conferem",
         "already-exists": "Este { param } já existe no sistema",
         "unauthenticated": "A sessão expirou",
         "password-incorrect": "Senha incorreta",
         "password-is-equal": "A senha enviada já está sendo utilizada",
         "master-password-incorrect": "Senha mestre incorreta",
+        "forgot-password-user-not-found": "Nenhum usuário foi encontrado com este email",
+        "token-or-user-not-found": "Token não é mais válido ou usuário não encontrado",
         "params": {
             "name": "nome",
             "password": "senha",
@@ -40,6 +45,20 @@
         "seconds": "segundos atrás"
     },
 
+    "reset-password": {
+        "form": {
+            "token": "Token",
+            "token-placeholder": "Insira o Token enviado por email",
+            "password": "Nova senha",
+            "password-placeholder": "**********",
+            "confirm-password": "Confirme a nova senha",
+            "confirm-password-placeholder": "**********",
+            "submit": "Redefinir senha"
+        },
+        "message-reseted": "Senha atualizada!",
+        "message-reseted-description": "Sua senha atualizada com sucesso, faça o login novamente"
+    },
+
     "login": {
         "login": "Log in",
         "enter": "Entrar",
@@ -48,7 +67,7 @@
         "password-placeholder": "Entre com sua senha",
         "login-failed": "Falha ao efetuar login",
         "user-not-found": "Nenhum usuário foi encontrado com este email e senha",
-        "forgot-password": "Esqueceu sua senha?"
+        "forgot-password": "Esqueceu a senha?"
     },
 
     "master-password": {

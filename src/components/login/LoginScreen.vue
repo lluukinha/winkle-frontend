@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import LoginForm from "./LoginForm.vue";
 import WinkleImg from "../shared/WinkleImg.vue";
-
-const emit = defineEmits(["loginFinished"]);
+defineProps<{ title: string }>();
 </script>
 
 <template>
@@ -20,7 +17,11 @@ const emit = defineEmits(["loginFinished"]);
           lg:justify-start lg:px-12
         "
       >
-        <div class="cursor-pointer flex items-center">
+        <router-link
+          tag="div"
+          class="cursor-pointer flex items-center"
+          :to="{ name: 'login' }"
+        >
           <div>
             <svg
               class="w-10 text-gray-500"
@@ -50,7 +51,7 @@ const emit = defineEmits(["loginFinished"]);
           >
             winkle
           </div>
-        </div>
+        </router-link>
       </div>
       <div
         class="
@@ -70,10 +71,10 @@ const emit = defineEmits(["loginFinished"]);
             xl:text-5xl xl:text-bold
           "
         >
-          {{ $t('login.login') }}
+          {{ title }}
         </h2>
         <div class="mt-12">
-          <LoginForm @loginFinished="emit('loginFinished')" />
+          <slot></slot>
           <!-- div
             class="
               mt-12
@@ -117,5 +118,36 @@ const emit = defineEmits(["loginFinished"]);
   stroke-width: 20;
   stroke-linecap: round;
   stroke-miterlimit: 3;
+}
+
+
+.slide-up-enter-active,
+.slide-up-leave-active {
+  transition: all 0.25s ease-out;
+}
+
+.slide-up-enter-from {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.slide-up-leave-to {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+
+.slide-left-enter-active,
+.slide-left-leave-active {
+  transition: all 0.25s ease-out;
+}
+
+.slide-left-enter-from {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+.slide-left-leave-to {
+  opacity: 0;
+  transform: translateX(-30px);
 }
 </style>
