@@ -15,7 +15,7 @@ const rememberPassword = (e: Event) => {
 
   WinkleScripts.setLoading(true);
   LoginRepository.forgotPassword(email.value)
-    .then((result: boolean) => { emailSent.value = result; })
+    .then(() => { emailSent.value = true; })
     .catch((errors: AxiosError) => {
       showErrorMessage(errors);
       email.value = '';
