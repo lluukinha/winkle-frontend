@@ -9,7 +9,6 @@ import ForgotPasswordForm from "../components/login/ForgotPasswordForm.vue";
 
 const forgotPassword: Ref<boolean> = ref(false);
 const loggedIn: Ref<boolean> = ref(false);
-const emit = defineEmits(["loginFinished"]);
 
 onBeforeMount(() => {
   const masterPass = LoginRepository.getMasterPassword();
@@ -24,12 +23,11 @@ onBeforeMount(() => {
   <LoginScreen
     :title="!forgotPassword ? $t('login.login') : $t('login.forgot-password')"
     v-if="!loggedIn"
-    @loginFinished="loggedIn = true"
   >
     <Transition name="slide-left">
       <LoginForm
         v-if="!forgotPassword"
-        @loginFinished="emit('loginFinished')"
+        @loginFinished="loggedIn = true"
         @forgot="forgotPassword = true"
       />
       <ForgotPasswordForm
