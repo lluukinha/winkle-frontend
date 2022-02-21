@@ -6,8 +6,8 @@ const showNotification = (title: string, text: string, type: NotificationType, d
   notify({ title, text, type, duration });
 };
 
-const showSuccess = (title: string, text: string) => {
-  showNotification(title, text, 'success');
+const showSuccess = (title: string, text: string, timeout: number = 1000) => {
+  showNotification(title, text, 'success', timeout);
 };
 
 const showWarning = (title: string, text: string, timeout: number = 1000) => {

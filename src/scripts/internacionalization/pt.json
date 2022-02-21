@@ -58,6 +58,8 @@
             "confirm-password-placeholder": "**********",
             "submit": "Redefinir senha"
         },
+        "email-sent": "Email enviado!",
+        "email-sent-description": "Foi enviado um e-mail com instruções para resetar sua senha. O código será válido pelas próximas 24 horas.",
         "message-reseted": "Senha atualizada!",
         "message-reseted-description": "Sua senha atualizada com sucesso, faça o login novamente"
     },

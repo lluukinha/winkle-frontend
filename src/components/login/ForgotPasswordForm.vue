@@ -3,9 +3,12 @@ import { AxiosError } from "axios";
 import { onMounted, Ref, ref } from "vue";
 import LoginRepository from "../../repositories/login/LoginRepository";
 import showErrorMessage from "../../scripts/ErrorLogs";
+import i18n from "../../scripts/internacionalization/i18n";
+import { showSuccess } from "../../scripts/NotificationScript";
 import WinkleScripts from "../../scripts/WinkleScripts";
 import ResetPasswordForm from "./ResetPasswordForm.vue";
 
+const { t } = i18n.element.global;
 const email: Ref<string> = ref('');
 const firstInput: Ref<HTMLElement | undefined> = ref();
 const emailSent: Ref<boolean> = ref(false);
@@ -15,7 +18,14 @@ const rememberPassword = (e: Event) => {
 
   WinkleScripts.setLoading(true);
   LoginRepository.forgotPassword(email.value)
-    .then(() => { emailSent.value = true; })
+    .then(() => {
+      showSuccess(
+        t('reset-password.email-sent'),
+        t('reset-password.email-sent-description'),
+        5000
+      );
+      emailSent.value = true;
+    })
     .catch((errors: AxiosError) => {
       showErrorMessage(errors);
       email.value = '';
