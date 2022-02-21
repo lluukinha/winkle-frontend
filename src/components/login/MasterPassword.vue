@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref, Ref } from "vue";
+import { ILoginInfo } from "../../repositories/login/ILoginInfo";
+import { IMasterPasswordConfig } from "../../repositories/login/IMasterPasswordConfig";
 import LoginRepository from "../../repositories/login/LoginRepository";
-import router from "../../router";
 import showErrorMessage from "../../scripts/ErrorLogs";
 import i18n from "../../scripts/internacionalization/i18n";
 import { showError } from "../../scripts/NotificationScript";
@@ -12,14 +13,21 @@ const failedCounter: Ref<number> = ref(0);
 const systemOk: Ref<boolean> = ref(false);
 const masterPassword: Ref<string> = ref('');
 const masterInput: Ref<HTMLElement | undefined> = ref();
+const minutesToExpire: Ref<number> = ref(15);
+const loginData: Ref<ILoginInfo | null> = ref(null);
 
-const emit = defineEmits(['failed']);
+const emit = defineEmits(['failed', 'success']);
 
 const setMasterPassword = () : void => {
   systemOk.value = true;
   setTimeout(() => {
-    LoginRepository.setMasterPassword(masterPassword.value);
-    router.push({ name: 'dashboard' });
+    const masterPasswordConfig: IMasterPasswordConfig = {
+      masterPassword: masterPassword.value,
+      minutesToExpire: minutesToExpire.value,
+      lastLogin: new Date()
+    };
+    LoginRepository.setMasterPassword(masterPasswordConfig);
+    emit('success');
   }, 300);
 };
 
@@ -52,7 +60,10 @@ const checkMasterPassword = (e: Event) => {
     .finally(() => { WinkleScripts.setLoading(false); })
 };
 
-onMounted(() => { masterInput.value?.focus(); });
+onMounted(() => {
+  masterInput.value?.focus();
+  loginData.value = LoginRepository.loginData();
+});
 </script>
 
 <template>
@@ -67,21 +78,48 @@ onMounted(() => { masterInput.value?.focus(); });
       :class="{ 'h-[65vh]': !systemOk, 'h-0 fixed bottom-0': systemOk }"
     >
       <div class="flex flex-col justify-center">
+        <h3 class="text-xl font-bold text-gray-100 mb-2">
+          {{ $t('hello') }} {{ loginData?.user }}
+          <router-link
+            tag="span"
+            class="text-sm font-normal text-gray-400 hover:underline"
+            :to="{ name: 'logout' }"
+          >
+            ({{ $t('leave') }})
+          </router-link>,
+        </h3>
         <h2 class="text-2xl uppercase font-bold text-gray-100 drop-shadow-lg">
           {{ $t('master-password.message') }}:
         </h2>
         <div class="mt-4">
           <form @submit="checkMasterPassword">
-          <input
-            ref="masterInput"
-            class="rounded rounded-tr-none rounded-br-none p-2 bg-gray-200 focus:bg-gray-50"
-            type="password"
-            v-model="masterPassword"
-            required
-          />
-          <button class="bg-gray-200 rounded rounded-tl-none rounded-bl-none p-2">
-            {{ $t('enter') }}
-          </button>
+            <div>
+              <input
+                ref="masterInput"
+                class="rounded rounded-tr-none rounded-br-none p-2 bg-gray-200 focus:bg-gray-50"
+                type="password"
+                v-model="masterPassword"
+                required
+              />
+              <button class="bg-gray-200 rounded rounded-tl-none rounded-bl-none p-2">
+                {{ $t('enter') }}
+              </button>
+            </div>
+            <div>
+              <span class="text-gray-200">
+                {{ $t('master-password.expires-in') }}:
+              </span>
+              <select
+                class="mt-4 bg-transparent text-gray-400"
+                v-model="minutesToExpire"
+              >
+                <option :value="15">15 {{ $t('master-password.minutes') }}</option>
+                <option :value="30">30 {{ $t('master-password.minutes') }}</option>
+                <option :value="45">45 {{ $t('master-password.minutes') }}</option>
+                <option :value="60">60 {{ $t('master-password.minutes') }}</option>
+                <option :value="1440">{{ $t('master-password.all-day') }}</option>
+              </select>
+            </div>
           </form>
         </div>
       </div>

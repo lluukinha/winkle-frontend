@@ -26,12 +26,6 @@ const emptyFolderIsOpen: Ref<boolean> = ref(true);
 const editingPassword: Ref<IPassword | null> = ref(null);
 const isCreating: Ref<boolean> = ref(false);
 const filter: Ref<string> = ref("");
-const header: Ref<HTMLElement | null> = ref(null);
-
-const contentHeight = computed(() => {
-  const headerHeight = header.value?.clientHeight || 0;
-  return { height: `calc(100% - (${headerHeight}px))` };
-});
 
 const passwordsWithoutFolder = computed(() => {
   return filteredPasswords.value.filter((p) => p.folder.id === '');
@@ -136,14 +130,13 @@ onMounted(() => getData());
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
     </svg>
   </button>
-  <div ref="header">
-    <DashboardHeader
-      :title="$t('passwords.title')"
-      :showSearchBox="true"
-      @search="filter = $event"
-    />
-  </div>
-  <DashboardContainer :style="contentHeight">
+  <DashboardHeader
+    :title="$t('passwords.title')"
+    :showSearchBox="true"
+    @search="filter = $event"
+  />
+
+  <DashboardContainer>
     <div class="w-full">
       <div
         class="border-b border-gray-400 w-full text-left uppercase select-none cursor-pointer"

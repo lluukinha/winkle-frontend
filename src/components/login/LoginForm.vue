@@ -1,32 +1,41 @@
 <script setup lang="ts">
-import { onMounted, reactive, ref, Ref } from "vue";
+import { onMounted, ref, Ref } from "vue";
 import LoginRepository from "../../repositories/login/LoginRepository";
 import WinkleScripts from "../../scripts/WinkleScripts";
 import { AxiosError } from "axios";
 import { showError } from "../../scripts/NotificationScript";
 import i18n from "../../scripts/internacionalization/i18n";
+import { ILoginForm } from "../../repositories/login/ILoginForm";
 
 const emit = defineEmits(['loginFinished', 'forgot']);
 const { t } = i18n.element.global;
-const firstInput : Ref<HTMLElement | null> = ref(null);
-const loginForm = reactive({ email: '', password: '' });
+const firstInput : Ref<HTMLElement | undefined> = ref();
+const loginForm: Ref<ILoginForm> = ref({ email: '', password: '' });
 
 const doLogin = (e: Event) => {
   e.preventDefault();
 
   WinkleScripts.setLoading(true);
-  LoginRepository.doLogin(loginForm)
+  LoginRepository.doLogin(loginForm.value)
     .then(() => { emit('loginFinished'); })
     .catch((e: AxiosError) => {
-      const failed : boolean = e.response?.status === 401
-        && e.response?.statusText === 'Unauthorized';
-      if (failed) {
-        showError(t('login.login-failed'), t('login.user-not-found'));
-      } else {
-        console.log(e.response);
-      }
+      const unauthorizedError = 'Unauthorized';
+      const isUnauthorized = e.response?.statusText === unauthorizedError
+        || e.response?.data.error === unauthorizedError;
+      const failed : boolean = e.response?.status === 401 && isUnauthorized;
+      if (failed) showError(t('login.login-failed'), t('login.user-not-found'));
+      if (!failed) console.log(e.response);
+      clearform();
     })
-    .finally(() => { WinkleScripts.setLoading(false); });
+    .finally(() => {
+      WinkleScripts.setLoading(false);
+    });
+};
+
+const clearform = () => {
+  loginForm.value.email = '';
+  loginForm.value.password = '';
+  firstInput.value?.focus();
 };
 
 onMounted(() => { firstInput.value?.focus(); });

@@ -39,6 +39,7 @@ onBeforeMount(() => {
   <MasterPassword
     v-if="loggedIn"
     @failed="loggedIn = false"
+    @success="router.push({ name: 'dashboard' })"
   />
 </template>
 

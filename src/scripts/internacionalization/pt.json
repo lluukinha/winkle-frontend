@@ -1,4 +1,6 @@
 {
+    "hello": "Olá",
+    "leave": "sair",
     "wait": "Aguarde",
     "not-redirected-message": "Se você não for redirecionado,",
     "click-here": "clique aqui",
@@ -71,7 +73,12 @@
     },
 
     "master-password": {
-        "message": "Insira sua senha mestre"
+        "message": "Insira sua senha mestre",
+        "expires-in": "Expira em",
+        "minutes": "minutos",
+        "all-day": "1 dia",
+        "timeout-title": "Atenção",
+        "timeout-description": "A tela será bloqueada em {count} segundos"
     },
 
     "user": {

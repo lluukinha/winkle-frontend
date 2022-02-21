@@ -3,9 +3,10 @@ import router from "../router";
 import LoginRepository from "../repositories/login/LoginRepository";
 
 import Sidebar from "../components/dashboard/Sidebar.vue";
-import { onBeforeMount, onMounted, ref } from "@vue/runtime-core";
+import { onBeforeMount, onMounted, Ref, ref } from "@vue/runtime-core";
+import MasterPassword from "../components/login/MasterPassword.vue";
 
-const isLoaded = ref(false);
+const isLoaded: Ref<boolean> = ref(false);
 
 onBeforeMount(() => {
   const available = LoginRepository.canUseLoginInfo();
@@ -19,7 +20,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="w-screen bg-gray-400 flex justify-center">
+  <MasterPassword v-if="!LoginRepository.isMasterPasswordInserted.value" />
+  <div class="w-screen bg-gray-400 flex justify-center" v-else>
     <div class="w-full flex flex-col items-center">
       <div class="w-full flex justify-center">
         <Sidebar v-if="isLoaded" />

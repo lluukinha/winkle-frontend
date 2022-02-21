@@ -13,8 +13,8 @@ watch(filter, (currentValue) => { emit('search', currentValue); });
 </script>
 
 <template>
-  <div class="border-b border-gray-300 px-8 py-4 bg-gray-200">
-    <div class="header-top flex justify-between mb-2">
+  <div class="border-b border-gray-300 px-8 py-4 bg-gray-200 h-16">
+    <div class="header-top flex justify-between">
       <h1 class="text-2xl font-bold flex items-center">
         <button class="md:hidden bg-gray-200 rounded mr-2" @click="toggleSidebar()">
           <!-- list icon -->
