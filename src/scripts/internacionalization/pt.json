@@ -29,6 +29,7 @@
         "master-password-incorrect": "Senha mestre incorreta",
         "forgot-password-user-not-found": "Nenhum usuário foi encontrado com este email",
         "token-or-user-not-found": "Token não é mais válido ou usuário não encontrado",
+        "user-has-reset-password-in-progress": "Já foi feito um pedido de resetar a senha recentemente. Verifique seu e-mail ou tente novamente nas próximas 24 horas.",
         "params": {
             "name": "nome",
             "password": "senha",
