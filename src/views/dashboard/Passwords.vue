@@ -57,10 +57,7 @@ const loadFolders = async () => {
 };
 
 const sortByName = (a: IPassword | IFolder, b: IPassword | IFolder) => {
-  return a.name.localeCompare(b.name);
-  // if (a.name < b.name) return -1;
-  // if (a.name > b.name) return 1;
-  // return 0;
+  return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
 };
 
 const getData = async () => {
