@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, Ref } from "vue";
+import { onBeforeMount, onMounted, ref, Ref } from "vue";
 import { ILoginInfo } from "../../repositories/login/ILoginInfo";
 import { IMasterPasswordConfig } from "../../repositories/login/IMasterPasswordConfig";
 import LoginRepository from "../../repositories/login/LoginRepository";
@@ -7,6 +7,7 @@ import showErrorMessage from "../../scripts/ErrorLogs";
 import i18n from "../../scripts/internacionalization/i18n";
 import { showError } from "../../scripts/NotificationScript";
 import WinkleScripts from "../../scripts/WinkleScripts";
+import router from "../../router";
 
 const { t } = i18n.element.global;
 const failedCounter: Ref<number> = ref(0);
@@ -60,21 +61,27 @@ const checkMasterPassword = (e: Event) => {
     .finally(() => { WinkleScripts.setLoading(false); })
 };
 
+onBeforeMount(() => {
+  const newLoginData = LoginRepository.loginData();
+  if (!newLoginData) router.push({ name: 'logout' });
+  loginData.value = newLoginData;
+
+})
+
 onMounted(() => {
   masterInput.value?.focus();
-  loginData.value = LoginRepository.loginData();
 });
 </script>
 
 <template>
-  <div class="w-screen h-screen bg-gray-300">
+  <div class="w-screen h-screen bg-gray-300 overflow-hidden">
     <div
-      class="bg-gradient-to-b from-cyan-700 to-gray-500 transition-all duration-300 border-b-8"
+      class="bg-gradient-to-b from-cyan-700 to-gray-500 transition-all duration-300 border-b-8 overflow-hidden w-full"
       :class="{ 'h-[35vh]': !systemOk, 'h-0': systemOk, }"
     >
     </div>
     <div
-      class="bg-gradient-to-b from-gray-800 to-gray-700 pt-10 transition-all duration-300 w-screen"
+      class="bg-gradient-to-b from-gray-800 to-gray-700 pt-10 transition-all duration-300 w-full overflow-hidden"
       :class="{ 'h-[65vh]': !systemOk, 'h-0 fixed bottom-0': systemOk }"
     >
       <div class="flex flex-col justify-center">
@@ -88,7 +95,7 @@ onMounted(() => {
             ({{ $t('leave') }})
           </router-link>,
         </h3>
-        <h2 class="text-2xl uppercase font-bold text-gray-100 drop-shadow-lg">
+        <h2 class="text-2xl uppercase font-bold text-gray-100 drop-shadow-lg whitespace-pre-wrap">
           {{ $t('master-password.message') }}:
         </h2>
         <div class="mt-4">

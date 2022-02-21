@@ -33,7 +33,7 @@ const menuHeight = computed(() => {
       h-screen
       transition-all
       duration-150
-      z-40
+      z-50
       bg-gray-800
       shadow
       flex-col

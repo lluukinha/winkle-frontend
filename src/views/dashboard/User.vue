@@ -13,12 +13,6 @@ import i18n from '../../scripts/internacionalization/i18n';
 import UpateUserPassword from '../../components/user/UpateUserPassword.vue';
 import UpdateUserMasterPassword from '../../components/user/UpdateUserMasterPassword.vue';
 
-const header: Ref<HTMLElement | undefined> = ref();
-const contentHeight = computed(() => {
-  const headerHeight = header.value?.clientHeight || 0;
-  return { height: `calc(100% - (${headerHeight}px))` };
-});
-
 const { t } = i18n.element.global;
 const user: Ref<IUser | undefined> = ref();
 const getUserData = async () => {
@@ -67,10 +61,8 @@ const userUpdated = (updatedUser: IUser) => {
     @close="isUpdatingMasterPassword = false"
     @save="userUpdated"
   />
-  <div ref="header">
-    <DashboardHeader :title="$t('user.title')" :showSearchBox="false" />
-  </div>
-  <DashboardContainer :style="contentHeight" v-if="user">
+  <DashboardHeader :title="$t('user.title')" :showSearchBox="false" />
+  <DashboardContainer v-if="user">
     <div class="w-full flex flex-col items-center md:items-end">
       <div
         class="
