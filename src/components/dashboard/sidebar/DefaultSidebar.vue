@@ -27,10 +27,13 @@ onMounted(() => {
     "
   >
     <div>
-      <div class="flex items-center justify-center pt-4 mb-6">
-        <img src="../../../assets/logo-white.png" class="px-14 w-full" />
+      <div class="pt-4 mb-4 px-4">
+        <img src="../../../assets/logo-white.png" class="h-12 w-auto" />
       </div>
-      <div class="flex px-4 items-center">
+
+      <hr class=" border-gray-700">
+
+      <div class="flex px-4 items-center my-4">
         <InitialsSquare
           :text="userName"
           size="sm"
@@ -52,34 +55,15 @@ onMounted(() => {
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
             </svg>
           </span>
-          <span class="italic font-thin text-xs break-all">{{ userLogin }}aaaaa</span>
-        </router-link>
-      </div>
-      <!-- div class="flex justify-center flex-col items-center">
-        <InitialsSquare
-          :text="userName"
-          class="mb-4 cursor-pointer"
-          @click="$router.push({ name: 'dashboard-user' })"
-        />
-        <router-link
-          tag="div"
-          class="
-            flex justify-center w-56
-            font-extralight text-sm text-gray-400
-            select-none
-            hover:text-gray-100 cursor-pointer
-          "
-          :to="{ name: 'dashboard-user' }"
-        >
-          <span class="truncate mr-2" :title="userLogin">
+          <span class="italic font-thin text-xs break-all">
             {{ userLogin }}
           </span>
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-          </svg>
         </router-link>
-      </div -->
-      <ul class="mt-10 px-4">
+      </div>
+
+      <hr class=" border-gray-700">
+
+      <ul class="mt-6 px-4">
         <router-link
           tag="li"
           :to="{ name: !item.disabled ? item.route : currentRoute }"
