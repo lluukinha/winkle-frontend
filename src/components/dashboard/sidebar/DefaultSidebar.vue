@@ -1,22 +1,20 @@
 <script setup lang="ts">
-import { computed, Ref, ref } from "vue";
+import { computed, onMounted, Ref, ref } from "vue";
 import { ISidebarItem } from "./ISidebarItem";
 import router from "../../../router";
 
 import SidebarIcon from "./SidebarIcon.vue";
 import InitialsSquare from "../../shared/InitialsSquare.vue";
+import { ILoginInfo } from "../../../repositories/login/ILoginInfo";
+import LoginRepository from "../../../repositories/login/LoginRepository";
 
 const props = defineProps<{ items: ISidebarItem[], userLogin: string, userName: string }>();
-const isOpen = ref(true);
+const isOpen: Ref<boolean> = ref(true);
 const currentRoute = computed(() => router.currentRoute.value.name);
-const topEl : Ref<HTMLElement | null> = ref(null);
-const userEl : Ref<HTMLElement | null> = ref(null);
-const footerEl : Ref<HTMLElement | null> = ref(null);
-const menuHeight = computed(() => {
-  const topHeight = topEl.value?.clientHeight || 0;
-  const userHeight = userEl.value?.clientHeight || 0;
-  const footerHeight = footerEl.value?.clientHeight || 0;
-  return topHeight  + userHeight + footerHeight + 100;
+const userData: Ref<ILoginInfo | null> = ref(null);
+
+onMounted(() => {
+  userData.value = LoginRepository.loginData();
 });
 </script>
 
@@ -29,16 +27,35 @@ const menuHeight = computed(() => {
     "
   >
     <div>
-      <div ref="topEl" class="flex items-center justify-center flex-shrink-0 text-white mr-6 pt-4 mb-6">
-        <img src="../../../assets/logo-white.png" class="px-10 w-full" />
-        <!-- svg class="fill-current h-8 w-8 mr-2" width="54" height="54" viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg">
-          <path d="M13.5 22.1c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05zM0 38.3c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05z" />
-        </svg>
-        <div class="flex flex-col items-start">
-          <span class="text-xl select-none">Winkle</span>
-        </div-->
+      <div class="flex items-center justify-center pt-4 mb-6">
+        <img src="../../../assets/logo-white.png" class="px-14 w-full" />
       </div>
-      <div ref="userEl" class="flex justify-center flex-col items-center">
+      <div class="flex px-4 items-center">
+        <InitialsSquare
+          :text="userName"
+          size="sm"
+          class="cursor-pointer mr-4"
+          @click="$router.push({ name: 'dashboard-user' })"
+        />
+        <router-link
+          tag="div"
+          class="
+            text-gray-300 hover:text-gray-100 text-left cursor-pointer hover:underline
+            flex flex-col justify-center -mt-1
+          "
+          v-if="userData"
+          :to="{ name: 'dashboard-user' }"
+        >
+          <span class="text-lg break-all flex items-center">
+            {{ userName }}
+            <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+            </svg>
+          </span>
+          <span class="italic font-thin text-xs break-all">{{ userLogin }}aaaaa</span>
+        </router-link>
+      </div>
+      <!-- div class="flex justify-center flex-col items-center">
         <InitialsSquare
           :text="userName"
           class="mb-4 cursor-pointer"
@@ -61,8 +78,8 @@ const menuHeight = computed(() => {
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
           </svg>
         </router-link>
-      </div>
-      <ul :class="`mt-10 overflow-auto px-4 h-[calc(100vh-(${menuHeight}px))]`">
+      </div -->
+      <ul class="mt-10 px-4">
         <router-link
           tag="li"
           :to="{ name: !item.disabled ? item.route : currentRoute }"
@@ -82,7 +99,7 @@ const menuHeight = computed(() => {
         </router-link>
       </ul>
     </div>
-    <div ref="footerEl" class="p-4 border-t border-gray-700">
+    <div class="p-4 border-t border-gray-700">
       <ul>
         <router-link
           tag="li"
