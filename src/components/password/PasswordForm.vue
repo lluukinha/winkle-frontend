@@ -22,7 +22,6 @@ const folderIsInput: Ref<boolean> = ref(props.folders.length === 0);
 const folderInput: Ref<HTMLElement | undefined> = ref();
 const folderSelect: Ref<HTMLElement | undefined> = ref();
 const firstInput : Ref<HTMLElement | undefined> = ref();
-const isShowingLogin : Ref<Boolean> = ref(false);
 const isShowingPassword : Ref<Boolean> = ref(false);
 const urlSelect: Ref<HTMLElement | undefined> = ref();
 const urlInput: Ref<HTMLElement | undefined> = ref();
@@ -154,22 +153,6 @@ defineExpose({ sendForm });
           for="inline-full-login"
         >
           {{ $t("passwords.form.login") }}
-          <span
-            class="cursor-pointer"
-            @click="isShowingLogin = !isShowingLogin"
-            :title="$t('passwords.form.show-login')"
-          >
-            <!-- EYE ICON -->
-            <svg v-if="!isShowingLogin" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-            </svg>
-
-            <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-            </svg>
-            <!-- END EYE ICON -->
-          </span>
         </label>
       </div>
       <div class="md:w-2/3">
@@ -187,7 +170,7 @@ defineExpose({ sendForm });
             focus:outline-none focus:bg-white focus:border-purple-500
           "
           id="inline-full-login"
-          :type="isShowingLogin ? 'text' : 'password'"
+          type="text"
           v-model="password.login"
           :placeholder="$t('passwords.form.login-placeholder')"
         />
@@ -211,31 +194,15 @@ defineExpose({ sendForm });
           for="inline-password"
         >
           {{ $t("passwords.form.password") }}
-          <span
-            class="cursor-pointer"
-            @click="isShowingPassword = !isShowingPassword"
-            :title="$t('passwords.form.show-password')"
-          >
-            <!-- EYE ICON -->
-            <svg v-if="!isShowingPassword" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-            </svg>
-
-            <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-            </svg>
-            <!-- END EYE ICON -->
-          </span>
         </label>
       </div>
-      <div class="md:w-2/3">
+      <div class="md:w-2/3 flex">
         <input
           class="
             bg-gray-200
             appearance-none
             border-2 border-gray-200
-            rounded
+            rounded rounded-tr-none rounded-br-none
             w-full
             py-2
             px-4
@@ -248,6 +215,28 @@ defineExpose({ sendForm });
           :placeholder="$t('passwords.form.password-placeholder')"
           v-model="password.password"
         />
+        <button type="button"
+          class="
+            cursor-pointer
+            bg-gray-300
+            hover:bg-gray-400 flex items-center px-4
+            select-none
+            rounded rounded-tl-none rounded-bl-none
+          "
+          @click="isShowingPassword = !isShowingPassword"
+          :title="$t('passwords.form.show-password')"
+        >
+          <!-- EYE ICON -->
+          <svg v-if="!isShowingPassword" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+          </svg>
+
+          <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+          </svg>
+          <!-- END EYE ICON -->
+        </button>
       </div>
     </div>
 
