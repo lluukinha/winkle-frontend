@@ -35,7 +35,7 @@ defineExpose({ click });
 
 <template>
   <button
-    :class="`${buttonClass} ${buttonSize} ${rounded ? 'rounded-full' : 'rounded'}`"
+    :class="`${buttonClass} ${buttonSize} ${rounded ? 'rounded-md' : 'rounded'}`"
     class="
       mb-2 md:mb-0
       px-5 py-2

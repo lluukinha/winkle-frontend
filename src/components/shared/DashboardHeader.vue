@@ -13,11 +13,14 @@ watch(filter, (currentValue) => { emit('search', currentValue); });
 </script>
 
 <template>
-  <div class="
-    border-b border-gray-300 px-8 py-4 bg-gray-200 h-16
-    fixed z-40
-    md:z-auto w-full
-  ">
+  <div
+    class="
+      border-b border-gray-300
+      px-8 py-4
+      bg-gray-200 h-16
+      absolute w-full md:static
+      "
+  >
     <div class="header-top flex justify-between">
       <h1 class="text-2xl font-bold flex items-center">
         <button class="md:hidden bg-gray-200 rounded mr-2" @click="toggleSidebar()">

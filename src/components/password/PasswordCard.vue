@@ -34,7 +34,7 @@ const handleRemove = () => {
       p-6
       border
       shadow-lg
-      rounded-lg
+      rounded
       transition-all hover:scale-105
     "
   >

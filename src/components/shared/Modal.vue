@@ -35,7 +35,7 @@ const handleSave = () => { emit('save'); }
         relative
         mx-auto
         my-40
-        rounded-xl
+        rounded
         shadow-lg
         bg-white
         max-h-[calc(100vh-2rem)]
