@@ -6,8 +6,8 @@ import Dashboard from './views/Dashboard.vue';
 import Passwords from './views/dashboard/Passwords.vue';
 import User from './views/dashboard/User.vue';
 import RedefinePassword from './views/RedefinePassword.vue';
-
-//https://winkle.app/redefine-password/lucas.prog07@gmail.com/x3Z1O042kd
+import UserRegistration from './views/UserRegistration.vue';
+import NotFound from './views/NotFound.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -16,6 +16,7 @@ const router = createRouter({
     { path: '/login', name: 'login', component: Login },
     { path: '/logout', name: 'logout', component: Logout },
     { path: '/redefine-password/:email/:token', component: RedefinePassword },
+    { path: '/registration/:email/:token', component: UserRegistration },
     {
       path: '/dashboard',
       name: 'dashboard',
@@ -32,7 +33,8 @@ const router = createRouter({
           component: User,
         }
       ],
-    }
+    },
+    { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFound }
   ]
 });
 

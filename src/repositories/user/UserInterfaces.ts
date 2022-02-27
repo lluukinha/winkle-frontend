@@ -35,10 +35,26 @@ interface IResetPassword {
   confirmPassword: string;
 }
 
+interface IUserRegistration {
+  email: string;
+  token: string;
+  password: string;
+  confirmPassword: string;
+  masterPassword: string;
+  confirmMasterPassword: string;
+};
+
+interface IUserVerification {
+  email: string;
+  token: string;
+}
+
 export {
   IUser,
   IUpdateUserEmail,
   IUpdatePassword,
   IUpdateMasterPassword,
-  IResetPassword
+  IResetPassword,
+  IUserRegistration,
+  IUserVerification
 }

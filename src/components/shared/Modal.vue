@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import WinkleButton from './WinkleButton.vue';
+defineProps<{ removeSave?: boolean }>();
 const emit = defineEmits(['close', 'save']);
 const handleClose = () => { emit('close'); }
 const handleSave = () => { emit('save'); }
@@ -50,12 +51,13 @@ const handleSave = () => { emit('save'); }
         <!--footer-->
         <div class="p-3 mt-2 text-center space-x-4 md:block">
           <WinkleButton :rounded="true" @click="handleClose()">
-            {{ $t('cancel') }}
+            {{ $t('close') }}
           </WinkleButton>
           <WinkleButton
             :rounded="true"
             type="success"
             @click="handleSave()"
+            v-if="!removeSave"
           >
             {{ $t('save') }}
           </WinkleButton>

@@ -8,6 +8,7 @@
     "i-remembered-my-password": "Acho que me lembrei da senha!",
     "enter": "Entrar",
     "cancel": "Cancelar",
+    "close": "Fechar",
     "save": "Salvar",
     "remove": "Remover",
     "logout": "Sair",
@@ -30,7 +31,8 @@
         "forgot-password-user-not-found": "Nenhum usuário foi encontrado com este email",
         "token-or-user-not-found": "Token não é mais válido ou usuário não encontrado",
         "user-has-reset-password-in-progress": "Já foi feito um pedido de resetar a senha recentemente. Verifique seu e-mail ou tente novamente nas próximas 24 horas.",
-        "must-be-at-least-6": "O campo a ser atualizado precisa ter pelo menos 6 caracteres",
+        "must-be-at-least-6": "O campo precisa ter pelo menos 6 caracteres",
+        "plan-expired": "Verifique sua assinatura",
         "params": {
             "name": "nome",
             "password": "senha",
@@ -47,6 +49,27 @@
         "hours": "{time} hora(s) atrás",
         "minutes": "{time} minuto(s) atrás",
         "seconds": "segundos atrás"
+    },
+
+    "registration": {
+        "master-password-help": {
+            "what-is": "o que é isso?",
+            "title": "O que é Senha Mestre?",
+            "description-1": "A <b>Senha Mestre</b> é a senha que será utilizada para encriptar/embaralhar as senhas que você cadastrar no sistema. É o primeiro nível da nossa criptografia, sua senha real <b>NUNCA</b> será enviada para nosso servidor, sempre enviaremos ela já embaralhada com sua senha meste.",
+            "description-2": "<b>IMPORTANTE:</b> Isso significa que sua senha mestre precisa ser uma senha que seja fácil de você lembrar, pois ela nunca será armazenada no nosso sistema, então não será possível redefini-la caso você já tenha senhas cadastradas no sistema."
+        },
+        "form": {
+            "email": "Endereço de Email",
+            "password": "Senha",
+            "password-placeholder": "******",
+            "confirm-password": "Confirme a Senha",
+            "confirm-password-placeholder": "******",
+            "master-password": "Senha Mestre",
+            "master-password-placeholder": "******",
+            "confirm-master-password": "Confirme a Senha Mestre",
+            "confirm-master-password-placeholder": "******",
+            "send-form": "Finalizar cadastro!"
+        }
     },
 
     "reset-password": {

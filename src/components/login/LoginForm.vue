@@ -6,6 +6,7 @@ import { AxiosError } from "axios";
 import { showError } from "../../scripts/NotificationScript";
 import i18n from "../../scripts/internacionalization/i18n";
 import { ILoginForm } from "../../repositories/login/ILoginForm";
+import showErrorMessage from "../../scripts/ErrorLogs";
 
 const emit = defineEmits(['loginFinished', 'forgot']);
 const { t } = i18n.element.global;
@@ -24,7 +25,7 @@ const doLogin = (e: Event) => {
         || e.response?.data.error === unauthorizedError;
       const failed : boolean = e.response?.status === 401 && isUnauthorized;
       if (failed) showError(t('login.login-failed'), t('login.user-not-found'));
-      if (!failed) console.log(e.response);
+      if (!failed) showErrorMessage(e);
       clearform();
     })
     .finally(() => {
