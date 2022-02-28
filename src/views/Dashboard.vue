@@ -1,26 +1,26 @@
 <script setup lang="ts">
 import router from "../router";
 import LoginRepository from "../repositories/login/LoginRepository";
-
 import Sidebar from "../components/dashboard/Sidebar.vue";
-import { onBeforeMount, onMounted, Ref, ref } from "@vue/runtime-core";
+import { onMounted, Ref, ref } from "@vue/runtime-core";
 import MasterPassword from "../components/login/MasterPassword.vue";
 
 const isLoaded: Ref<boolean> = ref(false);
 
-onBeforeMount(() => {
-  const available = LoginRepository.canUseLoginInfo();
-  if (!available) router.push({ name: 'logout' });
-});
-
 onMounted(() => {
+  const available = LoginRepository.canUseLoginInfo();
+  if (!available) {
+    router.push({ name: 'logout' });
+    return;
+  }
+
   if (router.currentRoute.value.name === 'dashboard') router.push({ name: 'dashboard-passwords' });
   isLoaded.value = true;
 });
 </script>
 
 <template>
-  <MasterPassword v-if="!LoginRepository.isMasterPasswordInserted.value" />
+  <MasterPassword v-if="isLoaded && !LoginRepository.isMasterPasswordInserted.value" />
   <div class="w-screen bg-gray-400 flex justify-center" v-else>
     <div class="w-full flex flex-col items-center">
       <div class="w-full flex justify-center">
