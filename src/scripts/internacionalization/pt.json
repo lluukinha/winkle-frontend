@@ -52,10 +52,12 @@
     },
 
     "registration": {
+        "not-available-1": "Usuário não está mais habilitado para finalizar cadastro.",
+        "not-available-2": "Verifique se o cadastro já não está ativo",
         "master-password-help": {
             "what-is": "o que é isso?",
             "title": "O que é Senha Mestre?",
-            "description-1": "A <b>Senha Mestre</b> é a senha que será utilizada para encriptar/embaralhar as senhas que você cadastrar no sistema. É o primeiro nível da nossa criptografia, sua senha real <b>NUNCA</b> será enviada para nosso servidor, sempre enviaremos ela já embaralhada com sua senha meste.",
+            "description-1": "A <b>Senha Mestre</b> é a senha que será utilizada para encriptar/embaralhar as senhas que você cadastrar no sistema. É o primeiro nível da nossa criptografia, suas senhas reais <b>NUNCA</b> serão enviadas para nosso servidor, sempre enviaremos elas já embaralhadas com sua senha mestre.",
             "description-2": "<b>IMPORTANTE:</b> Isso significa que sua senha mestre precisa ser uma senha que seja fácil de você lembrar, pois ela nunca será armazenada no nosso sistema, então não será possível redefini-la caso você já tenha senhas cadastradas no sistema."
         },
         "form": {

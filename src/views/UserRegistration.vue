@@ -102,14 +102,23 @@ onBeforeMount(() => { verifyIfUserCanBeCreated() });
 
 <template>
   <div
-    class="text-3xl flex justify-center items-center w-screen h-screen"
+    class="text-3xl flex flex-col justify-center items-center w-screen h-screen bg-gray-200"
     v-if="isLoaded && hasErrorsOnVerification"
   >
-    Usuário não está mais habilitado para finalizar cadastro.<br>
-    Verifique se o cadastro já não está ativo
+    <div>
+      {{ $t('registration.not-available-1') }}<br>
+      {{ $t('registration.not-available-2') }}
+    </div>
+    <WinkleButton
+      type="info"
+      class="mt-4"
+      @click="$router.push({ name: 'logout' })"
+    >
+      {{ $t('enter') }}
+    </WinkleButton>
   </div>
   <div
-    class="w-screen bg-gray-300 h-screen pt-10"
+    class="w-screen bg-gray-300 h-screen pt-6"
     v-if="isLoaded && !hasErrorsOnVerification"
   >
     <Modal
@@ -125,7 +134,8 @@ onBeforeMount(() => { verifyIfUserCanBeCreated() });
           <p v-html="$t('registration.master-password-help.description-2')" />
       </div>
     </Modal>
-    <h1 class="text-4xl mb-10">Finalize seu Cadastro {{ formData.email }}</h1>
+    <h1 class="text-3xl mb-2">Finalize seu Cadastro</h1>
+    <h1 class="text-xl mb-6 break-all">{{ formData.email }}</h1>
     <form
       class="mx-auto w-full md:w-2/3 rounded bg-gray-50 p-10 shadow-lg"
       @submit="finishRegistration" autocomplete="off"
