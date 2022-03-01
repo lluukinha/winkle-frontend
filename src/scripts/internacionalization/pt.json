@@ -48,7 +48,9 @@
         "days": "{time} dia(s) atrás",
         "hours": "{time} hora(s) atrás",
         "minutes": "{time} minuto(s) atrás",
-        "seconds": "segundos atrás"
+        "seconds": "segundos atrás",
+        "days-to": "{days} dia(s)",
+        "never": "não expira"
     },
 
     "registration": {

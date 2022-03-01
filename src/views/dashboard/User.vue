@@ -27,6 +27,10 @@ const timeSince = (time: string) => {
   return WinkleScripts.timeSince(new Date(time));
 }
 
+const timeTo = (time: string) => {
+  return WinkleScripts.timeTo(new Date(time));
+}
+
 onMounted(() => getUserData());
 
 const isUpdatingEmail: Ref<boolean> = ref(false);
@@ -80,37 +84,45 @@ const userUpdated = (updatedUser: IUser) => {
     <div class="w-full flex flex-col items-center md:items-end">
       <div
         class="
-          flex items-center justify-between
           bg-gray-50
-          py-4 px-10
-          rounded shadow-lg
-          z-30
-        "
-      >
-        <InitialsSquare
-          :text="user.name"
-          bgClass="bg-gray-600"
-          customClass="text-white"
-          class="mr-4"
-        />
-        <div class="text-center md:text-right">
-          <h1 class="text-2xl">{{ user.name }}</h1>
-          <h3 class="text-md text-gray-500">{{ user.email }}</h3>
-          <span class="text-xs text-gray-500">
-            {{ $t('user.created-at') }}:
-            {{ timeSince(user.createdAt) }}
-          </span>
-        </div>
-
-      </div>
-      <div
-        class="
-          bg-gray-50
-          w-full mt-6 md:-mt-10
+          w-full mt-6
           rounded-lg shadow-lg
           p-6 text-left
         "
       >
+        <div class="w-full">
+          <h1 class="text-xl">
+            <b>Usuário:</b> {{ user.name }}
+          </h1>
+          <h2 class="text-lg flex items-center">
+            <b>Email:</b>
+            <span
+              class="flex items-center ml-2 mr-2 hover:underline cursor-pointer"
+              @click="isUpdatingEmail = true"
+            >
+            {{ user.email }}
+            <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+            </svg>
+            </span>
+            <span class="text-xs text-green-500" v-if="user.emailVerified">
+              (verificado)
+            </span>
+            <span class="text-xs text-red-500" v-if="!user.emailVerified">
+              (não verificado)
+            </span>
+          </h2>
+          <h2>
+            <b>Conta criada em:</b> 
+            {{ timeSince(user.createdAt) }}
+          </h2>
+          <h2 class="text-lg mt-4">
+            <b>Plano:</b> {{ user.planName }}
+          </h2>
+          <h2>
+            <b>Expira em:</b> {{ timeTo(user.expirationDate) }}
+          </h2>
+        </div>
         <div class="w-full flex flex-wrap justify-between md:mt-16 mb-10">
           <div class="w-full md:w-1/3">
             <WinkleButton

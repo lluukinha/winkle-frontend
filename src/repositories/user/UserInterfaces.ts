@@ -2,6 +2,8 @@ interface IUser {
   canUpdateMasterPassword: boolean;
   email: string;
   emailVerified: boolean;
+  expirationDate: string;
+  planName: string;
   id: string;
   lastUpdate: string;
   createdAt: string;

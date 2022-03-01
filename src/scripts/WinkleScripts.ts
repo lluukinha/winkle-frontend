@@ -1,4 +1,5 @@
 import { ref } from "vue"
+import UserRepository from "../repositories/user/UserRepository";
 import i18n from "./internacionalization/i18n";
 import { showError, showSuccess } from "./NotificationScript";
 const { t } = i18n.element.global;
@@ -47,6 +48,12 @@ const urlTypes : UrlType[] = [
   { name: 'Youtube', url: 'https://www.youtube.com/' }
 ];
 
+const timeTo = (date: Date) : string => {
+  var millisecondsPerDay = 24 * 60 * 60 * 1000;
+  const days = (date.getTime() - new Date().getTime()) / millisecondsPerDay;
+  return t('time-convert.days-to', { days: Math.round(days) });
+};
+
 const timeSince = (date: Date) : string => {
   const currentDateTime = (new Date()).getTime();
   const seconds = Math.floor((currentDateTime - date.getTime()) / 1000);
@@ -90,5 +97,6 @@ export default {
   copyText,
   urlTypes,
   deviceType,
-  timeSince
+  timeSince,
+  timeTo,
 }
