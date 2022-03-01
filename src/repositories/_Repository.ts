@@ -24,7 +24,7 @@ Repository.interceptors.request.use(async (config: AxiosRequestConfig) => {
 
 Repository.interceptors.response.use(undefined, (error) => {
   if (WinkleScripts.isLoading.value) WinkleScripts.setLoading(false);
-  if (!LoginRepository.canUseLoginInfo()) router.push({ name: 'logout' });
+  if (!LoginRepository.canUseLoginInfo() || error.response.status === 401) router.push({ name: 'logout' });
   return Promise.reject(error);
 });
 
