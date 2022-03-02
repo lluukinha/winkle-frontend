@@ -125,7 +125,7 @@ onMounted(() => { firstInput.value?.focus() });
               bg-gray-200
               appearance-none
               border-2 border-gray-200
-              rounded
+              rounded rounded-tr-none rounded-br-none
               w-full
               py-2 px-4
               text-gray-700
@@ -180,7 +180,7 @@ onMounted(() => { firstInput.value?.focus() });
               bg-gray-200
               appearance-none
               border-2 border-gray-200
-              rounded
+              rounded rounded-tr-none rounded-br-none
               w-full
               py-2 px-4
               text-gray-700
