@@ -91,10 +91,10 @@ const userUpdated = (updatedUser: IUser) => {
         "
       >
         <div class="w-full">
-          <h1 class="text-xl">
+          <h1 class="md:text-xl">
             <b>Usuário:</b> {{ user.name }}
           </h1>
-          <h2 class="text-lg flex items-center">
+          <h2 class="md:text-lg flex flex-wrap items-center">
             <b>Email:</b>
             <span
               class="flex items-center ml-2 mr-2 hover:underline cursor-pointer"
@@ -106,24 +106,24 @@ const userUpdated = (updatedUser: IUser) => {
             </svg>
             </span>
             <span class="text-xs text-green-500" v-if="user.emailVerified">
-              (verificado)
+              (email verificado)
             </span>
             <span class="text-xs text-red-500" v-if="!user.emailVerified">
               (não verificado)
             </span>
           </h2>
-          <h2>
+          <h2 class="md:text-lg">
             <b>Conta criada em:</b> 
             {{ timeSince(user.createdAt) }}
           </h2>
-          <h2 class="text-lg mt-4">
+          <h2 class="md:text-lg mt-4">
             <b>Plano:</b> {{ user.planName }}
           </h2>
-          <h2>
+          <h2 class="md:text-lg">
             <b>Expira em:</b> {{ timeTo(user.expirationDate) }}
           </h2>
         </div>
-        <div class="w-full flex flex-wrap justify-between md:mt-16 mb-10">
+        <div class="w-full flex flex-wrap justify-between mt-10 md:mt-16 mb-10">
           <div class="w-full md:w-1/3">
             <WinkleButton
               type="success"
@@ -135,7 +135,7 @@ const userUpdated = (updatedUser: IUser) => {
             </WinkleButton>
           </div>
 
-          <div class="w-full md:w-1/3">
+          <div class="w-full md:w-1/3 flex justify-between">
             <WinkleButton
               type="success"
               size="xl"
@@ -146,7 +146,8 @@ const userUpdated = (updatedUser: IUser) => {
             </WinkleButton>
           </div>
 
-          <div class="w-full md:w-1/3 text-center">
+          <div class="w-full md:w-1/3 text-center flex justify-center items-center flex-col">
+          <div>
             <WinkleButton
               type="success"
               size="xl"
@@ -159,6 +160,7 @@ const userUpdated = (updatedUser: IUser) => {
                 <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
               </svg>
             </WinkleButton>
+            </div>
             <span
               class="text-xs hover:underline cursor-pointer"
               v-if="!user.canUpdateMasterPassword"

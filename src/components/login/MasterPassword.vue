@@ -109,10 +109,9 @@ onMounted(() => {
                 v-model="masterPassword"
                 required
               />
-              <button
-                type="button"
+              <span
                 @click="isShowingMasterPassword = !isShowingMasterPassword"
-                class="bg-gray-300 hover:bg-gray-400 px-2 py-3 rounded rounded-tl-none rounded-bl-none"
+                class="bg-gray-300 hover:bg-gray-400 px-2 py-3 rounded rounded-tl-none rounded-bl-none cursor-pointer"
               >
                 <!-- EYE ICON -->
                 <svg v-if="!isShowingMasterPassword" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -124,7 +123,7 @@ onMounted(() => {
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
                 </svg>
                 <!-- END EYE ICON -->
-              </button>
+              </span>
               <button
                 class="bg-green-400 hover:bg-green-500 shadow font-semibold rounded p-2 px-4 ml-2"
               >
