@@ -12,6 +12,9 @@ import PasswordCard from "../../components/password/PasswordCard.vue";
 import CreatePasswordModal from "../../components/password/CreatePasswordModal.vue";
 import DashboardHeader from "../../components/shared/DashboardHeader.vue";
 import DashboardContainer from "../../components/shared/DashboardContainer.vue";
+import WinkleButton from "../../components/shared/WinkleButton.vue";
+import SortDropdown from "../../components/password/SortDropdown.vue";
+import FolderFilterDropdown from "../../components/password/FolderFilterDropdown.vue";
 
 interface PasswordIncluded {
   newPassword: IPassword;
@@ -26,9 +29,18 @@ const emptyFolderIsOpen: Ref<boolean> = ref(true);
 const editingPassword: Ref<IPassword | null> = ref(null);
 const isCreating: Ref<boolean> = ref(false);
 const filter: Ref<string> = ref("");
+const selectedFolderIds: Ref<string[]> = ref([]);
+const isShowingSortDropdown: Ref<boolean> = ref(false);
 
 const passwordsWithoutFolder = computed(() => {
   return filteredPasswords.value.filter((p) => p.folder.id === '');
+});
+
+const filteredFolders = computed(() => {
+  if (selectedFolderIds.value.length === 0) return folders.value;
+
+  return folders.value
+    .filter((folder) => selectedFolderIds.value.includes(folder.id));
 });
 
 const filteredPasswords = computed(() => {
@@ -47,6 +59,8 @@ const loadFolders = async () => {
   WinkleScripts.setLoading(true);
   const foldersList = await PasswordRepository.getFolders();
   folders.value = foldersList.sort(sortByName);
+  const folderIds: string[] = foldersList.map(f => f.id);
+  selectedFolderIds.value = selectedFolderIds.value.filter(id => folderIds.includes(id));
   WinkleScripts.setLoading(false);
 };
 
@@ -88,6 +102,11 @@ const removePasswordFromList = (passwordId: number) => {
 const passwordsInFolder = (folderId: string) => {
   return filteredPasswords.value
     .filter(p => p.folder.id === folderId);
+};
+
+const saveSorting = (folderIds: string[]) => {
+  selectedFolderIds.value = [ ...folderIds ];
+  isShowingSortDropdown.value = false;
 };
 
 onMounted(() => getData());
@@ -137,6 +156,23 @@ onMounted(() => getData());
   />
 
   <DashboardContainer>
+    <div class="w-full flex justify-end" v-if="folders.length > 0">
+      <WinkleButton
+        @click="isShowingSortDropdown = !isShowingSortDropdown"
+      >
+        {{ $t('passwords.folder-filter.title') }}
+        <template v-if="selectedFolderIds.length > 0">
+          ({{ selectedFolderIds.length }})
+        </template>
+      </WinkleButton>
+      <FolderFilterDropdown
+        :folders="folders"
+        :selectedIds="selectedFolderIds"
+        v-if="isShowingSortDropdown"
+        @close="isShowingSortDropdown = false"
+        @save="saveSorting"
+      />
+    </div>
     <div class="w-full">
       <div
         class="border-b border-gray-400 w-full text-left uppercase select-none cursor-pointer"
@@ -179,7 +215,7 @@ onMounted(() => getData());
     </div>
 
     <template v-if="filteredPasswords.length > 0">
-      <div class="w-full mt-4" v-for="folder in folders" :key="folder.id">
+      <div class="w-full mt-4" v-for="folder in filteredFolders" :key="folder.id">
         <div
           class="border-b border-gray-400 w-full text-left uppercase select-none cursor-pointer"
           @click="folder.isOpen = !folder.isOpen"

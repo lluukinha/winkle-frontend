@@ -158,6 +158,12 @@
     },
 
     "passwords": {
+        "folder-filter": {
+            "title": "Categorias",
+            "save": "Filtrar",
+            "cancel": "Cancelar",
+            "show-all": "Mostrar tudo"
+        },
         "search": "Pesquise",
         "empty-list": "Nenhuma senha foi encontrada, mas você pode criar sua primeira",
         "clicking-here": "clicando aqui",
