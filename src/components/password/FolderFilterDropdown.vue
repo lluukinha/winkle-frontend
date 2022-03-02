@@ -32,9 +32,9 @@ const showAll = () => {
 </script>
 
 <template>
-  <div class="absolute bg-black opacity-30 inset-0 z-0"></div>
-  <div class="fixed mt-10 bg-gray-100 rounded p-4 shadow-lg">
-    <ul>
+  <div class="absolute bg-black opacity-30 inset-0 z-0" @click="$emit('close')"></div>
+  <div class="fixed mt-10 bg-gray-50 rounded p-4 shadow-lg">
+    <ul class="max-h-[40vh] max-w-[calc(100vw-60px)] md:max-w-64 overflow-auto px-4">
       <li
         class="text-left border-b-2 p-2 hover:bg-gray-200 cursor-pointer"
         @click="showAll()"
