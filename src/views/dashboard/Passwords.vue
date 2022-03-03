@@ -13,7 +13,6 @@ import CreatePasswordModal from "../../components/password/CreatePasswordModal.v
 import DashboardHeader from "../../components/shared/DashboardHeader.vue";
 import DashboardContainer from "../../components/shared/DashboardContainer.vue";
 import WinkleButton from "../../components/shared/WinkleButton.vue";
-import SortDropdown from "../../components/password/SortDropdown.vue";
 import FolderFilterDropdown from "../../components/password/FolderFilterDropdown.vue";
 
 interface PasswordIncluded {
