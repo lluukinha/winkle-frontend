@@ -9,6 +9,7 @@
   "dependencies": {
     "@kyvg/vue3-notification": "^2.3.4",
     "axios": "^0.25.0",
+    "bcryptjs": "^2.4.3",
     "vue": "^3.2.25",
     "vue-axios": "^3.4.0",
     "vue-i18n": "^9.2.0-beta.30",

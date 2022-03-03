@@ -7,12 +7,15 @@ import showErrorMessage from '../../scripts/ErrorLogs';
 import i18n from '../../scripts/internacionalization/i18n';
 import { showError } from '../../scripts/NotificationScript';
 import WinkleScripts from '../../scripts/WinkleScripts';
+import * as dcodeIO from 'bcryptjs';
 import Modal from '../shared/Modal.vue';
+import LoginRepository from '../../repositories/login/LoginRepository';
 
 const { t } = i18n.element.global;
 const isShowingMasterPassword: Ref<boolean> = ref(false);
 const isShowingCurrentMasterPassword: Ref<boolean> = ref(false);
 const firstInput : Ref<HTMLElement | undefined> = ref();
+const masterInput : Ref<HTMLElement | undefined> = ref();
 const formSubmit: Ref<HTMLElement | undefined> = ref();
 const form: Ref<IUpdateMasterPassword> = ref({
   password: '',
@@ -32,7 +35,7 @@ const clearForm = () => {
   firstInput.value?.focus();
 };
 const handleClose = () => { emit("close"); };
-const handleSave = (e: Event) => {
+const handleSave = async (e: Event) => {
   e.preventDefault();
 
   if (form.value.newMasterPassword !== form.value.confirmNewMasterPassword) {
@@ -41,14 +44,35 @@ const handleSave = (e: Event) => {
     return;
   }
 
+  if (form.value.oldMasterPassword.length === 0 || !await localMasterMatch()) {
+    showError(t('api-errors.title'), t('api-errors.master-password-incorrect'));
+    clearMasterOnly();
+    return;
+  }
+
   WinkleScripts.setLoading(true);
   UserRepository.updateMasterPassword(form.value)
-    .then((updatedUser: IUser) => { emit("save", updatedUser); })
+    .then(async (updatedUser: IUser) => {
+      await LoginRepository.setMasterPasswordStringOnly(form.value.newMasterPassword);
+      emit("save", updatedUser);
+    })
     .catch((e: AxiosError) => {
       showErrorMessage(e);
       clearForm();
     })
     .finally(() => { WinkleScripts.setLoading(false); });
+};
+
+const clearMasterOnly = () : void => {
+  form.value.oldMasterPassword = '';
+  masterInput.value?.focus();
+};
+
+const localMasterMatch = async () : Promise<boolean> => {
+  const masterPass = LoginRepository.loginData();
+  if (!masterPass) return false;
+  const result = await dcodeIO.compare(form.value.oldMasterPassword, masterPass.shuffled);
+  return result;
 };
 
 const sendForm = () => { formSubmit.value?.click(); };
@@ -193,6 +217,7 @@ onMounted(() => { firstInput.value?.focus() });
               leading-tight
               focus:outline-none focus:bg-white focus:border-purple-500
             "
+            ref="masterInput"
             id="old-master-password-input"
             :type="isShowingCurrentMasterPassword ? 'text' : 'password'"
             v-model="form.oldMasterPassword"

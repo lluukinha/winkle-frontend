@@ -5,4 +5,5 @@ export interface ILoginInfo {
   token_type: string;
   login: string;
   user: string;
+  shuffled: string;
 }

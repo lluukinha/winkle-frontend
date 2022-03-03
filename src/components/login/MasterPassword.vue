@@ -22,13 +22,13 @@ const emit = defineEmits(['failed', 'success']);
 
 const setMasterPassword = () : void => {
   systemOk.value = true;
-  setTimeout(() => {
+  setTimeout(async () => {
     const masterPasswordConfig: IMasterPasswordConfig = {
       masterPassword: masterPassword.value,
       minutesToExpire: minutesToExpire.value,
       lastLogin: new Date()
     };
-    LoginRepository.setMasterPassword(masterPasswordConfig);
+    await LoginRepository.setMasterPassword(masterPasswordConfig);
     emit('success');
   }, 300);
 };

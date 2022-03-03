@@ -33,7 +33,6 @@ const clearSelectedFolder = () => {
 }
 
 const changeFolder = (e: Event) => {
-  console.log(password.value.id);
   if (password.value.folder.id === "99999") {
     clearSelectedFolder();
     folderIsInput.value = true;

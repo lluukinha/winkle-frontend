@@ -88,7 +88,7 @@ const verifyIfUserCanBeCreated = () => {
     })
     .catch((e) => {
       hasErrorsOnVerification.value = true;
-      console.log(e);
+      console.error(e);
     })
     .finally(() => {
       WinkleScripts.setLoading(false);

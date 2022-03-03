@@ -8,7 +8,9 @@ import MasterPassword from "../components/login/MasterPassword.vue";
 const isLoaded: Ref<boolean> = ref(false);
 
 onMounted(() => {
-  const available = LoginRepository.canUseLoginInfo();
+  const canUseLoginInfo = LoginRepository.canUseLoginInfo();
+  const canUseMasterPassword = LoginRepository.canUseMasterPassword();
+  const available = canUseLoginInfo && canUseMasterPassword;
   if (!available) {
     router.push({ name: 'logout' });
     return;
@@ -20,7 +22,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <MasterPassword v-if="isLoaded && !LoginRepository.isMasterPasswordInserted.value" />
+  <MasterPassword v-if="isLoaded && !LoginRepository.masterPasswordConfig()" />
   <div class="w-screen bg-gray-400 flex justify-center" v-else>
     <div class="w-full flex flex-col items-center">
       <div class="w-full flex justify-center">
