@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import WinkleButton from './WinkleButton.vue';
-defineProps<{ removeSave?: boolean }>();
+defineProps<{
+  removeSave?: boolean,
+  saveLabel?: string,
+  size?: string,
+  saveDisabled?: boolean
+}>();
 const emit = defineEmits(['close', 'save']);
 const handleClose = () => { emit('close'); }
 const handleSave = () => { emit('save'); }
@@ -29,9 +34,9 @@ const handleSave = () => { emit('save'); }
   >
     <div class="absolute bg-black opacity-80 inset-0 z-0"></div>
     <div
+      :class="size ? `md:max-w-${size}` : 'md:max-w-xl'"
       class="
         w-full
-        md:max-w-xl
         p-4
         relative
         mx-auto
@@ -49,7 +54,7 @@ const handleSave = () => { emit('save'); }
           <slot></slot>
         </div>
         <!--footer-->
-        <div class="p-3 mt-2 text-center space-x-4 md:block">
+        <div class="p-3 mt-2 flex justify-between w-full">
           <WinkleButton :rounded="true" @click="handleClose()">
             {{ $t('close') }}
           </WinkleButton>
@@ -58,8 +63,9 @@ const handleSave = () => { emit('save'); }
             type="success"
             @click="handleSave()"
             v-if="!removeSave"
+            :disabled="saveDisabled"
           >
-            {{ $t('save') }}
+            {{ saveLabel ? saveLabel : $t('save') }}
           </WinkleButton>
         </div>
       </div>

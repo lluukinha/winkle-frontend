@@ -190,5 +190,6 @@ export default {
   resetPassword,
   canUseMasterPassword,
   masterPasswordConfig,
-  setMasterPasswordStringOnly
+  setMasterPasswordStringOnly,
+  isRunningTimeoutForMasterPassword
 }

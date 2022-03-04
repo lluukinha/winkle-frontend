@@ -14,6 +14,7 @@ import DashboardHeader from "../../components/shared/DashboardHeader.vue";
 import DashboardContainer from "../../components/shared/DashboardContainer.vue";
 import WinkleButton from "../../components/shared/WinkleButton.vue";
 import FolderFilterDropdown from "../../components/password/FolderFilterDropdown.vue";
+import ImportPasswordsModal from "../../components/password/ImportPasswords/ImportPasswordsModal.vue";
 
 interface PasswordIncluded {
   newPassword: IPassword;
@@ -30,6 +31,7 @@ const isCreating: Ref<boolean> = ref(false);
 const filter: Ref<string> = ref("");
 const selectedFolderIds: Ref<string[]> = ref([]);
 const isShowingSortDropdown: Ref<boolean> = ref(false);
+const isImportingPasswords: Ref<boolean> = ref(false);
 
 const passwordsWithoutFolder = computed(() => {
   return filteredPasswords.value.filter((p) => p.folder.id === '');
@@ -156,7 +158,19 @@ onMounted(() => getData());
 
   <DashboardContainer>
     <div class="w-full flex justify-end" v-if="folders.length > 0">
+      <!-- WinkleButton
+        size="sm"
+        @click="isImportingPasswords = !isImportingPasswords"
+        class="mr-2"
+      >
+        Importar senhas
+      </WinkleButton -->
+      <ImportPasswordsModal
+        v-if="isImportingPasswords"
+        @close="isImportingPasswords = false"
+      />
       <WinkleButton
+        size="sm"
         @click="isShowingSortDropdown = !isShowingSortDropdown"
       >
         {{ $t('passwords.folder-filter.title') }}

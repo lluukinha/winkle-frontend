@@ -9,8 +9,7 @@ const isLoaded: Ref<boolean> = ref(false);
 
 onMounted(() => {
   const canUseLoginInfo = LoginRepository.canUseLoginInfo();
-  const canUseMasterPassword = LoginRepository.canUseMasterPassword();
-  const available = canUseLoginInfo && canUseMasterPassword;
+  const available = canUseLoginInfo;
   if (!available) {
     router.push({ name: 'logout' });
     return;
@@ -22,7 +21,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <MasterPassword v-if="isLoaded && !LoginRepository.masterPasswordConfig()" />
+  <MasterPassword
+    v-if="isLoaded && !LoginRepository.isRunningTimeoutForMasterPassword.value"
+  />
   <div class="w-screen bg-gray-400 flex justify-center" v-else>
     <div class="w-full flex flex-col items-center">
       <div class="w-full flex justify-center">

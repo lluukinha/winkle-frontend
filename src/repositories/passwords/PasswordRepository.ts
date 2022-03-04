@@ -2,6 +2,7 @@ import AES from '../../scripts/AES';
 import LoginRepository from '../login/LoginRepository';
 import { Repository } from '../_Repository';
 import { IFolder } from './IFolder';
+import { IImportedPassword } from './IImportedPassword';
 import { IPassword } from './IPassword';
 
 const getFolders = async () : Promise<IFolder[]> => {
@@ -9,6 +10,19 @@ const getFolders = async () : Promise<IFolder[]> => {
   return data.data.map((folder: IFolder) => {
     folder.isOpen = true;
     return folder;
+  });
+};
+
+const convertPasswords = (list: IImportedPassword[]) : IImportedPassword[] => {
+  const master = LoginRepository.getMasterPassword() || '';
+  return list.map((p: IImportedPassword) => {
+    if (p.username && p.username.length > 0) {
+      p.username = AES.aesEncrypt(p.username, master);
+    }
+    if (p.password && p.password.length > 0) {
+      p.password = AES.aesEncrypt(p.password, master);
+    }
+    return p;
   });
 };
 
@@ -61,5 +75,6 @@ export default {
   getPasswords,
   createPassword,
   updatePassword,
-  removePassword
+  removePassword,
+  convertPasswords
 }

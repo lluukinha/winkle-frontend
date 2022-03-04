@@ -23,6 +23,21 @@ const buttonClass = computed(() => {
   return classTypes[props.type];
 });
 
+const sizeClass = computed(() => {
+  const classTypes = {
+    xs: 'px-2 py-1',
+    sm: 'px-3 py-2',
+    md: 'px-5 py-2',
+    lg: 'px-5 py-2',
+    xl: 'px-5 py-2',
+    '2xl': 'px-5 py-2',
+    '3xl': 'px-5 py-2',
+  };
+
+  if (!props.size) return classTypes.md;
+  return classTypes[props.size];
+});
+
 const buttonSize = computed(() => {
   if (!props.size) return 'text-sm';
   return `text-${props.size}`;
@@ -35,13 +50,13 @@ defineExpose({ click });
 
 <template>
   <button
-    :class="`${buttonClass} ${buttonSize} ${rounded ? 'rounded-md' : 'rounded'}`"
+    :class="`${buttonClass} ${sizeClass} ${buttonSize} ${rounded ? 'rounded-md' : 'rounded'}`"
     class="
       mb-2 md:mb-0
-      px-5 py-2
       shadow-sm
       font-medium tracking-wider
       disabled:opacity-50
+      text-center
     "
     :disabled="disabled"
     @click="click()"

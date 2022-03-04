@@ -66,11 +66,11 @@ onBeforeMount(() => {
   const newLoginData = LoginRepository.loginData();
   if (!newLoginData) router.push({ name: 'logout' });
   loginData.value = newLoginData;
-
 })
 
 onMounted(() => {
   masterInput.value?.focus();
+  if (LoginRepository.canUseMasterPassword()) emit('success');
 });
 </script>
 
