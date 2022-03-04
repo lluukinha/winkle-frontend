@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import WinkleScripts from '../../scripts/WinkleScripts';
 import WinkleButton from './WinkleButton.vue';
 defineProps<{
   removeSave?: boolean,
@@ -34,7 +35,7 @@ const handleSave = () => { emit('save'); }
   >
     <div class="absolute bg-black opacity-80 inset-0 z-0"></div>
     <div
-      :class="size ? `md:max-w-${size}` : 'md:max-w-xl'"
+      :class="size || 'md:max-w-xl'"
       class="
         w-full
         p-4
@@ -54,7 +55,10 @@ const handleSave = () => { emit('save'); }
           <slot></slot>
         </div>
         <!--footer-->
-        <div class="p-3 mt-2 flex justify-between w-full">
+        <div
+          class="p-3 mt-2"
+          :class="!removeSave ? 'flex justify-between w-full' : ''"
+        >
           <WinkleButton :rounded="true" @click="handleClose()">
             {{ $t('close') }}
           </WinkleButton>
@@ -63,7 +67,7 @@ const handleSave = () => { emit('save'); }
             type="success"
             @click="handleSave()"
             v-if="!removeSave"
-            :disabled="saveDisabled"
+            :disabled="saveDisabled || WinkleScripts.isLoading.value"
           >
             {{ saveLabel ? saveLabel : $t('save') }}
           </WinkleButton>

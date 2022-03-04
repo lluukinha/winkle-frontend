@@ -3,6 +3,7 @@ import LoginRepository from '../login/LoginRepository';
 import { Repository } from '../_Repository';
 import { IFolder } from './IFolder';
 import { IImportedPassword } from './IImportedPassword';
+import { IImportedPasswordResponse } from './IImportedPasswordResponse';
 import { IPassword } from './IPassword';
 
 const getFolders = async () : Promise<IFolder[]> => {
@@ -39,6 +40,30 @@ const getPasswords = async () : Promise<IPassword[]> => {
   return passwords;
 };
 
+const importCsv = async (passwords: IImportedPassword[]) : Promise<IImportedPasswordResponse> => {
+  const master = LoginRepository.getMasterPassword() || '';
+  const list = passwords
+    .filter(p => p.name && p.name.length > 0)
+    .map((p: IImportedPassword) => {
+      return {
+        name: p.name,
+        description: 'Senha importada',
+        login: p.username && p.username.length > 0
+          ? AES.aesEncrypt(p.username, master)
+          : '',
+        password: p.password && p.password.length > 0
+          ? AES.aesEncrypt(p.password, master)
+          : '',
+        url: p.url,
+        folderName: p.folderName
+      };
+    });
+
+  const { data } = await Repository.post(`/passwords/import`, { list });
+  console.log({ data });
+  return data;
+};
+
 const createPassword = async (p : IPassword) : Promise<IPassword> => {
   const master = LoginRepository.getMasterPassword() || '';
   const newPass = JSON.parse(JSON.stringify(p));
@@ -65,9 +90,9 @@ const updatePassword = async (p : IPassword) : Promise<IPassword> => {
   return ps;
 };
 
-const removePassword = async (passwordId: number) : Promise<boolean> => {
-  const response = await Repository.delete(`/passwords/${passwordId}`);
-  return response.data;
+const removePassword = async (passwordId: number) : Promise<IFolder[]> => {
+  const { data } = await Repository.delete(`/passwords/${passwordId}`);
+  return data.data;
 };
 
 export default {
@@ -76,5 +101,6 @@ export default {
   createPassword,
   updatePassword,
   removePassword,
-  convertPasswords
+  convertPasswords,
+  importCsv
 }

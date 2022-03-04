@@ -39,6 +39,12 @@
             "login": "login",
             "user": "usuário",
             "email": "email"
+        },
+        "password-import": {
+            "column-missing": "o arquivo CSV não possui todas as colunas.",
+            "column-missing-description": "O arquivo CSV precisa conter as colunas 'name', 'url', 'username', e 'password'",
+            "too-many-rows": "O arquivo enviado é muito grande",
+            "too-many-rows-description": "Envie um arquivo com no máximo 300 linhas/senhas por vez"
         }
     },
 
@@ -158,6 +164,25 @@
     },
 
     "passwords": {
+        "import": {
+            "title": "Importar senhas",
+            "finished-title": "Importação finalizada",
+            "description": "Se você tem as senhas salvas no seu navegador, você por exportá-las e importar o arquivo diretamente aqui. Vamos criptografar todos os logins e senhas e incluir no sistema.",
+            "import-btn": "Importar",
+            "obs": "OBS",
+            "obs-1": "Senhas sem nome serão ignoradas",
+            "obs-2": "Nomes duplicados serão atualizados com as informações do último item",
+            "headers": {
+                "name": "Nome",
+                "login": "Login",
+                "password": "Senha",
+                "folder": "Categoria"
+            },
+            "created": "Senhas criadas",
+            "updated": "Senhas atualizadas",
+            "not-inserted": "Senhas não inseridas",
+            "not-inserted-description": "(incorretas ou duplicadas)"
+        },
         "folder-filter": {
             "title": "Categorias",
             "save": "Filtrar",

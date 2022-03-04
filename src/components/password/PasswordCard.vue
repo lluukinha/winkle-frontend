@@ -5,6 +5,7 @@ import PasswordRepository from "../../repositories/passwords/PasswordRepository"
 import WinkleScripts from "../../scripts/WinkleScripts";
 import i18n from "../../scripts/internacionalization/i18n";
 import showErrorMessage from "../../scripts/ErrorLogs";
+import { IFolder } from "../../repositories/passwords/IFolder";
 
 const { t } = i18n.element.global;
 const props = defineProps<{ password: IPassword }>();
@@ -17,8 +18,13 @@ const handleRemove = () => {
 
   WinkleScripts.setLoading(true);
   PasswordRepository.removePassword(Number(props.password.id))
-    .then(() => { emit("remove", Number(props.password.id)); })
-    .catch(showErrorMessage)
+    .then((folders: IFolder[]) => {
+      emit("remove", Number(props.password.id), folders);
+    })
+    .catch((errors) => {
+      showErrorMessage(errors);
+      console.log({ errors });
+    })
     .finally(() => { WinkleScripts.setLoading(false); });
 };
 </script>

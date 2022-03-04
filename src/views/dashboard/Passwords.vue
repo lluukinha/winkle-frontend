@@ -56,9 +56,9 @@ const filteredPasswords = computed(() => {
   return list.sort(sortByName);
 });
 
-const loadFolders = async () => {
+const loadFolders = async (foldersList: IFolder[] | undefined) => {
   WinkleScripts.setLoading(true);
-  const foldersList = await PasswordRepository.getFolders();
+  if (!foldersList) foldersList = await PasswordRepository.getFolders();
   folders.value = foldersList.sort(sortByName);
   const folderIds: string[] = foldersList.map(f => f.id);
   selectedFolderIds.value = selectedFolderIds.value.filter(id => folderIds.includes(id));
@@ -82,7 +82,7 @@ const includePasswordInList = (e: PasswordIncluded) => {
   passwords.value.push(e.newPassword);
   isCreating.value = false;
   showNotification(t('passwords.created'), e.newPassword.name, 'success');
-  if (e.willReloadFolders) loadFolders();
+  if (e.willReloadFolders) loadFolders(undefined);
 };
 
 const changePasswordInList = (e: PasswordIncluded) => {
@@ -90,14 +90,19 @@ const changePasswordInList = (e: PasswordIncluded) => {
   passwords.value[index] = { ...e.newPassword };
   editingPassword.value = null;
   showNotification(t('passwords.updated'), e.newPassword.name, 'success');
-  if (e.willReloadFolders) loadFolders();
+  if (e.willReloadFolders) loadFolders(undefined);
 };
 
-const removePasswordFromList = (passwordId: number) => {
+const removePasswordFromList = (passwordId: number, foldersList: IFolder[]) => {
   const index = passwords.value.findIndex((p) => Number(p.id) === passwordId);
-  passwords.value.splice(index, 1);
+  if (index > -1) passwords.value.splice(index, 1);
   showNotification(t('passwords.removed'), '', 'success');
-  loadFolders();
+  if (foldersList.length > 0) loadFolders(foldersList);
+
+  if (folders.value.length === 1) {
+    const folder = folders.value[0];
+    if (passwordsInFolder(folder.id).length === 0) folders.value = [];
+  }
 };
 
 const passwordsInFolder = (folderId: string) => {
@@ -157,21 +162,24 @@ onMounted(() => getData());
   />
 
   <DashboardContainer>
-    <div class="w-full flex justify-end" v-if="folders.length > 0">
-      <!-- WinkleButton
+    <div class="w-full flex justify-end">
+      <WinkleButton
         size="sm"
         @click="isImportingPasswords = !isImportingPasswords"
-        class="mr-2"
+        class="hidden md:block mr-2"
       >
-        Importar senhas
-      </WinkleButton -->
+        {{ $t('passwords.import.title') }}
+      </WinkleButton>
       <ImportPasswordsModal
+        :folders="folders"
         v-if="isImportingPasswords"
         @close="isImportingPasswords = false"
+        @save="getData()"
       />
       <WinkleButton
         size="sm"
         @click="isShowingSortDropdown = !isShowingSortDropdown"
+        v-if="folders.length > 0"
       >
         {{ $t('passwords.folder-filter.title') }}
         <template v-if="selectedFolderIds.length > 0">

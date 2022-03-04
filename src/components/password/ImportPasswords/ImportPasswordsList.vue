@@ -1,36 +1,55 @@
 <script setup lang="ts">
-import { defineProps } from "vue";
+import { defineProps, ref } from "vue";
+import { IFolder } from "../../../repositories/passwords/IFolder";
 import { IImportedPassword } from "../../../repositories/passwords/IImportedPassword";
+const props = defineProps<{ list: IImportedPassword[], folders?: IFolder[] }>();
 
-defineProps<{ list: IImportedPassword[] }>();
+const folderNameIsNew = (folderName: string | undefined) : boolean => {
+  return !!folderName
+    && folderName.length > 0
+    && !props.folders?.map(f => f.name).includes(folderName);
+};
 </script>
 
 <template>
   <div>
-    <h2 class="my-4">
-        OBS: Senhas sem nome serão ignoradas
-    </h2>
+    <div class="my-4 flex justify-center">
+      <div class="mr-10 text-lg font-bold">{{ $t('passwords.import.obs') }}: </div>
+      <div class="text-left text-sm font-semibold text-red-700">
+        1 - {{ $t('passwords.import.obs-1') }}<br>
+        2 - {{ $t('passwords.import.obs-2') }}
+      </div>
+    </div>
     <ul>
       <li class="flex items-center text-left text-xs py-2 font-bold bg-gray-300">
         <div class="w-full flex items-center text-left">
-        <div class="w-1/4 truncate px-2">Nome</div>
-        <div class="w-1/4 truncate px-2">Login</div>
-        <div class="w-1/4 px-2">Senha</div>
-        <div class="w-1/4 px-2">Categoria</div>
+          <div class="w-1/4 px-2">
+            {{ $t('passwords.import.headers.name') }}
+          </div>
+          <div class="w-1/4 px-2">
+            {{ $t('passwords.import.headers.login') }}
+          </div>
+          <div class="w-1/4 px-2">
+            {{ $t('passwords.import.headers.password') }}
+          </div>
+          <div class="w-1/4 px-2">
+            {{ $t('passwords.import.headers.folder') }}
+          </div>
         </div>
         <div></div>
       </li>
       <li
         v-for="(p, index) in list"
-        :key="`${p.name}_${p.url}_${p.username}`"
+        :key="`import_${index}`"
         class="flex items-center text-left text-xs py-2 border-b-2"
+        :class="{ 'bg-red-200': !p.name || p.name.length === 0 }"
       >
       <div class="w-full flex items-center">
         <div class="w-1/4 px-2">
           <input
             type="text"
             v-model="p.name"
-            class="p-1 shadow bg-gray-100 px-2 w-full"
+            class="p-1 shadow bg-gray-100 px-2 w-full mb-1"
             placeholder="Nome"
             title="Nome da senha"
           />
@@ -56,12 +75,33 @@ defineProps<{ list: IImportedPassword[] }>();
           </span>
         </div>
         <div class="w-1/4 px-2">
+          <select
+            class="p-1 shadow bg-gray-100 px-2 w-full uppercase mb-1"
+            v-model="p.folderName"
+            placeholder="test"
+            v-if="folders && folders.length > 0 && !folderNameIsNew(p.folderName)"
+          >
+            <option :value="undefined" disabled>
+              {{ $t("passwords.form.select") }}
+            </option>
+            <option value="-">
+              Criar
+            </option>
+            <option
+              v-for="folder in folders"
+              :key="folder.id"
+              :value="folder.name"
+            >
+              {{ folder.name }}
+            </option>
+          </select>
           <input
             type="text"
             v-model="p.folderName"
             class="p-1 shadow bg-gray-100 px-2 w-full uppercase"
             placeholder="Categoria"
             title="Categoria da senha"
+            v-else
           />
         </div>
         </div>

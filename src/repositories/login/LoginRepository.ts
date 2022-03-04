@@ -88,10 +88,11 @@ const loginTimeout = () : boolean => {
   const loginTime = new Date(login.last_login);
   const timeAfterTimeout = new Date(login.last_login);
   timeAfterTimeout.setSeconds(timeAfterTimeout.getSeconds() + login.expires_in);
-  if (loginTime >= timeAfterTimeout) return true;
+  const currentTime = new Date();
+  if (loginTime >= timeAfterTimeout || currentTime >= timeAfterTimeout) return true;
 
   if (!isRunningTimeout.value) {
-    const diff = new Date().getTime() - timeAfterTimeout.getTime();
+    const diff = currentTime.getTime() - timeAfterTimeout.getTime();
     const secondsFromT1ToT2 = diff / 1000;
     const secondsBetweenDates = Math.abs(secondsFromT1ToT2);
     setTimeoutToLogout(secondsBetweenDates);
@@ -107,10 +108,11 @@ const masterPasswordTimeout = () : boolean => {
   const loginTime = new Date(masterPassword.lastLogin);
   const timeAfterTimeout = new Date(masterPassword.lastLogin);
   timeAfterTimeout.setSeconds(timeAfterTimeout.getSeconds() + (masterPassword.minutesToExpire * 60));
-  if (loginTime >= timeAfterTimeout) return true;
+  const currentTime = new Date();
+  if (loginTime >= timeAfterTimeout || currentTime >= timeAfterTimeout) return true;
 
   if (!isRunningTimeoutForMasterPassword.value) {
-    const diff = new Date().getTime() - timeAfterTimeout.getTime();
+    const diff = currentTime.getTime() - timeAfterTimeout.getTime();
     const secondsFromT1ToT2 = diff / 1000;
     const secondsBetweenDates = Math.abs(secondsFromT1ToT2);
     setTimeoutToEraseMasterPassword(secondsBetweenDates);

@@ -1,51 +1,31 @@
 <script setup lang="ts">
-import { Ref, ref } from 'vue';
+import { computed, Ref, ref } from 'vue';
 import { IImportedPassword } from '../../../repositories/passwords/IImportedPassword';
+import { IImportedPasswordResponse } from '../../../repositories/passwords/IImportedPasswordResponse';
 import PasswordRepository from '../../../repositories/passwords/PasswordRepository';
-import AES from '../../../scripts/AES';
+import showErrorMessage from '../../../scripts/ErrorLogs';
 import WinkleScripts from '../../../scripts/WinkleScripts';
 import Modal from '../../shared/Modal.vue';
 import ImportPasswordsList from './ImportPasswordsList.vue';
+import i18n from '../../../scripts/internacionalization/i18n';
+import { showError } from '../../../scripts/NotificationScript';
+import { IFolder } from '../../../repositories/passwords/IFolder';
+
+const { t } = i18n.element.global;
+const form: Ref<HTMLFormElement | undefined> = ref();
 const fileInput: Ref<HTMLFormElement | undefined> = ref();
 const importedList: Ref<IImportedPassword[]> = ref([]);
 const submitButton: Ref<HTMLElement | undefined> = ref();
+const importResult: Ref<IImportedPasswordResponse | undefined> = ref();
 
-const csvToArray = (str: string, delimiter = ',') : IImportedPassword[] | undefined => {
-  // slice from start of text to the first \n index
-  // use split to create an array from string by delimiter
-  const headers = str.slice(0, str.indexOf("\n")).split(delimiter);
-  // slice from \n index + 1 to the end of the text
-  // use split to create an array of each csv value row
-  const rows = str.slice(str.indexOf("\n") + 1).split("\n");
+const notInsertedPasswords = computed(() => {
+  if (!importResult.value || importedList.value.length === 0) return 0;
+  const { created, updated } = importResult.value;
+  return importedList.value.length - (created + updated);
+});
 
-  if (
-    !headers.includes('name') ||
-    !headers.includes('url') ||
-    !headers.includes('username') ||
-    !headers.includes('password')
-  ) {
-    console.log('erro');
-    return undefined;
-  }
-
-  // Map the rows
-  // split values from each row into an array
-  // use headers.reduce to create an object
-  // object properties derived from headers:values
-  // the object passed as an element of the array
-  const arr = rows.map((row) => {
-    const values = row.split(delimiter);
-    const el = headers.reduce((object: any, header, index) => {
-      object[header] = values[index];
-      return object;
-    }, {});
-    el.isShowingPassword = false;
-    return el;
-  });
-
-    // return the array
-    return arr;
-  }
+defineProps<{ folders?: IFolder[] }>();
+const emit = defineEmits(['close','save']);
 
 const sendFile = (e: Event) => {
   e.preventDefault();
@@ -57,8 +37,11 @@ const sendFile = (e: Event) => {
 
   reader.onload = (e) => {
     if (!e.target || !e.target.result) return;
-    const data = csvToArray(e.target.result.toString());
-    if (!data) return;
+    const data = WinkleScripts.csvToArray(e.target.result.toString());
+    if (!data) {
+      form.value?.reset();
+      return;
+    }
     importedList.value = data;
   };
 
@@ -67,30 +50,61 @@ const sendFile = (e: Event) => {
 };
 
 const importList = () => {
-  console.log('vrau');
+  WinkleScripts.setLoading(true);
+  PasswordRepository.importCsv(importedList.value)
+    .then((result: IImportedPasswordResponse) => {
+      importResult.value = result;
+      emit('save');
+    })
+    .catch(showErrorMessage)
+    .finally(() => WinkleScripts.setLoading(false));
 };
 </script>
 
 <template>
   <Modal
     :saveLabel="importedList.length === 0 ? 'Importar' : undefined"
+    :removeSave="!!importResult"
+    @close="$emit('close')"
     @save="importedList.length === 0 ? submitButton?.click() : importList()"
-    size="2xl"
+    size="md:max-w-3xl"
   >
-      <h1 class="uppercase text-xl font-bold">Importar senhas</h1>
-      <template v-if="importedList.length === 0">
-        <p class="text-justify my-4">
-          Se você tem as senhas salvas no seu navegador,
-          você por exportá-las e importar o arquivo diretamente aqui.
-          Vamos criptografar todos os logins e senhas
-          e incluir no sistema.
-        </p>
-        <form @submit="sendFile">
-          <input type="file" ref="fileInput" accept=".csv" required />
-          <br />
-          <button ref="submitButton"></button>
-        </form>
-      </template>
-      <ImportPasswordsList :list="importedList" v-else />
+    <h1 class="uppercase text-xl font-bold">
+      <template v-if="importResult">{{ $t('passwords.import.finished-title') }}</template>
+      <template v-else>{{ $t('passwords.import.title') }}</template>
+    </h1>
+
+    <div
+      v-if="importResult"
+      class="w-full flex justify-around items-center my-10"
+    >
+      <div class="bg-green-200 rounded p-4 shadow-lg">
+        <h1 class="text-7xl">{{ importResult.created }}</h1>
+        <p class="text-xl mt-4">{{ $t('passwords.import.created') }}</p>
+      </div>
+      <div class="bg-indigo-100 rounded p-4 shadow-lg">
+        <h1 class="text-7xl">{{ importResult.updated }}</h1>
+        <p class="text-xl mt-4">{{ $t('passwords.import.updated') }}</p>
+      </div>
+      <div class="bg-red-200 rounded p-4 shadow-lg">
+        <h1 class="text-7xl">{{ notInsertedPasswords }}</h1>
+        <p class="text-xl mt-4">{{ $t('passwords.import.not-inserted') }}</p>
+        <p class="text-sm">{{ $t('passwords.import.not-inserted-description') }}</p>
+      </div>
+    </div>
+
+    <template v-else-if="importedList.length === 0">
+      <p class="text-justify my-4">{{ $t('passwords.import.description') }}</p>
+      <form ref="form" @submit="sendFile">
+        <input type="file" ref="fileInput" accept=".csv" required />
+        <button ref="submitButton"></button>
+      </form>
+    </template>
+
+    <ImportPasswordsList
+      :folders="folders"
+      :list="importedList"
+      v-else
+    />
   </Modal>
 </template>

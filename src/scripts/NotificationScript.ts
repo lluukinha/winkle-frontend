@@ -14,8 +14,8 @@ const showWarning = (title: string, text: string, timeout: number = 1000) => {
   showNotification( title, text, 'warn', timeout);
 };
 
-const showError = (title: string, text: string) => {
-  showNotification(title, text, 'error', 3000);
+const showError = (title: string, text: string, timeout: number = 3000) => {
+  showNotification(title, text, 'error', timeout);
 };
 
 export {
