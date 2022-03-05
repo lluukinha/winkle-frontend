@@ -1,15 +1,14 @@
 <script setup lang="ts">
-import { Ref, ref, watch } from "vue";
+import { ILoginInfo } from "../../repositories/login/ILoginInfo";
+import LoginRepository from "../../repositories/login/LoginRepository";
 import SidebarScript from "../../scripts/SidebarScript";
-defineProps<{ title: string, showSearchBox: boolean }>();
-const emit = defineEmits(['search']);
+defineProps<{ title: string }>();
 
-const filter: Ref<string> = ref('');
+const loginData : ILoginInfo | null = LoginRepository.loginData();
 const toggleSidebar = () => {
   SidebarScript.toggleSidebar(true);
 };
 
-watch(filter, (currentValue) => { emit('search', currentValue); });
 </script>
 
 <template>
@@ -21,46 +20,28 @@ watch(filter, (currentValue) => { emit('search', currentValue); });
       absolute w-full md:static
       "
   >
-    <div class="header-top flex justify-between">
-      <div
-        class="md:w-auto"
-        :class="{ 'w-full': !showSearchBox, 'w-1/2': showSearchBox }"
-      >
-      <h1 class="text-xl md:text-2xl font-bold flex items-center">
-        <button class="md:hidden bg-gray-200 rounded mr-2" @click="toggleSidebar()">
-          <!-- list icon -->
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-          </svg>
-          <!-- end list icon -->
-        </button>
-        {{ title }}
-      </h1>
+    <div class="header-top flex justify-between items-center">
+      <div class="w-1/2">
+        <h1 class="text-xl md:text-2xl font-bold flex items-center">
+          <button class="md:hidden bg-gray-200 rounded mr-2" @click="toggleSidebar()">
+            <!-- list icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+            </svg>
+            <!-- end list icon -->
+          </button>
+          {{ title }}
+        </h1>
       </div>
       <div
-        class="w-1/2 md:w-auto flex border-b items-center bg-gray-100 rounded-lg px-2 shadow"
-        v-if="showSearchBox"
+        class="w-1/2 md:w-auto hover:underline cursor-pointer flex justify-end"
+        v-if="loginData"
+        @click="$router.push({ name: 'dashboard-user' })"
       >
-        <label for="search-input">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-        </label>
-        <input
-          id="search-input"
-          type="text"
-          class="
-            ml-4
-            bg-gray-100
-            border border-none border-b-2
-            focus:border-none
-            w-20 sm:w-24
-            !outline-none
-          "
-          v-model="filter"
-          :placeholder="$t('passwords.search')"
-          autocomplete="off"
-        />
+        <span class="truncate">{{ loginData.user }}</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
       </div>
     </div>
   </div>

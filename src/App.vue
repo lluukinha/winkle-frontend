@@ -7,7 +7,7 @@ import Loading from "./components/shared/Loading.vue";
 <template>
   <router-view></router-view>
   <Loading />
-  <notifications position="top center" class="mt-24 md:mt-4" />
+  <notifications position="top center" class="mt-4" />
 </template>
 
 <style lang="postcss">

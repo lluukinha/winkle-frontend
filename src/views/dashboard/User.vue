@@ -79,7 +79,7 @@ const userUpdated = (updatedUser: IUser) => {
     @close="isUpdatingMasterPassword = false"
     @save="userUpdated"
   />
-  <DashboardHeader :title="$t('user.title')" :showSearchBox="false" />
+  <DashboardHeader :title="$t('user.title')" />
   <DashboardContainer v-if="user">
     <div class="w-full flex flex-col items-center md:items-end">
       <div

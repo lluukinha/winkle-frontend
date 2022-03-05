@@ -12,7 +12,7 @@ const initials = computed(() => {
   const words = props.text.split(' ');
   const lastIndex = words.length - 1;
   if (lastIndex === 0) return words[0].charAt(0);
-  return `${words[0].charAt(0)}${words[lastIndex].charAt(0)}`;
+  return `${words[0].charAt(0)}${words[lastIndex].charAt(0)}`.toUpperCase();
 });
 
 const circleClass = computed(() => {

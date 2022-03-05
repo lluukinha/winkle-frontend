@@ -155,44 +155,72 @@ onMounted(() => getData());
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
     </svg>
   </button>
-  <DashboardHeader
-    :title="$t('passwords.title')"
-    :showSearchBox="true"
-    @search="filter = $event"
-  />
+  <DashboardHeader :title="$t('passwords.title')" />
 
   <DashboardContainer>
-    <div class="w-full flex justify-end">
-      <WinkleButton
-        size="sm"
-        @click="isImportingPasswords = !isImportingPasswords"
-        class="hidden md:block mr-2"
-      >
-        {{ $t('passwords.import.title') }}
-      </WinkleButton>
-      <ImportPasswordsModal
-        :folders="folders"
-        v-if="isImportingPasswords"
-        @close="isImportingPasswords = false"
-        @save="getData()"
-      />
-      <WinkleButton
-        size="sm"
-        @click="isShowingSortDropdown = !isShowingSortDropdown"
-        v-if="folders.length > 0"
-      >
-        {{ $t('passwords.folder-filter.title') }}
-        <template v-if="selectedFolderIds.length > 0">
-          ({{ selectedFolderIds.length }})
-        </template>
-      </WinkleButton>
-      <FolderFilterDropdown
-        :folders="folders"
-        :selectedIds="selectedFolderIds"
-        v-if="isShowingSortDropdown"
-        @close="isShowingSortDropdown = false"
-        @save="saveSorting"
-      />
+    <!-- passwords heaader /-->
+    <div class="w-full flex items-center justify-between md:mt-2 mb-6">
+      <div class="flex items-center">
+        <WinkleButton
+          size="sm"
+          @click="isImportingPasswords = !isImportingPasswords"
+          class="hidden md:block mr-2"
+        >
+          {{ $t('passwords.import.title') }}
+        </WinkleButton>
+        <ImportPasswordsModal
+          :folders="folders"
+          v-if="isImportingPasswords"
+          @close="isImportingPasswords = false"
+          @save="getData()"
+        />
+        <WinkleButton
+          size="sm"
+          @click="isShowingSortDropdown = !isShowingSortDropdown"
+          v-if="folders.length > 0"
+          class="flex items-center"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+          </svg>
+          <span class="hidden md:block">
+          {{ $t('passwords.folder-filter.title') }}
+          </span>
+          <template v-if="selectedFolderIds.length > 0">
+            ({{ selectedFolderIds.length }})
+          </template>
+        </WinkleButton>
+        <FolderFilterDropdown
+          :folders="folders"
+          :selectedIds="selectedFolderIds"
+          v-if="isShowingSortDropdown"
+          @close="isShowingSortDropdown = false"
+          @save="saveSorting"
+        />
+      </div>
+
+      <div class="md:w-auto flex border-b items-center bg-gray-100 rounded px-2 py-1 shadow">
+        <label for="search-input">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </label>
+        <input
+          id="search-input"
+          type="text"
+          class="
+            ml-4
+            bg-gray-100
+            border border-none border-b-2
+            focus:border-none
+            w-24 md:w-full
+            !outline-none
+          "
+          v-model="filter"
+          :placeholder="$t('passwords.search')"
+          autocomplete="off"
+        />
+      </div>
     </div>
     <div class="w-full">
       <div

@@ -76,7 +76,7 @@ const setTimeoutToEraseMasterPassword = (expirationInSeconds: number) => {
     );
   }, expiresIn - 10000);
 
-  setTimeout(() => removeMasterPassword, expiresIn);
+  setTimeout(() => { removeMasterPassword(); }, expiresIn);
 };
 
 const removeMasterPassword = () => {
