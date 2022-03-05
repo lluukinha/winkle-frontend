@@ -8,6 +8,7 @@ import { ILoginForm } from "./ILoginForm";
 import { ILoginInfo } from "./ILoginInfo";
 import { IMasterPasswordConfig } from './IMasterPasswordConfig';
 import * as dcodeIO from 'bcryptjs';
+import SidebarScript from '../../scripts/SidebarScript';
 
 const { t } = i18n.element.global;
 const isRunningTimeout: Ref<boolean> = ref(false);
@@ -75,10 +76,13 @@ const setTimeoutToEraseMasterPassword = (expirationInSeconds: number) => {
     );
   }, expiresIn - 10000);
 
-  setTimeout(() => {
-    localStorage.removeItem('master');
-    isRunningTimeoutForMasterPassword.value = false;
-  }, expiresIn);
+  setTimeout(() => removeMasterPassword, expiresIn);
+};
+
+const removeMasterPassword = () => {
+  localStorage.removeItem('master');
+  SidebarScript.toggleSidebar(false);
+  isRunningTimeoutForMasterPassword.value = false;
 };
 
 const loginTimeout = () : boolean => {
@@ -193,5 +197,6 @@ export default {
   canUseMasterPassword,
   masterPasswordConfig,
   setMasterPasswordStringOnly,
-  isRunningTimeoutForMasterPassword
+  isRunningTimeoutForMasterPassword,
+  removeMasterPassword
 }

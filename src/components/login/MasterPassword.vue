@@ -8,6 +8,9 @@ import i18n from "../../scripts/internacionalization/i18n";
 import { showError } from "../../scripts/NotificationScript";
 import WinkleScripts from "../../scripts/WinkleScripts";
 import router from "../../router";
+import WinkleButton from "../shared/WinkleButton.vue";
+import EyeIcon from "../shared/EyeIcon.vue";
+import SidebarScript from "../../scripts/SidebarScript";
 
 const { t } = i18n.element.global;
 const failedCounter: Ref<number> = ref(0);
@@ -70,6 +73,7 @@ onBeforeMount(() => {
 
 onMounted(() => {
   masterInput.value?.focus();
+  SidebarScript.toggleSidebar(false);
   if (LoginRepository.canUseMasterPassword()) emit('success');
 });
 </script>
@@ -77,58 +81,70 @@ onMounted(() => {
 <template>
   <div class="w-screen h-screen bg-gray-300 overflow-hidden">
     <div
-      class="bg-gradient-to-b from-cyan-700 to-gray-500 transition-all duration-300 border-b-8 overflow-hidden w-full"
+      class="
+        bg-gradient-to-b from-gray-600 to-gray-800
+        transition-all duration-300
+        border-b-8 overflow-hidden w-full
+        flex justify-center items-end
+      "
       :class="{ 'h-[35vh]': !systemOk, 'h-0': systemOk, }"
     >
+      <div class="cursor-pointer flex items-center select-none mb-10 drop-shadow">
+        <img src="../../assets/logo-white.png" class="w-24 px-0 md:w-32 mr-2 drop-shadow-lg" />
+        <div class="flex flex-col items-start text-gray-50">
+          <span class="text-6xl font-bold italic">Winkle</span>
+          <span class="text-sm ml-1">Gerenciador de Senhas</span>
+        </div>
+      </div>
     </div>
     <div
-      class="bg-gradient-to-b from-gray-800 to-gray-700 pt-10 transition-all duration-300 w-full overflow-hidden"
+      class="bg-gradient-to-b from-gray-800 to-gray-600 pt-10 transition-all duration-300 w-full overflow-hidden"
       :class="{ 'h-[65vh]': !systemOk, 'h-0 fixed bottom-0': systemOk }"
     >
       <div class="flex flex-col justify-center">
-        <h3 class="text-xl font-bold text-gray-100 mb-2">
-          {{ $t('hello') }} {{ loginData?.user }}
+        <h3 class="text-xl text-gray-100 mb-2">
+          {{ $t('hello') }} <span class="font-bold">{{ loginData?.user }}</span>
           <router-link
             tag="span"
-            class="text-sm font-normal text-gray-400 hover:underline"
+            class="text-sm text-gray-400 hover:underline"
             :to="{ name: 'logout' }"
           >
             ({{ $t('leave') }})
           </router-link>,
         </h3>
-        <h2 class="text-2xl uppercase font-bold text-gray-100 drop-shadow-lg whitespace-pre-wrap">
+        <h2 class="text-xl uppercase text-gray-300 drop-shadow-lg whitespace-pre-wrap">
           {{ $t('master-password.message') }}:
         </h2>
         <div class="mt-4">
           <form @submit="checkMasterPassword">
-            <div class="flex justify-center items-center">
-              <input
-                ref="masterInput"
-                class="rounded rounded-tr-none rounded-br-none p-2 bg-gray-200 focus:bg-gray-50"
-                :type="isShowingMasterPassword ? 'text' : 'password'"
-                v-model="masterPassword"
-                required
-              />
-              <span
-                @click="isShowingMasterPassword = !isShowingMasterPassword"
-                class="bg-gray-300 hover:bg-gray-400 px-2 py-3 rounded rounded-tl-none rounded-bl-none cursor-pointer"
+            <div class="flex flex-col w-full">
+              <div
+                class="
+                  flex justify-center items-center
+                  mb-2 px-4
+                  w-full md:w-72 md:mx-auto
+                "
               >
-                <!-- EYE ICON -->
-                <svg v-if="!isShowingMasterPassword" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                </svg>
-
-                <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-                </svg>
-                <!-- END EYE ICON -->
-              </span>
-              <button
-                class="bg-green-400 hover:bg-green-500 shadow font-semibold rounded p-2 px-4 ml-2"
-              >
-                {{ $t('enter') }}
-              </button>
+                <input
+                  ref="masterInput"
+                  class="rounded rounded-tr-none rounded-br-none p-2 bg-gray-200 focus:bg-gray-50 w-full px-4"
+                  :type="isShowingMasterPassword ? 'text' : 'password'"
+                  v-model="masterPassword"
+                  :placeholder="$t('master-password.message')"
+                  required
+                />
+                <span
+                  @click="isShowingMasterPassword = !isShowingMasterPassword"
+                  class="bg-gray-300 hover:bg-gray-400 px-2 py-3 rounded rounded-tl-none rounded-bl-none cursor-pointer"
+                >
+                  <EyeIcon :isShowing="isShowingMasterPassword" />
+                </span>
+              </div>
+              <div class="px-4 w-full md:w-72 md:mx-auto">
+                <WinkleButton
+                  type="success" class="w-full"
+                >{{ $t('enter') }}</WinkleButton>
+              </div>
             </div>
             <div>
               <span class="text-gray-200">

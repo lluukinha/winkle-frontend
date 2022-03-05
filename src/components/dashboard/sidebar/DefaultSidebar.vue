@@ -27,8 +27,11 @@ onMounted(() => {
     "
   >
     <div>
-      <div class="pt-4 mb-4 px-4">
-        <img src="../../../assets/logo-white.png" class="h-12 w-auto" />
+      <div class="pt-4 pb-4 px-4 flex items-center bg-gray-900 select-none">
+        <div class="bg-gray-900 rounded shadow w-10 p-1 mr-2 border-gray-700 border">
+          <img src="../../../assets/logo-white.png" class="h-auto w-36" />
+        </div>
+        <span class="text-gray-50 text-xl font-bold italic shadow-lg">Winkle</span>
       </div>
 
       <hr class=" border-gray-700">
@@ -85,10 +88,9 @@ onMounted(() => {
     </div>
     <div class="p-4 border-t border-gray-700">
       <ul>
-        <router-link
-          tag="li"
-          :to="{ name: 'logout' }"
+        <li
           class="flex justify-between items-center w-full cursor-pointer mb-2 text-gray-300 hover:bg-gray-700 rounded-md py-2 px-6"
+          @click="LoginRepository.removeMasterPassword()"
         >
           <div class="flex items-center focus:outline-none" >
             <svg
@@ -107,7 +109,7 @@ onMounted(() => {
             </svg>
             <span class="text-sm ml-2">{{ $t('logout') }}</span>
           </div>
-        </router-link>
+        </li>
       </ul>
     </div>
   </div>

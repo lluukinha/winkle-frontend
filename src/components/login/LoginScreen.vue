@@ -9,7 +9,7 @@ defineProps<{ title: string }>();
     <div class="lg:w-1/2 xl:max-w-screen-sm bg-white h-screen">
       <div
         class="
-          py-12
+          py-6 md:py-12
           bg-gray-100
           lg:bg-white
           flex
@@ -19,13 +19,17 @@ defineProps<{ title: string }>();
       >
         <router-link
           tag="div"
-          class="cursor-pointer flex items-center"
+          class="cursor-pointer flex items-center select-none drop-shadow"
           :to="{ name: 'login' }"
         >
           <img
             src="../../assets/logo-dark.png"
-            class="w-full px-16 md:px-0 md:w-56"
+            class="w-24 px-0 md:w-32 mr-2"
           />
+          <div class="flex flex-col items-start text-gray-800">
+            <span class="text-6xl font-bold italic">Winkle</span>
+            <span class="text-sm ml-1">Gerenciador de Senhas</span>
+          </div>
         </router-link>
       </div>
       <div
@@ -50,7 +54,7 @@ defineProps<{ title: string }>();
         </h2>
         <div class="mt-12">
           <slot></slot>
-          <!-- div
+          <div
             class="
               mt-12
               text-sm
@@ -58,11 +62,15 @@ defineProps<{ title: string }>();
               text-gray-700 text-center
             "
           >
-            Don't have an account ?
-            <a class="cursor-pointer text-indigo-600 hover:text-indigo-800"
-              >Sign up</a
+            {{ $t('login.no-account') }}
+            <a
+              class="cursor-pointer text-indigo-600 hover:text-indigo-800"
+              href="https://www.winkle.com.br"
+              targett="_blank"
             >
-          </div -->
+              {{ $t('login.sign-up') }}
+            </a>
+          </div>
         </div>
       </div>
     </div>

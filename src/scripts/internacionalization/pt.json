@@ -106,7 +106,9 @@
         "password-placeholder": "Entre com sua senha",
         "login-failed": "Falha ao efetuar login",
         "user-not-found": "Nenhum usuário foi encontrado com este email e senha",
-        "forgot-password": "Esqueceu a senha?"
+        "forgot-password": "Esqueceu a senha?",
+        "no-account": "Não possui uma conta?",
+        "sign-up": "Cadastre-se"
     },
 
     "master-password": {

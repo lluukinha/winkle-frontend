@@ -52,7 +52,6 @@ defineExpose({ click });
   <button
     :class="`${buttonClass} ${sizeClass} ${buttonSize} ${rounded ? 'rounded-md' : 'rounded'}`"
     class="
-      mb-2 md:mb-0
       shadow-sm
       font-medium tracking-wider
       disabled:opacity-50

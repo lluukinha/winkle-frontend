@@ -26,10 +26,10 @@ watch(filter, (currentValue) => { emit('search', currentValue); });
         class="md:w-auto"
         :class="{ 'w-full': !showSearchBox, 'w-1/2': showSearchBox }"
       >
-      <h1 class="text-lg sm:text-xl md:text-2xl font-bold flex items-center">
+      <h1 class="text-xl md:text-2xl font-bold flex items-center">
         <button class="md:hidden bg-gray-200 rounded mr-2" @click="toggleSidebar()">
           <!-- list icon -->
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
           </svg>
           <!-- end list icon -->
