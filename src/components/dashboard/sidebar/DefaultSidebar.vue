@@ -6,11 +6,13 @@ import router from "../../../router";
 import SidebarIcon from "./SidebarIcon.vue";
 import { ILoginInfo } from "../../../repositories/login/ILoginInfo";
 import LoginRepository from "../../../repositories/login/LoginRepository";
+import ImportPasswordsModal from "../../password/ImportPasswords/ImportPasswordsModal.vue";
 
 const props = defineProps<{ items: ISidebarItem[] }>();
 const isOpen: Ref<boolean> = ref(true);
 const currentRoute = computed(() => router.currentRoute.value.name);
 const userData: Ref<ILoginInfo | null> = ref(null);
+const isImportingPasswords: Ref<boolean> = ref(false);
 
 onMounted(() => {
   userData.value = LoginRepository.loginData();
@@ -36,6 +38,23 @@ onMounted(() => {
       <hr class=" border-gray-700">
 
       <ul class="mt-4 px-4">
+        <li
+          class="flex justify-between items-center w-full cursor-pointer mb-2 text-gray-300 hover:bg-gray-700 rounded-md py-2 px-6"
+          @click="isImportingPasswords = !isImportingPasswords"
+        >
+          <div class="flex items-center focus:outline-none" >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+            <span class="text-sm ml-2">{{ $t('passwords.import.title') }}</span>
+          </div>
+        </li>
+        <ImportPasswordsModal
+          :folders="[]"
+          v-if="isImportingPasswords"
+          @close="isImportingPasswords = false"
+          @save="() => {}"
+        />
         <router-link
           tag="li"
           :to="{ name: !item.disabled ? item.route : currentRoute }"

@@ -31,7 +31,6 @@ const isCreating: Ref<boolean> = ref(false);
 const filter: Ref<string> = ref("");
 const selectedFolderIds: Ref<string[]> = ref([]);
 const isShowingSortDropdown: Ref<boolean> = ref(false);
-const isImportingPasswords: Ref<boolean> = ref(false);
 
 const passwordsWithoutFolder = computed(() => {
   return filteredPasswords.value.filter((p) => p.folder.id === '');
@@ -115,6 +114,11 @@ const saveSorting = (folderIds: string[]) => {
   isShowingSortDropdown.value = false;
 };
 
+const toggleAllFolders = (willShow: boolean) => {
+  emptyFolderIsOpen.value = willShow;
+  folders.value.map(f => f.isOpen = willShow);
+};
+
 onMounted(() => getData());
 </script>
 
@@ -158,27 +162,14 @@ onMounted(() => getData());
   <DashboardHeader :title="$t('passwords.title')" />
 
   <DashboardContainer>
-    <!-- passwords heaader /-->
+    <!-- passwords header /-->
     <div class="w-full flex items-center justify-between md:mt-2 mb-6">
       <div class="flex items-center">
         <WinkleButton
           size="sm"
-          @click="isImportingPasswords = !isImportingPasswords"
-          class="hidden md:block mr-2"
-        >
-          {{ $t('passwords.import.title') }}
-        </WinkleButton>
-        <ImportPasswordsModal
-          :folders="folders"
-          v-if="isImportingPasswords"
-          @close="isImportingPasswords = false"
-          @save="getData()"
-        />
-        <WinkleButton
-          size="sm"
           @click="isShowingSortDropdown = !isShowingSortDropdown"
           v-if="folders.length > 0"
-          class="flex items-center"
+          class="flex items-center mr-1"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
@@ -197,6 +188,23 @@ onMounted(() => getData());
           @close="isShowingSortDropdown = false"
           @save="saveSorting"
         />
+        <WinkleButton class="mr-1 flex items-center" size="sm" @click="toggleAllFolders(false)">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 11l7-7 7 7M5 19l7-7 7 7" />
+          </svg>
+          <span class="hidden md:block">
+          {{ $t('passwords.hide-folders') }}
+          </span>
+        </WinkleButton>
+
+        <WinkleButton class="flex items-center" size="sm" @click="toggleAllFolders(true)">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" />
+          </svg>
+          <span class="hidden md:block">
+            {{ $t('passwords.show-folders') }}
+          </span>
+        </WinkleButton>
       </div>
 
       <div class="md:w-auto flex border-b items-center bg-gray-100 rounded px-2 py-1 shadow">
@@ -222,7 +230,12 @@ onMounted(() => getData());
         />
       </div>
     </div>
-    <div class="w-full">
+
+    <!-- Without category -->
+    <div
+      class="w-full mb-4"
+      v-if="selectedFolderIds.length === 0 || selectedFolderIds.includes('0')"
+    >
       <div
         class="border-b border-gray-400 w-full text-left uppercase select-none cursor-pointer"
         @click="emptyFolderIsOpen = !emptyFolderIsOpen"
@@ -236,7 +249,7 @@ onMounted(() => getData());
           </svg>
         </button> {{ $t('passwords.without-folder') }} ({{ passwordsWithoutFolder.length }})
       </div>
-      <div class="flex items-center flex-wrap w-full mt-4" v-show="emptyFolderIsOpen">
+      <div class="flex items-center flex-wrap w-full mt-6" v-show="emptyFolderIsOpen">
         <div class="mt-2 text-gray-400" v-if="filteredPasswords.length === 0">
           <p v-if="filter.length === 0">
             {{ $t("passwords.empty-list") }}
@@ -264,7 +277,7 @@ onMounted(() => getData());
     </div>
 
     <template v-if="filteredPasswords.length > 0">
-      <div class="w-full mt-4" v-for="folder in filteredFolders" :key="folder.id">
+      <div class="w-full my-6" v-for="folder in filteredFolders" :key="folder.id">
         <div
           class="border-b border-gray-400 w-full text-left uppercase select-none cursor-pointer"
           @click="folder.isOpen = !folder.isOpen"
@@ -278,7 +291,7 @@ onMounted(() => getData());
             </svg>
           </button> {{ folder.name }} ({{ passwordsInFolder(folder.id).length }})
         </div>
-        <div class="flex items-center flex-wrap w-full mt-4" v-if="folder.isOpen">
+        <div class="flex items-center flex-wrap w-full mt-6" v-if="folder.isOpen">
           <PasswordCard
             v-for="password in passwordsInFolder(folder.id)"
             :key="password.id"

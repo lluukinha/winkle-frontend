@@ -51,7 +51,7 @@ const changeRoute = (newRoute: string) : void => {
 
       <hr class="border-gray-700">
 
-      <ul class="">
+      <ul>
         <li
           class="flex justify-between items-center w-full mb-2 py-4 px-8"
           v-for="item in items"

@@ -1,4 +1,6 @@
 {
+    "app-title": "Winkle",
+    "app-description": "Gerenciador de Senhas",
     "hello": "Olá",
     "leave": "sair",
     "wait": "Aguarde",
@@ -191,6 +193,8 @@
             "cancel": "Cancelar",
             "show-all": "Mostrar tudo"
         },
+        "show-folders": "Mostrar",
+        "hide-folders": "Esconder",
         "search": "Pesquise",
         "empty-list": "Nenhuma senha foi encontrada, mas você pode criar sua primeira",
         "clicking-here": "clicando aqui",

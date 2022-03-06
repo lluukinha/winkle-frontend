@@ -32,7 +32,10 @@ const showAll = () => {
 </script>
 
 <template>
-  <div class="absolute bg-black opacity-30 inset-0 z-0" @click="$emit('close')"></div>
+  <div
+    class="absolute bg-black opacity-30 inset-0 z-0"
+    @click="$emit('close')"
+  />
   <div class="fixed mt-10 bg-gray-50 rounded p-4 shadow-lg">
     <ul class="max-h-[40vh] max-w-[calc(100vw-60px)] md:max-w-64 overflow-auto px-4">
       <li
@@ -43,6 +46,15 @@ const showAll = () => {
           type="checkbox"
           :checked="selectedFolderIds.length === 0"
         /> {{ $t('passwords.folder-filter.show-all') }}
+      </li>
+      <li
+        class="text-left border-b-2 p-2 hover:bg-gray-200 cursor-pointer"
+        @click="selectFolder('0')"
+      >
+        <input
+          type="checkbox"
+          :checked="selectedFolderIds.includes('0')"
+        /> {{ $t('passwords.without-folder') }}
       </li>
       <li
         v-for="folder in folders"
