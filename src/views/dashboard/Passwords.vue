@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, computed, Ref, ref, watch } from "vue";
 import { IPassword } from "../../repositories/passwords/IPassword";
-import { IFolder } from "../../repositories/passwords/IFolder";
+import { IFolder } from "../../repositories/folder/IFolder";
 import PasswordRepository from "../../repositories/passwords/PasswordRepository";
 import WinkleScripts from "../../scripts/WinkleScripts";
 import i18n from "../../scripts/internacionalization/i18n";
