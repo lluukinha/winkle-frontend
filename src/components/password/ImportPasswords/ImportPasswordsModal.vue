@@ -9,7 +9,7 @@ import Modal from '../../shared/Modal.vue';
 import ImportPasswordsList from './ImportPasswordsList.vue';
 import i18n from '../../../scripts/internacionalization/i18n';
 import { showError } from '../../../scripts/NotificationScript';
-import { IFolder } from '../../../repositories/passwords/IFolder';
+import { IFolder } from '../../../repositories/folder/IFolder';
 
 const { t } = i18n.element.global;
 const form: Ref<HTMLFormElement | undefined> = ref();

@@ -3,7 +3,7 @@ import { IPassword } from "../../repositories/passwords/IPassword";
 import { ref } from "@vue/reactivity";
 import { onBeforeMount, onMounted, Ref } from "vue";
 import WinkleScripts from "../../scripts/WinkleScripts";
-import { IFolder } from "../../repositories/passwords/IFolder";
+import { IFolder } from "../../repositories/folder/IFolder";
 import EyeIcon from "../icons/EyeIcon.vue";
 import PasswordStore from "../../store/passwords/PasswordStore";
 

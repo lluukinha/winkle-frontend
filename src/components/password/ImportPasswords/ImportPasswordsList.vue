@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { defineProps, ref } from "vue";
-import { IFolder } from "../../../repositories/passwords/IFolder";
+import { IFolder } from "../../../repositories/folder/IFolder";
 import { IImportedPassword } from "../../../repositories/passwords/IImportedPassword";
 const props = defineProps<{ list: IImportedPassword[], folders?: IFolder[] }>();
 

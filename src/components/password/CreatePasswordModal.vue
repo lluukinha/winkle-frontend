@@ -6,7 +6,7 @@ import { Ref } from "vue";
 import PasswordRepository from "../../repositories/passwords/PasswordRepository";
 import WinkleScripts from "../../scripts/WinkleScripts";
 import showErrorMessage from "../../scripts/ErrorLogs";
-import { IFolder } from "../../repositories/passwords/IFolder";
+import { IFolder } from "../../repositories/folder/IFolder";
 import PasswordForm from "./PasswordForm.vue";
 import PasswordStore from "../../store/passwords/PasswordStore";
 
