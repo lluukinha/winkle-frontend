@@ -16,11 +16,7 @@ import WinkleButton from "../../components/shared/WinkleButton.vue";
 import FolderFilterDropdown from "../../components/password/FolderFilterDropdown.vue";
 import ImportPasswordsModal from "../../components/password/ImportPasswords/ImportPasswordsModal.vue";
 import PasswordStore from "../../store/passwords/PasswordStore";
-
-interface PasswordIncluded {
-  newPassword: IPassword;
-  willReloadFolders: boolean;
-};
+import RemoveIcon from "../../components/icons/RemoveIcon.vue";
 
 const { t } = i18n.element.global;
 
@@ -54,21 +50,19 @@ const filteredPasswords = computed(() => {
   return list;
 });
 
-const includePasswordInList = (e: PasswordIncluded) => {
+const filterHasPasswordsInFolder = (folderId: string) => {
+  if (filter.value.length === 0) return true;
+  return filter.value.length > 0 && passwordsInFolder(folderId).length > 0;
+};
+
+const includePasswordInList = (newPassword: IPassword) => {
   isCreating.value = false;
-  PasswordStore.includePasswordInList(e.newPassword);
-  showNotification(t('passwords.created'), e.newPassword.name, 'success');
+  PasswordStore.includePasswordInList(newPassword);
 };
 
-const changePasswordInList = (e: PasswordIncluded) => {
-  PasswordStore.changePasswordInList(e.newPassword);
+const changePasswordInList = (newPassword: IPassword) => {
+  PasswordStore.changePasswordInList(newPassword);
   editingPassword.value = null;
-  showNotification(t('passwords.updated'), e.newPassword.name, 'success');
-};
-
-const removePasswordFromList = (passwordId: number, foldersList: IFolder[]) => {
-  PasswordStore.removePasswordFromList(passwordId);
-  showNotification(t('passwords.removed'), '', 'success');
 };
 
 const passwordsInFolder = (folderId: string) => {
@@ -149,26 +143,13 @@ onMounted(() => PasswordStore.getAllData());
         <WinkleButton
           class="mr-1 flex items-center"
           size="sm"
-          @click="PasswordStore.toggleAllFolders(false)"
+          @click="PasswordStore.toggleAllFolders()"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M5 11l7-7 7 7M5 19l7-7 7 7" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z" />
           </svg>
           <span class="hidden md:block">
-          {{ $t('passwords.hide-folders') }}
-          </span>
-        </WinkleButton>
-
-        <WinkleButton
-          class="flex items-center"
-          size="sm"
-          @click="PasswordStore.toggleAllFolders(true)"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" />
-          </svg>
-          <span class="hidden md:block">
-            {{ $t('passwords.show-folders') }}
+            {{ $t('passwords.toggle-folders') }}
           </span>
         </WinkleButton>
       </div>
@@ -218,19 +199,15 @@ onMounted(() => PasswordStore.getAllData());
           </svg>
         </button> {{ $t('passwords.without-folder') }} ({{ passwordsWithoutFolder.length }})
       </div>
-      <div class="flex items-center flex-wrap w-full mt-6" v-show="PasswordStore.emptyFolderIsOpen.value">
-        <div class="mt-2 text-gray-400" v-if="filteredPasswords.length === 0">
-          <p v-if="filter.length === 0">
-            {{ $t("passwords.empty-list") }}
-            <span
-              class="hover:text-gray-500 cursor-pointer"
-              @click="isCreating = true"
-            >
-              {{ $t("passwords.clicking-here") }}
-            </span>
-          </p>
-          <p v-if="filter.length > 0">
-            {{ $t("passwords.empty-filtered-list", { filter }) }}
+      <div class="flex items-center flex-wrap w-full mt-4" v-show="PasswordStore.emptyFolderIsOpen.value">
+        <div class="text-gray-400" v-if="passwordsWithoutFolder.length === 0">
+          <p class="ml-4">
+            <template v-if="filter.length === 0">
+              {{ $t("passwords.empty-list") }}
+            </template>
+            <template v-else>
+              {{ $t("passwords.empty-filtered-list", { filter }) }}
+            </template>
           </p>
         </div>
         <template v-else>
@@ -239,37 +216,64 @@ onMounted(() => PasswordStore.getAllData());
             :key="password.id"
             :password="password"
             @edit="editingPassword = { ...password }"
-            @remove="removePasswordFromList"
+            @remove="PasswordStore.removePasswordFromList"
           />
         </template>
       </div>
     </div>
 
-    <template v-if="filteredPasswords.length > 0">
-      <div class="w-full my-6" v-for="folder in filteredFolders" :key="folder.id">
-        <div
-          class="border-b border-gray-400 w-full text-left uppercase select-none cursor-pointer"
-          @click="folder.isOpen = !folder.isOpen"
+    <div
+      v-for="folder in filteredFolders"
+      :key="folder.id"
+      class="w-full my-6"
+      :class="{ hidden: !filterHasPasswordsInFolder(folder.id) }"
+    >
+      <div
+        class="
+          border-b border-gray-400
+          w-full uppercase select-none cursor-pointer
+          flex justify-between items-center
+        "
+      >
+        <div class="flex items-center" @click="folder.isOpen = !folder.isOpen">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path v-if="!folder.isOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+          <span class="ml-2">
+            {{ folder.name }} ({{ passwordsInFolder(folder.id).length }})
+          </span>
+        </div>
+
+        <button
+          class="
+            py-2 px-3
+            text-xs leading-3
+            text-red-700 hover:text-red-500
+            rounded-full flex items-center
+          "
+          @click="PasswordStore.removeFolder(Number(folder.id))"
+          :title="$t('passwords.remove')"
+          v-if="passwordsInFolder(folder.id).length === 0"
         >
-          <button>
-            <svg v-if="!folder.isOpen" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-            </svg>
-            <svg v-if="folder.isOpen" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-          </button> {{ folder.name }} ({{ passwordsInFolder(folder.id).length }})
-        </div>
-        <div class="flex items-center flex-wrap w-full mt-6" v-if="folder.isOpen">
-          <PasswordCard
-            v-for="password in passwordsInFolder(folder.id)"
-            :key="password.id"
-            :password="password"
-            @edit="editingPassword = { ...password }"
-            @remove="removePasswordFromList"
-          />
-        </div>
+          <RemoveIcon />
+        </button>
       </div>
-    </template>
+      <div class="flex items-center flex-wrap w-full mt-4" v-if="folder.isOpen">
+        <div
+          class="text-gray-400"
+          v-if="passwordsInFolder(folder.id).length === 0"
+        >
+          <p class="ml-4">{{ $t("passwords.folder-is-empty") }}</p>
+        </div>
+        <PasswordCard
+          v-for="password in passwordsInFolder(folder.id)"
+          :key="password.id"
+          :password="password"
+          @edit="editingPassword = { ...password }"
+          @remove="PasswordStore.removePasswordFromList"
+        />
+      </div>
+    </div>
   </DashboardContainer>
 </template>

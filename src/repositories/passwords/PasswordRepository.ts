@@ -1,18 +1,9 @@
 import AES from '../../scripts/AES';
 import LoginRepository from '../login/LoginRepository';
 import { Repository } from '../_Repository';
-import { IFolder } from './IFolder';
 import { IImportedPassword } from './IImportedPassword';
 import { IImportedPasswordResponse } from './IImportedPasswordResponse';
 import { IPassword } from './IPassword';
-
-const getFolders = async () : Promise<IFolder[]> => {
-  const { data } = await Repository.get('/passwords/folders');
-  return data.data.map((folder: IFolder) => {
-    folder.isOpen = true;
-    return folder;
-  });
-};
 
 const convertPasswords = (list: IImportedPassword[]) : IImportedPassword[] => {
   const master = LoginRepository.getMasterPassword() || '';
@@ -60,7 +51,6 @@ const importCsv = async (passwords: IImportedPassword[]) : Promise<IImportedPass
     });
 
   const { data } = await Repository.post(`/passwords/import`, { list });
-  console.log({ data });
   return data;
 };
 
@@ -90,13 +80,12 @@ const updatePassword = async (p : IPassword) : Promise<IPassword> => {
   return ps;
 };
 
-const removePassword = async (passwordId: number) : Promise<IFolder[]> => {
+const removePassword = async (passwordId: number) : Promise<boolean> => {
   const { data } = await Repository.delete(`/passwords/${passwordId}`);
-  return data.data;
+  return data;
 };
 
 export default {
-  getFolders,
   getPasswords,
   createPassword,
   updatePassword,

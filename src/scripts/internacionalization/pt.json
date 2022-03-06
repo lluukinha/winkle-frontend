@@ -35,6 +35,7 @@
         "user-has-reset-password-in-progress": "Já foi feito um pedido de resetar a senha recentemente. Verifique seu e-mail ou tente novamente nas próximas 24 horas.",
         "must-be-at-least-6": "O campo precisa ter pelo menos 6 caracteres",
         "plan-expired": "Verifique sua assinatura",
+        "folder-has-passwords": "Não é possível deletar uma categoria que possui senhas cadastradas.",
         "params": {
             "name": "nome",
             "password": "senha",
@@ -193,10 +194,10 @@
             "cancel": "Cancelar",
             "show-all": "Mostrar tudo"
         },
-        "show-folders": "Mostrar",
-        "hide-folders": "Esconder",
+        "toggle-folders": "Mostrar/Esconder todas",
+        "folder-is-empty": "Categoria vazia",
         "search": "Pesquise",
-        "empty-list": "Nenhuma senha foi encontrada, mas você pode criar sua primeira",
+        "empty-list": "Nenhuma senha sem categoria encontrada",
         "clicking-here": "clicando aqui",
         "empty-filtered-list": "Não encontrei nada usando \"{filter}\" como chave",
         "created": "Senha criada",

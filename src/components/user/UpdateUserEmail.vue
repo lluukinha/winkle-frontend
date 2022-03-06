@@ -8,7 +8,7 @@ import i18n from '../../scripts/internacionalization/i18n';
 import { showError } from '../../scripts/NotificationScript';
 import WinkleScripts from '../../scripts/WinkleScripts';
 import Modal from '../shared/Modal.vue';
-import EyeIcon from '../shared/EyeIcon.vue';
+import EyeIcon from '../icons/EyeIcon.vue';
 
 const { t } = i18n.element.global;
 const isShowingPassword: Ref<boolean> = ref(false);

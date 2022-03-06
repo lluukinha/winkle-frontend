@@ -11,7 +11,7 @@ import Modal from "../components/shared/Modal.vue";
 import showErrorMessage from "../scripts/ErrorLogs";
 import { AxiosError } from "axios";
 import router from "../router";
-import EyeIcon from "../components/shared/EyeIcon.vue";
+import EyeIcon from "../components/icons/EyeIcon.vue";
 
 const { t } = i18n.element.global;
 const currentRoute = useRoute();

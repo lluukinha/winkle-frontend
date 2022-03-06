@@ -9,7 +9,7 @@ import { showError } from "../../scripts/NotificationScript";
 import WinkleScripts from "../../scripts/WinkleScripts";
 import router from "../../router";
 import WinkleButton from "../shared/WinkleButton.vue";
-import EyeIcon from "../shared/EyeIcon.vue";
+import EyeIcon from "../icons/EyeIcon.vue";
 import SidebarScript from "../../scripts/SidebarScript";
 
 const { t } = i18n.element.global;

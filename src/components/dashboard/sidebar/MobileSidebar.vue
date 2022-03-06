@@ -70,7 +70,7 @@ const changeRoute = (newRoute: string) : void => {
         </li>
       </ul>
     </div>
-    <div class="py-2 border-t border-gray-700" v-if="isOpen">
+    <div class="py-2 border-t border-gray-700 mb-20" v-if="isOpen">
       <ul>
         <li class="flex justify-between items-center w-full cursor-pointer mb-2 text-gray-300 hover:bg-gray-700 rounded-md py-2 px-8">
           <div

@@ -4,7 +4,7 @@ import { ref } from "@vue/reactivity";
 import { onBeforeMount, onMounted, Ref } from "vue";
 import WinkleScripts from "../../scripts/WinkleScripts";
 import { IFolder } from "../../repositories/passwords/IFolder";
-import EyeIcon from "../shared/EyeIcon.vue";
+import EyeIcon from "../icons/EyeIcon.vue";
 import PasswordStore from "../../store/passwords/PasswordStore";
 
 const props = defineProps<{ newPassword?: IPassword }>();

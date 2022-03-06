@@ -1,10 +1,14 @@
 import { ref, Ref } from "vue";
-import { IFolder } from "../../repositories/passwords/IFolder";
+import FolderRepository from "../../repositories/folder/FolderRepository";
+import { IFolder } from "../../repositories/folder/IFolder";
 import { IPassword } from "../../repositories/passwords/IPassword";
 import PasswordRepository from "../../repositories/passwords/PasswordRepository";
 import showErrorMessage from "../../scripts/ErrorLogs";
+import i18n from "../../scripts/internacionalization/i18n";
+import { showNotification } from "../../scripts/NotificationScript";
 import WinkleScripts from "../../scripts/WinkleScripts";
 
+const { t } = i18n.element.global;
 const passwordsList: Ref<IPassword[]> = ref([]);
 const foldersList: Ref<IFolder[]> = ref([]);
 const listIsLoaded: Ref<boolean> = ref(false);
@@ -33,7 +37,7 @@ const loadPasswords = () => {
 
 const loadFolders = () => {
   WinkleScripts.setLoading(true);
-  PasswordRepository.getFolders()
+  FolderRepository.getFolders()
     .then((result: IFolder[]) => {
       foldersList.value = result.sort(sortByName);
       const folderIds: string[] = result.map(f => f.id);
@@ -47,12 +51,14 @@ const loadFolders = () => {
 
 const includePasswordInList = (password: IPassword) => {
   passwordsList.value.push(password);
+  showNotification(t('passwords.created'), password.name, 'success');
   checkAndIncludeFolder(password);
 };
 
 const changePasswordInList = (password: IPassword) => {
   const index = passwordsList.value.findIndex((p) => p.id === password.id);
   passwordsList.value[index] = { ...password };
+  showNotification(t('passwords.updated'), password.name, 'success');
   checkAndIncludeFolder(password);
 };
 
@@ -70,6 +76,20 @@ const checkAndIncludeFolder = (password: IPassword) => {
 const removePasswordFromList = (passwordId: number) => {
   const index = passwordsList.value.findIndex((p) => Number(p.id) === passwordId);
   if (index > -1) passwordsList.value.splice(index, 1);
+  showNotification(t('passwords.removed'), '', 'success');
+};
+
+const removeFolder = (folderId: number) => {
+  WinkleScripts.setLoading(true);
+  FolderRepository.removeFolder(folderId)
+    .then(() => { removeFolderFromList(folderId); })
+    .catch(showErrorMessage)
+    .finally(() => { WinkleScripts.setLoading(false); });
+}
+
+const removeFolderFromList = (folderId: number) => {
+  const index = foldersList.value.findIndex((f) => Number(f.id) === folderId);
+  if (index > -1) foldersList.value.splice(index, 1);
 };
 
 const sortByName = (a: IPassword | IFolder, b: IPassword | IFolder) => {
@@ -80,9 +100,10 @@ const saveFoldersFilter = (folderIds: string[]) => {
   selectedFolderIds.value = [ ...folderIds ];
 };
 
-const toggleAllFolders = (willShow: boolean) => {
-  emptyFolderIsOpen.value = willShow;
-  foldersList.value.map(f => f.isOpen = willShow);
+const toggleAllFolders = () => {
+  const newValue = !emptyFolderIsOpen.value;
+  emptyFolderIsOpen.value = newValue;
+  foldersList.value.map(f => f.isOpen = newValue);
 };
 
 export default {
@@ -97,5 +118,6 @@ export default {
   removePasswordFromList,
   getAllData,
   saveFoldersFilter,
-  toggleAllFolders
+  toggleAllFolders,
+  removeFolder
 };

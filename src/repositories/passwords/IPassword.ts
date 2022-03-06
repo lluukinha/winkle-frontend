@@ -1,4 +1,4 @@
-import { IFolder } from "./IFolder";
+import { IFolder } from "../folder/IFolder";
 
 export interface IPassword {
   description: string;

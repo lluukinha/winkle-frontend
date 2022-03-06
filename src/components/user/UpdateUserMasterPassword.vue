@@ -10,7 +10,7 @@ import WinkleScripts from '../../scripts/WinkleScripts';
 import * as dcodeIO from 'bcryptjs';
 import Modal from '../shared/Modal.vue';
 import LoginRepository from '../../repositories/login/LoginRepository';
-import EyeIcon from '../shared/EyeIcon.vue';
+import EyeIcon from '../icons/EyeIcon.vue';
 
 const { t } = i18n.element.global;
 const isShowingMasterPassword: Ref<boolean> = ref(false);

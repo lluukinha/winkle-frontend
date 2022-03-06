@@ -6,7 +6,6 @@ import { Ref } from "vue";
 import PasswordRepository from "../../repositories/passwords/PasswordRepository";
 import WinkleScripts from "../../scripts/WinkleScripts";
 import showErrorMessage from "../../scripts/ErrorLogs";
-import { IFolder } from "../../repositories/passwords/IFolder";
 import PasswordForm from "./PasswordForm.vue";
 const props = defineProps<{ password: IPassword }>();
 const emit = defineEmits(["close", "save"]);
@@ -20,11 +19,7 @@ const handleSave = (updatedPassword: IPassword) => {
 
   WinkleScripts.setLoading(true);
   PasswordRepository.updatePassword(updatedPassword)
-    .then((newPassword: IPassword) => {
-      const willReloadFolders = props.password.folder.id !== newPassword.folder.id;
-      const event = { newPassword, willReloadFolders };
-      emit("save", event);
-    })
+    .then((newPassword: IPassword) => { emit("save", newPassword); })
     .catch(showErrorMessage)
     .finally(() => { WinkleScripts.setLoading(false); });
 };

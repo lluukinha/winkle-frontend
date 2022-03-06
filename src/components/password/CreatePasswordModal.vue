@@ -41,10 +41,7 @@ const handleSave = (password: IPassword) => {
 
   WinkleScripts.setLoading(true);
   PasswordRepository.createPassword(password)
-    .then((newPassword : IPassword) => {
-      const event = { newPassword, willReloadFolders: folderName !== '' };
-      emit("save", event);
-    })
+    .then((newPassword : IPassword) => { emit("save", newPassword); })
     .catch(showErrorMessage)
     .finally(() => { WinkleScripts.setLoading(false); });
 };
