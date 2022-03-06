@@ -8,7 +8,7 @@ import WinkleScripts from "../../scripts/WinkleScripts";
 import showErrorMessage from "../../scripts/ErrorLogs";
 import { IFolder } from "../../repositories/passwords/IFolder";
 import PasswordForm from "./PasswordForm.vue";
-const props = defineProps<{ password: IPassword, folders: IFolder[] }>();
+const props = defineProps<{ password: IPassword }>();
 const emit = defineEmits(["close", "save"]);
 
 const passwordForm: Ref<any> = ref();
@@ -35,7 +35,6 @@ const handleSave = (updatedPassword: IPassword) => {
     <h2 class="text-xl font-bold py-4">{{ $t("passwords.edit") }}</h2>
     <PasswordForm
       ref="passwordForm"
-      :folders="folders"
       :newPassword="{ ...password }"
       @save="handleSave"
     />

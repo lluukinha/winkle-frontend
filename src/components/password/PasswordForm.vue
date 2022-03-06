@@ -5,8 +5,9 @@ import { onBeforeMount, onMounted, Ref } from "vue";
 import WinkleScripts from "../../scripts/WinkleScripts";
 import { IFolder } from "../../repositories/passwords/IFolder";
 import EyeIcon from "../shared/EyeIcon.vue";
+import PasswordStore from "../../store/passwords/PasswordStore";
 
-const props = defineProps<{ folders: IFolder[], newPassword?: IPassword }>();
+const props = defineProps<{ newPassword?: IPassword }>();
 const emit = defineEmits(["save"]);
 const password: Ref<IPassword> = ref({
   type: 'password',
@@ -19,7 +20,7 @@ const password: Ref<IPassword> = ref({
 });
 
 const formSubmit: Ref<HTMLElement | undefined> = ref();
-const folderIsInput: Ref<boolean> = ref(props.folders.length === 0);
+const folderIsInput: Ref<boolean> = ref(PasswordStore.foldersList.value.length === 0);
 const folderInput: Ref<HTMLElement | undefined> = ref();
 const folderSelect: Ref<HTMLElement | undefined> = ref();
 const firstInput : Ref<HTMLElement | undefined> = ref();
@@ -42,7 +43,7 @@ const changeFolder = (e: Event) => {
   }
 
   const { id } = password.value.folder;
-  const newFolder = props.folders.find((f: IFolder) => f.id === id);
+  const newFolder = PasswordStore.foldersList.value.find((f: IFolder) => f.id === id);
   if (!newFolder) {
     clearSelectedFolder();
     folderIsInput.value = true;
@@ -352,7 +353,7 @@ defineExpose({ sendForm });
             {{ $t("passwords.form.folder-select-other") }}
           </option>
           <option
-            v-for="folder in folders"
+            v-for="folder in PasswordStore.foldersList.value"
             :key="folder.id"
             :value="folder.id"
           >
@@ -381,7 +382,7 @@ defineExpose({ sendForm });
             :placeholder="$t('passwords.form.folder-placeholder')"
           />
           <button
-            v-if="folders.length > 0"
+            v-if="PasswordStore.foldersList.value.length > 0"
             type="button"
             @click="transformFolderInDropdown()"
             class="

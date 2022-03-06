@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { onMounted, ref, Ref } from "vue";
 import { IFolder } from "../../repositories/passwords/IFolder";
+import PasswordStore from "../../store/passwords/PasswordStore";
 import WinkleButton from "../shared/WinkleButton.vue";
 
-const props = defineProps<{ folders: IFolder[], selectedIds: string[] }>();
 defineEmits(['close', 'save']);
 
 const selectedFolderIds: Ref<string[]> = ref([]);
 
 onMounted(() => {
-  selectedFolderIds.value = [ ...props.selectedIds ];
+  selectedFolderIds.value = [ ...PasswordStore.selectedFolderIds.value ];
 });
 
 const selectFolder = (folderId: string) => {
@@ -24,7 +24,8 @@ const selectFolder = (folderId: string) => {
 
 const showAll = () => {
   if (selectedFolderIds.value.length === 0) {
-    selectedFolderIds.value = [ ...props.folders.map(f => f.id) ];
+    const folderIds: string[] = PasswordStore.foldersList.value.map(f => f.id);
+    selectedFolderIds.value = [ ...folderIds ];
     return;
   }
   selectedFolderIds.value = [];
@@ -36,7 +37,7 @@ const showAll = () => {
     class="absolute bg-black opacity-30 inset-0 z-0"
     @click="$emit('close')"
   />
-  <div class="fixed mt-10 bg-gray-50 rounded p-4 shadow-lg">
+  <div class="fixed top-32 bg-gray-50 rounded p-4 shadow-lg">
     <ul class="max-h-[40vh] max-w-[calc(100vw-60px)] md:max-w-64 overflow-auto px-4">
       <li
         class="text-left border-b-2 p-2 hover:bg-gray-200 cursor-pointer"
@@ -57,7 +58,7 @@ const showAll = () => {
         /> {{ $t('passwords.without-folder') }}
       </li>
       <li
-        v-for="folder in folders"
+        v-for="folder in PasswordStore.foldersList.value"
         :key="folder.id"
         class="text-left border-b-2 p-2 hover:bg-gray-200 cursor-pointer"
         @click="selectFolder(folder.id)"

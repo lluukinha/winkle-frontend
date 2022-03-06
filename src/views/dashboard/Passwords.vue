@@ -15,6 +15,7 @@ import DashboardContainer from "../../components/shared/DashboardContainer.vue";
 import WinkleButton from "../../components/shared/WinkleButton.vue";
 import FolderFilterDropdown from "../../components/password/FolderFilterDropdown.vue";
 import ImportPasswordsModal from "../../components/password/ImportPasswords/ImportPasswordsModal.vue";
+import PasswordStore from "../../store/passwords/PasswordStore";
 
 interface PasswordIncluded {
   newPassword: IPassword;
@@ -23,13 +24,9 @@ interface PasswordIncluded {
 
 const { t } = i18n.element.global;
 
-const passwords: Ref<IPassword[]> = ref([]);
-const folders: Ref<IFolder[]> = ref([]);
-const emptyFolderIsOpen: Ref<boolean> = ref(true);
 const editingPassword: Ref<IPassword | null> = ref(null);
 const isCreating: Ref<boolean> = ref(false);
 const filter: Ref<string> = ref("");
-const selectedFolderIds: Ref<string[]> = ref([]);
 const isShowingSortDropdown: Ref<boolean> = ref(false);
 
 const passwordsWithoutFolder = computed(() => {
@@ -37,71 +34,41 @@ const passwordsWithoutFolder = computed(() => {
 });
 
 const filteredFolders = computed(() => {
-  if (selectedFolderIds.value.length === 0) return folders.value;
+  if (PasswordStore.selectedFolderIds.value.length === 0) {
+    return PasswordStore.foldersList.value;
+  }
 
-  return folders.value
-    .filter((folder) => selectedFolderIds.value.includes(folder.id));
+  return PasswordStore.foldersList.value
+    .filter((folder) => PasswordStore.selectedFolderIds.value.includes(folder.id));
 });
 
 const filteredPasswords = computed(() => {
   const list = !filter.value || filter.value === ""
-    ? passwords.value
-    : passwords.value.filter((p) => {
+    ? PasswordStore.passwordsList.value
+    : PasswordStore.passwordsList.value.filter((p) => {
         const filterValue = filter.value.toLowerCase();
         const containsName = p.name.toLowerCase().search(filterValue) > -1;
         const containsUrl = p.url.toLowerCase().search(filterValue) > -1;
         return containsName || containsUrl;
       });
-  return list.sort(sortByName);
+  return list;
 });
 
-const loadFolders = async (foldersList: IFolder[] | undefined) => {
-  WinkleScripts.setLoading(true);
-  if (!foldersList) foldersList = await PasswordRepository.getFolders();
-  folders.value = foldersList.sort(sortByName);
-  const folderIds: string[] = foldersList.map(f => f.id);
-  selectedFolderIds.value = selectedFolderIds.value.filter(id => folderIds.includes(id));
-  WinkleScripts.setLoading(false);
-};
-
-const sortByName = (a: IPassword | IFolder, b: IPassword | IFolder) => {
-  return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
-};
-
-const getData = async () => {
-  WinkleScripts.setLoading(true);
-  const foldersList = await PasswordRepository.getFolders();
-  const passwordsList = await PasswordRepository.getPasswords();
-  passwords.value = passwordsList;
-  folders.value = foldersList.sort(sortByName);
-  WinkleScripts.setLoading(false);
-};
-
 const includePasswordInList = (e: PasswordIncluded) => {
-  passwords.value.push(e.newPassword);
   isCreating.value = false;
+  PasswordStore.includePasswordInList(e.newPassword);
   showNotification(t('passwords.created'), e.newPassword.name, 'success');
-  if (e.willReloadFolders) loadFolders(undefined);
 };
 
 const changePasswordInList = (e: PasswordIncluded) => {
-  const index = passwords.value.findIndex((p) => p.id === e.newPassword.id);
-  passwords.value[index] = { ...e.newPassword };
+  PasswordStore.changePasswordInList(e.newPassword);
   editingPassword.value = null;
   showNotification(t('passwords.updated'), e.newPassword.name, 'success');
-  if (e.willReloadFolders) loadFolders(undefined);
 };
 
 const removePasswordFromList = (passwordId: number, foldersList: IFolder[]) => {
-  const index = passwords.value.findIndex((p) => Number(p.id) === passwordId);
-  if (index > -1) passwords.value.splice(index, 1);
+  PasswordStore.removePasswordFromList(passwordId);
   showNotification(t('passwords.removed'), '', 'success');
-  if (foldersList.length > 0) loadFolders(foldersList);
-
-  if (folders.value.length === 1) {
-    const folder = folders.value[0];
-    if (passwordsInFolder(folder.id).length === 0) folders.value = [];
-  }
 };
 
 const passwordsInFolder = (folderId: string) => {
@@ -109,30 +76,23 @@ const passwordsInFolder = (folderId: string) => {
     .filter(p => p.folder.id === folderId);
 };
 
-const saveSorting = (folderIds: string[]) => {
-  selectedFolderIds.value = [ ...folderIds ];
+const saveFoldersFilter = (folderIds: string[]) => {
+  PasswordStore.saveFoldersFilter(folderIds);
   isShowingSortDropdown.value = false;
 };
 
-const toggleAllFolders = (willShow: boolean) => {
-  emptyFolderIsOpen.value = willShow;
-  folders.value.map(f => f.isOpen = willShow);
-};
-
-onMounted(() => getData());
+onMounted(() => PasswordStore.getAllData());
 </script>
 
 <template>
   <EditPasswordModal
     v-if="editingPassword"
     :password="editingPassword"
-    :folders="folders"
     @close="editingPassword = null"
     @save="changePasswordInList"
   />
   <CreatePasswordModal
     v-if="isCreating"
-    :folders="folders"
     @close="isCreating = false"
     @save="includePasswordInList"
   />
@@ -168,7 +128,7 @@ onMounted(() => getData());
         <WinkleButton
           size="sm"
           @click="isShowingSortDropdown = !isShowingSortDropdown"
-          v-if="folders.length > 0"
+          v-if="PasswordStore.foldersList.value.length > 0"
           class="flex items-center mr-1"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -177,18 +137,20 @@ onMounted(() => getData());
           <span class="hidden md:block">
           {{ $t('passwords.folder-filter.title') }}
           </span>
-          <template v-if="selectedFolderIds.length > 0">
-            ({{ selectedFolderIds.length }})
+          <template v-if="PasswordStore.selectedFolderIds.value.length > 0">
+            ({{ PasswordStore.selectedFolderIds.value.length }})
           </template>
         </WinkleButton>
         <FolderFilterDropdown
-          :folders="folders"
-          :selectedIds="selectedFolderIds"
           v-if="isShowingSortDropdown"
           @close="isShowingSortDropdown = false"
-          @save="saveSorting"
+          @save="saveFoldersFilter"
         />
-        <WinkleButton class="mr-1 flex items-center" size="sm" @click="toggleAllFolders(false)">
+        <WinkleButton
+          class="mr-1 flex items-center"
+          size="sm"
+          @click="PasswordStore.toggleAllFolders(false)"
+        >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M5 11l7-7 7 7M5 19l7-7 7 7" />
           </svg>
@@ -197,7 +159,11 @@ onMounted(() => getData());
           </span>
         </WinkleButton>
 
-        <WinkleButton class="flex items-center" size="sm" @click="toggleAllFolders(true)">
+        <WinkleButton
+          class="flex items-center"
+          size="sm"
+          @click="PasswordStore.toggleAllFolders(true)"
+        >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" />
           </svg>
@@ -234,22 +200,25 @@ onMounted(() => getData());
     <!-- Without category -->
     <div
       class="w-full mb-4"
-      v-if="selectedFolderIds.length === 0 || selectedFolderIds.includes('0')"
+      v-if="
+        PasswordStore.selectedFolderIds.value.length === 0
+        || PasswordStore.selectedFolderIds.value.includes('0')
+      "
     >
       <div
         class="border-b border-gray-400 w-full text-left uppercase select-none cursor-pointer"
-        @click="emptyFolderIsOpen = !emptyFolderIsOpen"
+        @click="PasswordStore.emptyFolderIsOpen.value = !PasswordStore.emptyFolderIsOpen.value"
       >
         <button>
-          <svg v-if="!emptyFolderIsOpen" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg v-if="!PasswordStore.emptyFolderIsOpen.value" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
           </svg>
-          <svg v-if="emptyFolderIsOpen" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
           </svg>
         </button> {{ $t('passwords.without-folder') }} ({{ passwordsWithoutFolder.length }})
       </div>
-      <div class="flex items-center flex-wrap w-full mt-6" v-show="emptyFolderIsOpen">
+      <div class="flex items-center flex-wrap w-full mt-6" v-show="PasswordStore.emptyFolderIsOpen.value">
         <div class="mt-2 text-gray-400" v-if="filteredPasswords.length === 0">
           <p v-if="filter.length === 0">
             {{ $t("passwords.empty-list") }}
