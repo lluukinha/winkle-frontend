@@ -1,14 +1,8 @@
 <script setup lang="ts">
 import { defineProps, ref } from "vue";
-import { IFolder } from "../../../repositories/folder/IFolder";
 import { IImportedPassword } from "../../../repositories/passwords/IImportedPassword";
-const props = defineProps<{ list: IImportedPassword[], folders?: IFolder[] }>();
-
-const folderNameIsNew = (folderName: string | undefined) : boolean => {
-  return !!folderName
-    && folderName.length > 0
-    && !props.folders?.map(f => f.name).includes(folderName);
-};
+import PasswordStore from "../../../store/passwords/PasswordStore";
+const props = defineProps<{ list: IImportedPassword[] }>();
 </script>
 
 <template>
@@ -79,30 +73,18 @@ const folderNameIsNew = (folderName: string | undefined) : boolean => {
             class="p-1 shadow bg-gray-100 px-2 w-full uppercase mb-1"
             v-model="p.folderName"
             placeholder="test"
-            v-if="folders && folders.length > 0 && !folderNameIsNew(p.folderName)"
           >
             <option :value="undefined" disabled>
               {{ $t("passwords.form.select") }}
             </option>
-            <option value="-">
-              Criar
-            </option>
             <option
-              v-for="folder in folders"
+              v-for="folder in PasswordStore.foldersList.value"
               :key="folder.id"
               :value="folder.name"
             >
               {{ folder.name }}
             </option>
           </select>
-          <input
-            type="text"
-            v-model="p.folderName"
-            class="p-1 shadow bg-gray-100 px-2 w-full uppercase"
-            placeholder="Categoria"
-            title="Categoria da senha"
-            v-else
-          />
         </div>
         </div>
         <div class="px-2 cursor-pointer hover:text-red-500 opacity-50 hover:opacity-100" @click="list.splice(index, 1)">

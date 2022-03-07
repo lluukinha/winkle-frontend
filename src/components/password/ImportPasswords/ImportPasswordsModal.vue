@@ -9,14 +9,18 @@ import Modal from '../../shared/Modal.vue';
 import ImportPasswordsList from './ImportPasswordsList.vue';
 import i18n from '../../../scripts/internacionalization/i18n';
 import { showError } from '../../../scripts/NotificationScript';
-import { IFolder } from '../../../repositories/folder/IFolder';
+import PasswordStore from '../../../store/passwords/PasswordStore';
 
 const { t } = i18n.element.global;
 const form: Ref<HTMLFormElement | undefined> = ref();
 const fileInput: Ref<HTMLFormElement | undefined> = ref();
 const importedList: Ref<IImportedPassword[]> = ref([]);
 const submitButton: Ref<HTMLElement | undefined> = ref();
-const importResult: Ref<IImportedPasswordResponse | undefined> = ref();
+interface PasswordResponseCounter {
+  created: number;
+  updated: number;
+}
+const importResult: Ref<PasswordResponseCounter | undefined> = ref();
 
 const notInsertedPasswords = computed(() => {
   if (!importResult.value || importedList.value.length === 0) return 0;
@@ -24,7 +28,6 @@ const notInsertedPasswords = computed(() => {
   return importedList.value.length - (created + updated);
 });
 
-defineProps<{ folders?: IFolder[] }>();
 const emit = defineEmits(['close','save']);
 
 const sendFile = (e: Event) => {
@@ -42,7 +45,13 @@ const sendFile = (e: Event) => {
       form.value?.reset();
       return;
     }
-    importedList.value = data;
+    importedList.value = data.map(password => {
+      const existing = PasswordStore.passwordsList.value
+        .find(p => p.name === password.name);
+
+      if (existing) password.folderName = existing.folder.name;
+      return password;
+    });
   };
 
   reader.onloadend = () => WinkleScripts.setLoading(false);
@@ -53,7 +62,13 @@ const importList = () => {
   WinkleScripts.setLoading(true);
   PasswordRepository.importCsv(importedList.value)
     .then((result: IImportedPasswordResponse) => {
-      importResult.value = result;
+      const counter =  {
+        created: Object.keys(result.created).length,
+        updated: Object.keys(result.updated).length
+      };
+      PasswordStore.includeMany(result.created);
+      PasswordStore.updateMany(result.updated);
+      importResult.value = counter;
       emit('save');
     })
     .catch(showErrorMessage)
@@ -101,10 +116,6 @@ const importList = () => {
       </form>
     </template>
 
-    <ImportPasswordsList
-      :folders="folders"
-      :list="importedList"
-      v-else
-    />
+    <ImportPasswordsList :list="importedList" v-else />
   </Modal>
 </template>

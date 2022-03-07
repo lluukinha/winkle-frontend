@@ -51,6 +51,34 @@ const importCsv = async (passwords: IImportedPassword[]) : Promise<IImportedPass
     });
 
   const { data } = await Repository.post(`/passwords/import`, { list });
+  return mapDataFromImportedResults(data, master);
+};
+
+const mapDataFromImportedResults = (data: IImportedPasswordResponse, master: string) : IImportedPasswordResponse => {
+  Object.keys(data.created).forEach((name: string) => {
+    const currentLogin = data.created[name].login;
+    const currentPassword = data.created[name].password;
+
+    data.created[name].login = currentLogin && currentLogin.length > 0
+      ? AES.aesDecrypt(currentLogin, master)
+      : '';
+    data.created[name].password = currentPassword && currentPassword.length > 0
+      ? AES.aesDecrypt(currentPassword, master)
+      : '';
+  });
+
+  Object.keys(data.updated).forEach((name: string) => {
+    const currentLogin = data.updated[name].login;
+    const currentPassword = data.updated[name].password;
+
+    data.updated[name].login = currentLogin && currentLogin.length > 0
+      ? AES.aesDecrypt(currentLogin, master)
+      : '';
+    data.updated[name].password = currentPassword && currentPassword.length > 0
+      ? AES.aesDecrypt(currentPassword, master)
+      : '';
+  });
+
   return data;
 };
 

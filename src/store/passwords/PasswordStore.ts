@@ -1,6 +1,7 @@
 import { ref, Ref } from "vue";
 import FolderRepository from "../../repositories/folder/FolderRepository";
 import { IFolder } from "../../repositories/folder/IFolder";
+import { PasswordObject } from "../../repositories/passwords/IImportedPasswordResponse";
 import { IPassword } from "../../repositories/passwords/IPassword";
 import PasswordRepository from "../../repositories/passwords/PasswordRepository";
 import showErrorMessage from "../../scripts/ErrorLogs";
@@ -106,6 +107,21 @@ const toggleAllFolders = () => {
   foldersList.value.map(f => f.isOpen = newValue);
 };
 
+const includeMany = (passwords: PasswordObject) => {
+  const list = Object.values(passwords);
+  list.forEach((p: IPassword) => checkAndIncludeFolder(p));
+  passwordsList.value.push(...list);
+};
+
+const updateMany = (passwords: PasswordObject) => {
+  Object.keys(passwords).forEach((key: string) => {
+    const currentIndex = passwordsList.value
+      .findIndex((p: IPassword) => p.name === key);
+    checkAndIncludeFolder(passwords[key]);
+    passwordsList.value[currentIndex] = passwords[key];
+  });
+};
+
 export default {
   passwordsList,
   foldersList,
@@ -119,5 +135,7 @@ export default {
   getAllData,
   saveFoldersFilter,
   toggleAllFolders,
-  removeFolder
+  removeFolder,
+  includeMany,
+  updateMany,
 };

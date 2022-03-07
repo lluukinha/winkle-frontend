@@ -39,7 +39,7 @@ onMounted(() => {
 
       <ul class="mt-4 px-4">
         <li
-          class="justify-between items-center w-full cursor-pointer mb-2 text-gray-300 hover:bg-gray-700 rounded-md py-2 px-6 hidden"
+          class="justify-between items-center w-full cursor-pointer mb-2 text-gray-300 hover:bg-gray-700 rounded-md py-2 px-6"
           @click="isImportingPasswords = !isImportingPasswords"
         >
           <div class="flex items-center focus:outline-none" >
@@ -50,7 +50,6 @@ onMounted(() => {
           </div>
         </li>
         <ImportPasswordsModal
-          :folders="[]"
           v-if="isImportingPasswords"
           @close="isImportingPasswords = false"
           @save="() => {}"
