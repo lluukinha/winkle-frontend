@@ -124,6 +124,16 @@
     },
 
     "user": {
+        "content": {
+            "user": "Usuário",
+            "email": "Email",
+            "verified": "email verificado",
+            "not-verified": "não verificado",
+            "created-at": "Conta criada em",
+            "plan": "Plano",
+            "expires-at": "Expira em"
+
+        },
         "master-alert": {
             "title": "Porque não consigo atualizar?",
             "description": "Se você já possuir alguma senha criada, sua senha mestre não poderá ser atualizada, porque todas as suas senhas são embaralhadas baseando-se na sua senha mestre."

@@ -24,6 +24,12 @@ const getAllData = (forceLoad: boolean = false) => {
   }
 };
 
+const removeData = () => {
+  passwordsList.value = [];
+  foldersList.value = [];
+  listIsLoaded.value = false;
+};
+
 const loadPasswords = () => {
   WinkleScripts.setLoading(true);
   PasswordRepository.getPasswords()
@@ -127,6 +133,7 @@ export default {
   foldersList,
   selectedFolderIds,
   emptyFolderIsOpen,
+  listIsLoaded,
   loadPasswords,
   loadFolders,
   includePasswordInList,
@@ -138,4 +145,5 @@ export default {
   removeFolder,
   includeMany,
   updateMany,
+  removeData
 };

@@ -1,14 +1,14 @@
 import { Ref, ref } from 'vue';
 import router from '../../router';
-import i18n from '../../scripts/internacionalization/i18n';
 import { IResetPassword } from '../user/UserInterfaces';
 import { PublicRepository, Repository } from '../_Repository';
 import { ILoginForm } from "./ILoginForm";
 import { ILoginInfo } from "./ILoginInfo";
 import * as dcodeIO from 'bcryptjs';
 import SidebarScript from '../../scripts/SidebarScript';
+import UserStore from '../../store/user/UserStore';
+import PasswordStore from '../../store/passwords/PasswordStore';
 
-const { t } = i18n.element.global;
 const isRunningTimeout: Ref<boolean> = ref(false);
 const masterPassword: Ref<string | null> = ref(localStorage.getItem('master'));
 
@@ -23,6 +23,8 @@ const removeLoginInfo = () : void => {
   localStorage.removeItem('login');
   localStorage.removeItem('master');
   masterPassword.value = null;
+  UserStore.removeUserData();
+  PasswordStore.removeData();
 }
 
 const doLogin = async (loginForm: ILoginForm): Promise<ILoginInfo> => {
@@ -62,6 +64,8 @@ const setTimeoutToLogout = (expirationInSeconds: number) => {
 const removeMasterPassword = () => {
   localStorage.removeItem('master');
   masterPassword.value = null;
+  UserStore.removeUserData();
+  PasswordStore.removeData();
   SidebarScript.toggleSidebar(false);
 };
 
