@@ -116,7 +116,7 @@ onMounted(() => {
           {{ $t('master-password.message') }}:
         </h2>
         <div class="mt-4">
-          <form @submit="checkMasterPassword">
+          <form @submit="checkMasterPassword" autocomplete="off">
             <div class="flex flex-col w-full">
               <div
                 class="
@@ -132,6 +132,7 @@ onMounted(() => {
                   v-model="masterPassword"
                   :placeholder="$t('master-password.message')"
                   required
+                  autocomplete="off"
                 />
                 <span
                   @click="isShowingMasterPassword = !isShowingMasterPassword"
@@ -141,19 +142,16 @@ onMounted(() => {
                 </span>
               </div>
               <div class="px-4 w-full md:w-72 md:mx-auto">
-                <WinkleButton
-                  type="success" class="w-full"
-                >{{ $t('enter') }}</WinkleButton>
+                <WinkleButton type="success" class="w-full">
+                  {{ $t('enter') }}
+                </WinkleButton>
               </div>
             </div>
             <div>
               <span class="text-gray-200">
                 {{ $t('master-password.expires-in') }}:
               </span>
-              <select
-                class="mt-4 bg-transparent text-gray-400"
-                v-model="minutesToExpire"
-              >
+              <select class="mt-4 bg-transparent text-gray-400" v-model="minutesToExpire">
                 <option :value="15">15 {{ $t('master-password.minutes') }}</option>
                 <option :value="30">30 {{ $t('master-password.minutes') }}</option>
                 <option :value="45">45 {{ $t('master-password.minutes') }}</option>
