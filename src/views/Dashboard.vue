@@ -22,7 +22,7 @@ onMounted(() => {
 
 <template>
   <MasterPassword
-    v-if="isLoaded && !LoginRepository.isRunningTimeoutForMasterPassword.value"
+    v-if="isLoaded && !LoginRepository.masterPassword.value"
   />
   <div class="w-screen bg-gray-400 flex justify-center" v-else>
     <div class="w-full flex flex-col items-center">

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onBeforeMount, onMounted, ref, Ref } from "vue";
 import { ILoginInfo } from "../../repositories/login/ILoginInfo";
-import { IMasterPasswordConfig } from "../../repositories/login/IMasterPasswordConfig";
 import LoginRepository from "../../repositories/login/LoginRepository";
 import showErrorMessage from "../../scripts/ErrorLogs";
 import i18n from "../../scripts/internacionalization/i18n";
@@ -17,7 +16,6 @@ const failedCounter: Ref<number> = ref(0);
 const systemOk: Ref<boolean> = ref(false);
 const masterPassword: Ref<string> = ref('');
 const masterInput: Ref<HTMLElement | undefined> = ref();
-const minutesToExpire: Ref<number> = ref(15);
 const loginData: Ref<ILoginInfo | null> = ref(null);
 const isShowingMasterPassword: Ref<boolean> = ref(false);
 
@@ -26,12 +24,7 @@ const emit = defineEmits(['failed', 'success']);
 const setMasterPassword = () : void => {
   systemOk.value = true;
   setTimeout(async () => {
-    const masterPasswordConfig: IMasterPasswordConfig = {
-      masterPassword: masterPassword.value,
-      minutesToExpire: minutesToExpire.value,
-      lastLogin: new Date()
-    };
-    await LoginRepository.setMasterPassword(masterPasswordConfig);
+    await LoginRepository.setMasterPassword(masterPassword.value);
     emit('success');
   }, 300);
 };
@@ -93,7 +86,7 @@ onMounted(() => {
         <img src="../../assets/logo-white.png" class="w-24 px-0 md:w-32 mr-2 drop-shadow-lg" />
         <div class="flex flex-col items-start text-gray-50">
           <span class="text-6xl font-bold italic">Winkle</span>
-          <span class="text-sm ml-1">Gerenciador de Senhas</span>
+          <span class="text-sm ml-1">{{ $t('app-description') }}</span>
         </div>
       </div>
     </div>
@@ -117,7 +110,7 @@ onMounted(() => {
         </h2>
         <div class="mt-4">
           <form @submit="checkMasterPassword" autocomplete="off">
-            <div class="flex flex-col w-full">
+            <div class="w-full">
               <div
                 class="
                   flex justify-center items-center
@@ -146,18 +139,6 @@ onMounted(() => {
                   {{ $t('enter') }}
                 </WinkleButton>
               </div>
-            </div>
-            <div>
-              <span class="text-gray-200">
-                {{ $t('master-password.expires-in') }}:
-              </span>
-              <select class="mt-4 bg-transparent text-gray-400" v-model="minutesToExpire">
-                <option :value="15">15 {{ $t('master-password.minutes') }}</option>
-                <option :value="30">30 {{ $t('master-password.minutes') }}</option>
-                <option :value="45">45 {{ $t('master-password.minutes') }}</option>
-                <option :value="60">60 {{ $t('master-password.minutes') }}</option>
-                <option :value="1440">{{ $t('master-password.all-day') }}</option>
-              </select>
             </div>
           </form>
         </div>

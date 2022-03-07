@@ -54,7 +54,7 @@ const handleSave = async (e: Event) => {
   WinkleScripts.setLoading(true);
   UserRepository.updateMasterPassword(form.value)
     .then(async (updatedUser: IUser) => {
-      await LoginRepository.setMasterPasswordStringOnly(form.value.newMasterPassword);
+      await LoginRepository.setMasterPassword(form.value.newMasterPassword);
       emit("save", updatedUser);
     })
     .catch((e: AxiosError) => {

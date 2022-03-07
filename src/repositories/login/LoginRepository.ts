@@ -1,20 +1,17 @@
 import { Ref, ref } from 'vue';
 import router from '../../router';
 import i18n from '../../scripts/internacionalization/i18n';
-import { showWarning } from '../../scripts/NotificationScript';
 import { IResetPassword } from '../user/UserInterfaces';
 import { PublicRepository, Repository } from '../_Repository';
 import { ILoginForm } from "./ILoginForm";
 import { ILoginInfo } from "./ILoginInfo";
-import { IMasterPasswordConfig } from './IMasterPasswordConfig';
 import * as dcodeIO from 'bcryptjs';
 import SidebarScript from '../../scripts/SidebarScript';
 
 const { t } = i18n.element.global;
 const isRunningTimeout: Ref<boolean> = ref(false);
-const isRunningTimeoutForMasterPassword: Ref<boolean> = ref(false);
+const masterPassword: Ref<string | null> = ref(localStorage.getItem('master'));
 
-const masterPasswordConfig = () : string | null => localStorage.getItem('master');
 const loginInfo = () : string | null => localStorage.getItem('login');
 const loginData = () : ILoginInfo | null => {
   if (loginTimeout()) return null;
@@ -25,6 +22,7 @@ const loginData = () : ILoginInfo | null => {
 const removeLoginInfo = () : void => {
   localStorage.removeItem('login');
   localStorage.removeItem('master');
+  masterPassword.value = null;
 }
 
 const doLogin = async (loginForm: ILoginForm): Promise<ILoginInfo> => {
@@ -61,28 +59,10 @@ const setTimeoutToLogout = (expirationInSeconds: number) => {
   }, expiresIn);
 };
 
-const setTimeoutToEraseMasterPassword = (expirationInSeconds: number) => {
-  const minutes = Math.floor(expirationInSeconds / 60);
-  const msg = `running timeout, cleaning masterPassword in ${minutes} minutes.`;
-  console.warn(msg);
-  const expiresIn = 1000 * expirationInSeconds;
-  isRunningTimeoutForMasterPassword.value = true;
-
-  setTimeout(() => {
-    showWarning(
-      t('master-password.timeout-title'),
-      t('master-password.timeout-description', { count: 10 }),
-      10000
-    );
-  }, expiresIn - 10000);
-
-  setTimeout(() => { removeMasterPassword(); }, expiresIn);
-};
-
 const removeMasterPassword = () => {
   localStorage.removeItem('master');
+  masterPassword.value = null;
   SidebarScript.toggleSidebar(false);
-  isRunningTimeoutForMasterPassword.value = false;
 };
 
 const loginTimeout = () : boolean => {
@@ -105,75 +85,33 @@ const loginTimeout = () : boolean => {
   return false;
 };
 
-const masterPasswordTimeout = () : boolean => {
-  const masterString = masterPasswordConfig();
-  if (!masterString) return true;
-  const masterPassword: IMasterPasswordConfig = JSON.parse(masterString);
-  const loginTime = new Date(masterPassword.lastLogin);
-  const timeAfterTimeout = new Date(masterPassword.lastLogin);
-  timeAfterTimeout.setSeconds(timeAfterTimeout.getSeconds() + (masterPassword.minutesToExpire * 60));
-  const currentTime = new Date();
-  if (loginTime >= timeAfterTimeout || currentTime >= timeAfterTimeout) return true;
-
-  if (!isRunningTimeoutForMasterPassword.value) {
-    const diff = currentTime.getTime() - timeAfterTimeout.getTime();
-    const secondsFromT1ToT2 = diff / 1000;
-    const secondsBetweenDates = Math.abs(secondsFromT1ToT2);
-    setTimeoutToEraseMasterPassword(secondsBetweenDates);
-  }
-
-  return false;
-};
-
 const canUseLoginInfo = () : boolean => {
   return loginInfo() !== null && !loginTimeout();
 };
 
 const canUseMasterPassword = () : boolean => {
-  const config = masterPasswordConfig();
-  return config !== null && !masterPasswordTimeout();
+  const master = getMasterPassword();
+  return master !== null;
 };
 
-const setMasterPassword = async (config: IMasterPasswordConfig) : Promise<boolean> => {
+const setMasterPassword = async (master: string) : Promise<boolean> => {
   const login = loginData();
   if (!login) return false;
 
-  setTimeoutToEraseMasterPassword(config.minutesToExpire * 60);
-  const newHash = await dcodeIO.hash(config.masterPassword, 8);
+  const newHash = await dcodeIO.hash(master, 8);
   login.shuffled = newHash;
-  localStorage.setItem('master', JSON.stringify(config));
-
-  localStorage.removeItem('login');
-  localStorage.setItem('login', JSON.stringify(login));
-  return true;
-};
-
-const setMasterPasswordStringOnly = async (newMasterPassword: string) : Promise<boolean> => {
-  const login = loginData();
-  const master = masterPasswordConfig();
-  if (!login || !master) return false;
-
-  const newHash = await dcodeIO.hash(newMasterPassword, 8);
-  login.shuffled = newHash;
-
-  const config = JSON.parse(master);
-  config.masterPassword = newMasterPassword;
-
   localStorage.removeItem('master');
-  localStorage.setItem('master', JSON.stringify(config));
+  localStorage.setItem('master', master);
+  masterPassword.value = master;
 
   localStorage.removeItem('login');
   localStorage.setItem('login', JSON.stringify(login));
-
   return true;
 };
 
 const getMasterPassword = () : string | null => {
-  const masterString = masterPasswordConfig();
-  if (!masterString) return null;
-  const masterConfig = JSON.parse(masterString);
-  return masterConfig.masterPassword || null;
-}
+  return localStorage.getItem('master');
+};
 
 const checkMasterPassword = async (master: string) : Promise<boolean> => {
   const masterPass = loginData();
@@ -195,8 +133,6 @@ export default {
   forgotPassword,
   resetPassword,
   canUseMasterPassword,
-  masterPasswordConfig,
-  setMasterPasswordStringOnly,
-  isRunningTimeoutForMasterPassword,
-  removeMasterPassword
+  removeMasterPassword,
+  masterPassword,
 }
