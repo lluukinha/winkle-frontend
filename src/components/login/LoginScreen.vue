@@ -9,12 +9,12 @@ defineProps<{ title: string }>();
     <div class="lg:w-1/2 xl:max-w-screen-sm bg-white h-screen">
       <div
         class="
-          py-6 md:py-12
-          bg-gray-100
-          lg:bg-white
-          flex
-          justify-center
-          lg:justify-start lg:px-12
+          pt-10
+          px-12
+          sm:px-24
+          md:px-48
+          lg:px-12
+          xl:px-24 xl:max-w-2xl
         "
       >
         <router-link
@@ -22,37 +22,13 @@ defineProps<{ title: string }>();
           class="cursor-pointer flex items-center select-none drop-shadow"
           :to="{ name: 'login' }"
         >
-          <img
-            src="../../assets/logo-dark.png"
-            class="w-24 px-0 md:w-32 mr-2"
-          />
+          <img src="../../assets/logo-dark.png" class="w-20 px-0 mr-2" />
           <div class="flex flex-col items-start text-gray-800">
-            <span class="text-6xl font-bold italic">Winkle</span>
-            <span class="text-sm ml-1">Gerenciador de Senhas</span>
+            <span class="text-5xl font-bold italic">Winkle</span>
+            <span class="text-sm ml-1">{{ $t('app-description') }}</span>
           </div>
         </router-link>
-      </div>
-      <div
-        class="
-          mt-10
-          px-12
-          sm:px-24
-          md:px-48
-          lg:px-12 lg:mt-16
-          xl:px-24 xl:max-w-2xl
-        "
-      >
-        <h2
-          class="
-            text-center text-4xl text-gray-800
-            font-display font-semibold
-            lg:text-left
-            xl:text-5xl xl:text-bold
-          "
-        >
-          {{ title }}
-        </h2>
-        <div class="mt-12">
+        <div class="mt-12 md:mt-16">
           <slot></slot>
           <div
             class="
