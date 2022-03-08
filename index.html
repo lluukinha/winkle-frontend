@@ -6,7 +6,8 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" href="/favicon.ico" id="light-scheme-icon">
+    <link rel="icon" href="/favicon-white.ico" id="dark-scheme-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Winkle - Gerenciador de Senhas</title>
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -21,5 +22,24 @@
   <body>
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
+    <script>
+      const lightSchemeIcon = document.querySelector('link#light-scheme-icon');
+      const darkSchemeIcon = document.querySelector('link#dark-scheme-icon');
+      matcher = window.matchMedia('(prefers-color-scheme: dark)');
+      matcher.addListener(onUpdateTheme);
+      onUpdateTheme();
+
+      function onUpdateTheme() {
+        const lightIcon = document.querySelector('link#light-scheme-icon');
+        const darkIcon = document.querySelector('link#dark-scheme-icon');
+        if (matcher.matches) {
+          lightIcon.remove();
+          document.head.append(darkSchemeIcon);
+        } else {
+          document.head.append(lightSchemeIcon);
+          darkIcon.remove();
+        }
+      }
+    </script>
   </body>
 </html>
