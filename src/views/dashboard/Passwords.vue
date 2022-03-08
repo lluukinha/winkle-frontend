@@ -17,6 +17,7 @@ import FolderFilterDropdown from "../../components/password/FolderFilterDropdown
 import ImportPasswordsModal from "../../components/password/ImportPasswords/ImportPasswordsModal.vue";
 import PasswordStore from "../../store/passwords/PasswordStore";
 import RemoveIcon from "../../components/icons/RemoveIcon.vue";
+import PasswordFolderToggle from "../../components/password/PasswordFolderToggle.vue";
 
 const { t } = i18n.element.global;
 
@@ -160,7 +161,7 @@ onMounted(() => PasswordStore.getAllData());
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
           </svg>
-          <span class="text-sm ml-2">{{ $t('passwords.import.title') }}</span>
+          <span class="block ml-2">{{ $t('passwords.import.title') }}</span>
         </Winklebutton>
         <ImportPasswordsModal
           v-if="isImportingPasswords"
@@ -209,24 +210,13 @@ onMounted(() => PasswordStore.getAllData());
         || PasswordStore.selectedFolderIds.value.includes('0')
       "
     >
-      <div
-        class="
-          border-b border-gray-400 dark:border-gray-600
-          w-full pb-2
-          text-left uppercase select-none cursor-pointer
-          dark:text-gray-100
-        "
-        @click="PasswordStore.emptyFolderIsOpen.value = !PasswordStore.emptyFolderIsOpen.value"
-      >
-        <button>
-          <svg v-if="!PasswordStore.emptyFolderIsOpen.value" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-          </svg>
-          <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-          </svg>
-        </button> {{ $t('passwords.without-folder') }} ({{ passwordsWithoutFolder.length }})
-      </div>
+      <PasswordFolderToggle
+        @toggle="PasswordStore.emptyFolderIsOpen.value = !PasswordStore.emptyFolderIsOpen.value"
+        :isOpen="PasswordStore.emptyFolderIsOpen.value"
+        :name="$t('passwords.without-folder')"
+        :count="passwordsWithoutFolder.length"
+      />
+
       <div class="flex items-center flex-wrap w-full mt-4" v-show="PasswordStore.emptyFolderIsOpen.value">
         <div class="text-gray-400" v-if="passwordsWithoutFolder.length === 0">
           <p class="ml-4">
@@ -256,38 +246,14 @@ onMounted(() => PasswordStore.getAllData());
       class="w-full my-6"
       :class="{ hidden: !filterHasPasswordsInFolder(folder.id) }"
     >
-      <div
-        class="
-          border-b border-gray-400 dark:border-gray-600
-          w-full uppercase select-none cursor-pointer pb-2
-          flex justify-between items-center dark:text-gray-100
-        "
-      >
-        <div class="flex items-center" @click="folder.isOpen = !folder.isOpen">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path v-if="!folder.isOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-            <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-          </svg>
-          <span class="ml-2">
-            {{ folder.name }} ({{ passwordsInFolder(folder.id).length }})
-          </span>
-        </div>
+      <PasswordFolderToggle
+        @toggle="folder.isOpen = !folder.isOpen"
+        :isOpen="folder.isOpen || false"
+        :name="folder.name"
+        :count="passwordsInFolder(folder.id).length"
+        :folderId="folder.id"
+      />
 
-        <button
-          class="
-            py-2 px-3
-            text-xs leading-3
-            text-red-700 hover:text-red-500
-            dark:text-red-300 hover:text-red-500
-            rounded-full flex items-center
-          "
-          @click="PasswordStore.removeFolder(Number(folder.id))"
-          :title="$t('passwords.remove')"
-          v-if="passwordsInFolder(folder.id).length === 0"
-        >
-          <RemoveIcon />
-        </button>
-      </div>
       <div class="flex items-center flex-wrap w-full mt-4" v-if="folder.isOpen">
         <div
           class="text-gray-400"
