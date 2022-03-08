@@ -18,6 +18,15 @@
       gtag('js', new Date());
       gtag('config', 'G-EWH58E8W94');
     </script>
+    <script>
+      if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+        if (!localStorage.getItem('theme')) localStorage.theme = 'dark';
+      } else {
+        document.documentElement.classList.remove('dark');
+        if (!localStorage.getItem('theme')) localStorage.theme = 'light';
+      }
+    </script>
   </head>
   <body>
     <div id="app"></div>

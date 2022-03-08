@@ -57,27 +57,13 @@ onMounted(() => { firstInput.value?.focus() });
       <button type="submit" class="hidden" ref="formSubmit"></button>
       <div class="md:flex md:items-center mb-6">
         <div class="md:w-1/3">
-          <label
-            class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-            for="email-input"
-          >
+          <label for="email-input">
             {{ $t("user.update-email-form.email") }} *
           </label>
         </div>
         <div class="md:w-2/3">
           <input
             ref="firstInput"
-            class="
-              bg-gray-200
-              appearance-none
-              border-2 border-gray-200
-              rounded
-              w-full
-              py-2 px-4
-              text-gray-700
-              leading-tight
-              focus:outline-none focus:bg-white focus:border-purple-500
-            "
             id="email-input"
             type="email"
             v-model="form.email"
@@ -89,26 +75,12 @@ onMounted(() => { firstInput.value?.focus() });
 
       <div class="md:flex md:items-center mb-6">
         <div class="md:w-1/3">
-          <label
-            class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4 "
-            for="confirm-email-input"
-          >
+          <label for="confirm-email-input">
             {{ $t("user.update-email-form.email-confirm") }} *
           </label>
         </div>
         <div class="md:w-2/3">
           <input
-            class="
-              bg-gray-200
-              appearance-none
-              border-2 border-gray-200
-              rounded
-              w-full
-              py-2 px-4
-              text-gray-700
-              leading-tight
-              focus:outline-none focus:bg-white focus:border-purple-500
-            "
             id="confirm-email-input"
             type="email"
             v-model="form.confirmEmail"
@@ -118,30 +90,17 @@ onMounted(() => { firstInput.value?.focus() });
         </div>
       </div>
 
-      <hr>
+      <hr class="dark:border-gray-600">
 
       <div class="md:flex md:items-center mb-6 mt-6">
         <div class="md:w-1/3">
-          <label
-            class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4 "
-            for="password-input"
-          >
+          <label for="password-input">
             {{ $t("user.update-email-form.password") }} *
           </label>
         </div>
         <div class="md:w-2/3 flex">
           <input
-            class="
-              bg-gray-200
-              appearance-none
-              border-2 border-gray-200
-              rounded rounded-tr-none rounded-br-none
-              w-full
-              py-2 px-4
-              text-gray-700
-              leading-tight
-              focus:outline-none focus:bg-white focus:border-purple-500
-            "
+            class="input"
             id="password-input"
             :type="isShowingPassword ? 'text' : 'password'"
             v-model="form.password"
@@ -149,13 +108,7 @@ onMounted(() => { firstInput.value?.focus() });
             :placeholder="$t('user.update-email-form.password-placeholder')"
           />
           <span
-            class="
-              cursor-pointer
-              bg-gray-300
-              hover:bg-gray-400 flex items-center px-4
-              select-none
-              rounded rounded-tl-none rounded-bl-none
-            "
+            class="span-button"
             @click="isShowingPassword = !isShowingPassword"
             :title="$t('passwords.form.show-password')"
           >
@@ -166,3 +119,31 @@ onMounted(() => { firstInput.value?.focus() });
     </form>
   </Modal>
 </template>
+
+<style lang="postcss" scoped>
+label {
+  @apply block text-gray-500 dark:text-gray-200 font-bold md:text-right mb-1 md:mb-0 pr-4
+}
+
+.span-button {
+  @apply  cursor-pointer
+          bg-gray-200 dark:bg-gray-600
+          hover:bg-gray-400 dark:hover:bg-gray-800
+          flex items-center px-4
+          select-none
+          rounded rounded-tl-none rounded-bl-none
+}
+
+input {
+  @apply  bg-gray-200 dark:bg-gray-500
+            appearance-none
+            border-2 border-gray-200 dark:border-gray-600
+            rounded rounded-tr-none rounded-br-none
+            w-full py-2 px-4
+            text-gray-700 dark:text-gray-200
+            leading-tight
+            focus:outline-none focus:bg-white focus:border-purple-500
+            dark:focus:bg-gray-400 dark:focus:border-purple-800
+            dark:focus:text-gray-800
+}
+</style>

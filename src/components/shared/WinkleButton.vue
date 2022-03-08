@@ -12,11 +12,28 @@ const props = defineProps<{
 
 const buttonClass = computed(() => {
   const classTypes = {
-    success: 'bg-green-600 border border-green-500 hover:bg-green-700 text-white',
-    warning: 'bg-yellow-500 border border-yellow-400 hover:bg-yellow-600 text-white text-shadow',
-    error: 'bg-red-600 border border-red-500 hover:bg-red-700 text-white',
-    info: 'bg-indigo-500 border border-indigo-400 hover:bg-indigo-600 text-white',
-    default: 'bg-gray-100 border border-gray-300 hover:bg-gray-200 text-gray-800',
+    success: `
+      bg-green-600 hover:bg-green-700
+      border border-green-500
+      text-white`,
+    warning: `
+      bg-yellow-500 hover:bg-yellow-600
+      border border-yellow-400
+      text-white text-shadow`,
+    error: `
+      bg-red-600 hover:bg-red-700
+      border border-red-500
+      text-white`,
+    info: `
+      bg-indigo-500
+      border border-indigo-400
+      hover:bg-indigo-600
+      text-white`,
+    default: `
+      bg-gray-100 dark:bg-gray-600
+      border border-gray-300 dark:border-gray-600
+      hover:bg-gray-200 dark:hover:bg-gray-700
+      text-gray-800 dark:text-gray-200`,
   };
 
   if (!props.type) return classTypes['default'];

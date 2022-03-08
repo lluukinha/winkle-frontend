@@ -20,6 +20,7 @@ import RemoveIcon from "../../components/icons/RemoveIcon.vue";
 
 const { t } = i18n.element.global;
 
+const isImportingPasswords: Ref<boolean> = ref(false);
 const editingPassword: Ref<IPassword | null> = ref(null);
 const isCreating: Ref<boolean> = ref(false);
 const filter: Ref<string> = ref("");
@@ -92,12 +93,12 @@ onMounted(() => PasswordStore.getAllData());
   />
   <button
     class="
-      bg-gray-500
-      hover:bg-gray-700
+      bg-gray-500 hover:bg-gray-700
+      dark:bg-gray-800 dark:hover:bg-gray-900
       text-gray-200
       py-2
       px-2
-      border border-gray-200
+      border border-gray-200 dark:border-gray-700
       rounded-full
       shadow-lg
       absolute
@@ -152,11 +153,32 @@ onMounted(() => PasswordStore.getAllData());
             {{ $t('passwords.toggle-folders') }}
           </span>
         </WinkleButton>
+        <WinkleButton
+          class="mr-1 items-center hidden md:flex"
+          @click="isImportingPasswords = !isImportingPasswords"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+          </svg>
+          <span class="text-sm ml-2">{{ $t('passwords.import.title') }}</span>
+        </Winklebutton>
+        <ImportPasswordsModal
+          v-if="isImportingPasswords"
+          @close="isImportingPasswords = false"
+          @save="() => {}"
+        />
       </div>
 
-      <div class="md:w-auto flex border-b items-center bg-gray-100 rounded px-2 py-1 shadow">
+      <div
+        class="
+          md:w-auto flex
+          border-b items-center
+          bg-gray-100 dark:bg-gray-600 dark:border-gray-600
+          rounded px-2 py-1 shadow
+        "
+      >
         <label for="search-input">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600 dark:text-gray-100" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
         </label>
@@ -165,8 +187,9 @@ onMounted(() => PasswordStore.getAllData());
           type="text"
           class="
             ml-4
-            bg-gray-100
+            bg-gray-100 dark:bg-gray-600
             border border-none border-b-2
+            dark:border-gray-600
             focus:border-none
             w-24 md:w-full
             !outline-none
@@ -187,7 +210,12 @@ onMounted(() => PasswordStore.getAllData());
       "
     >
       <div
-        class="border-b border-gray-400 w-full text-left uppercase select-none cursor-pointer"
+        class="
+          border-b border-gray-400 dark:border-gray-600
+          w-full pb-2
+          text-left uppercase select-none cursor-pointer
+          dark:text-gray-100
+        "
         @click="PasswordStore.emptyFolderIsOpen.value = !PasswordStore.emptyFolderIsOpen.value"
       >
         <button>
@@ -230,9 +258,9 @@ onMounted(() => PasswordStore.getAllData());
     >
       <div
         class="
-          border-b border-gray-400
-          w-full uppercase select-none cursor-pointer
-          flex justify-between items-center
+          border-b border-gray-400 dark:border-gray-600
+          w-full uppercase select-none cursor-pointer pb-2
+          flex justify-between items-center dark:text-gray-100
         "
       >
         <div class="flex items-center" @click="folder.isOpen = !folder.isOpen">
@@ -250,6 +278,7 @@ onMounted(() => PasswordStore.getAllData());
             py-2 px-3
             text-xs leading-3
             text-red-700 hover:text-red-500
+            dark:text-red-300 hover:text-red-500
             rounded-full flex items-center
           "
           @click="PasswordStore.removeFolder(Number(folder.id))"

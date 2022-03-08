@@ -9,13 +9,23 @@ const props = defineProps<{ list: IImportedPassword[] }>();
   <div>
     <div class="my-4 flex justify-center">
       <div class="mr-10 text-lg font-bold">{{ $t('passwords.import.obs') }}: </div>
-      <div class="text-left text-sm font-semibold text-red-700">
+      <div
+        class="
+          text-left text-sm font-semibold
+          text-red-700 dark:text-red-400
+        "
+      >
         1 - {{ $t('passwords.import.obs-1') }}<br>
         2 - {{ $t('passwords.import.obs-2') }}
       </div>
     </div>
     <ul>
-      <li class="flex items-center text-left text-xs py-2 font-bold bg-gray-300">
+      <li
+        class="
+          flex items-center
+          text-left text-xs py-2 font-bold
+          bg-gray-300 dark:bg-gray-800"
+      >
         <div class="w-full flex items-center text-left">
           <div class="w-1/4 px-2">
             {{ $t('passwords.import.headers.name') }}
@@ -43,14 +53,14 @@ const props = defineProps<{ list: IImportedPassword[] }>();
           <input
             type="text"
             v-model="p.name"
-            class="p-1 shadow bg-gray-100 px-2 w-full mb-1"
+            class="p-1 shadow bg-gray-100 dark:bg-gray-500 px-2 w-full mb-1"
             placeholder="Nome"
             title="Nome da senha"
           />
           <input
             type="text"
             v-model="p.url"
-            class="p-1 shadow bg-gray-100 px-2 w-full"
+            class="p-1 shadow bg-gray-100 dark:bg-gray-500 px-2 w-full"
             placeholder="Url"
             title="URL da senha"
           />
@@ -70,7 +80,7 @@ const props = defineProps<{ list: IImportedPassword[] }>();
         </div>
         <div class="w-1/4 px-2">
           <select
-            class="p-1 shadow bg-gray-100 px-2 w-full uppercase mb-1"
+            class="p-1 shadow bg-gray-100 dark:bg-gray-500 px-2 w-full uppercase mb-1"
             v-model="p.folderName"
             placeholder="test"
           >

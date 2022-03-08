@@ -106,28 +106,13 @@ defineExpose({ sendForm });
     <button type="submit" class="hidden" ref="formSubmit"></button>
     <div class="md:flex md:items-center mb-6">
       <div class="md:w-1/3">
-        <label
-          class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-          for="inline-full-name"
-        >
+        <label for="inline-full-name">
           {{ $t("passwords.form.name") }} *
         </label>
       </div>
       <div class="md:w-2/3">
         <input
           ref="firstInput"
-          class="
-            bg-gray-200
-            appearance-none
-            border-2 border-gray-200
-            rounded
-            w-full
-            py-2
-            px-4
-            text-gray-700
-            leading-tight
-            focus:outline-none focus:bg-white focus:border-purple-500
-          "
           id="inline-full-name"
           type="text"
           v-model="password.name"
@@ -138,38 +123,12 @@ defineExpose({ sendForm });
     </div>
     <div class="md:flex md:items-center mb-6">
       <div class="md:w-1/3">
-        <label
-          class="
-            text-gray-500
-            font-bold
-            md:text-right
-            mb-1
-            md:mb-0
-            pr-4
-            flex
-            items-center
-            justify-center
-            md:justify-end
-          "
-          for="inline-full-login"
-        >
+        <label for="inline-full-login">
           {{ $t("passwords.form.login") }}
         </label>
       </div>
       <div class="md:w-2/3">
         <input
-          class="
-            bg-gray-200
-            appearance-none
-            border-2 border-gray-200
-            rounded
-            w-full
-            py-2
-            px-4
-            text-gray-700
-            leading-tight
-            focus:outline-none focus:bg-white focus:border-purple-500
-          "
           id="inline-full-login"
           type="text"
           v-model="password.login"
@@ -179,51 +138,20 @@ defineExpose({ sendForm });
     </div>
     <div class="md:flex md:items-center mb-6">
       <div class="md:w-1/3">
-        <label
-          class="
-            text-gray-500
-            font-bold
-            md:text-right
-            mb-1
-            md:mb-0
-            pr-4
-            flex
-            items-center
-            justify-center
-            md:justify-end
-          "
-          for="inline-password"
-        >
+        <label for="inline-password">
           {{ $t("passwords.form.password") }}
         </label>
       </div>
       <div class="md:w-2/3 flex">
         <input
-          class="
-            bg-gray-200
-            appearance-none
-            border-2 border-gray-200
-            rounded rounded-tr-none rounded-br-none
-            w-full
-            py-2
-            px-4
-            text-gray-700
-            leading-tight
-            focus:outline-none focus:bg-white focus:border-purple-500
-          "
+          class="rounded-tr-none rounded-br-none"
           id="inline-password"
           :type="isShowingPassword ? 'text' : 'password'"
           :placeholder="$t('passwords.form.password-placeholder')"
           v-model="password.password"
         />
         <span
-          class="
-            cursor-pointer
-            bg-gray-300
-            hover:bg-gray-400 flex items-center px-4
-            select-none
-            rounded rounded-tl-none rounded-bl-none
-          "
+          class="span-button"
           @click="isShowingPassword = !isShowingPassword"
           :title="$t('passwords.form.show-password')"
         >
@@ -234,28 +162,13 @@ defineExpose({ sendForm });
 
     <div class="md:flex md:items-center mb-6">
       <div class="md:w-1/3">
-        <label
-          class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-          for="inline-full-url"
-        >
+        <label for="inline-full-url">
           {{ $t("passwords.form.url") }}
         </label>
       </div>
       <div class="md:w-2/3">
         <select
           ref="urlSelect"
-          class="
-            bg-gray-200
-            appearance-none
-            border-2 border-gray-200
-            rounded
-            w-full
-            py-2
-            px-4
-            text-gray-700
-            leading-tight
-            focus:outline-none focus:bg-white focus:border-purple-500
-          "
           id="url-select"
           v-model="selectedUrl"
           @change="changeUrl"
@@ -278,18 +191,7 @@ defineExpose({ sendForm });
 
         <div v-if="selectedUrlAsInput" class="flex">
           <input
-            class="
-              bg-gray-200
-              appearance-none
-              border-2 border-gray-200
-              rounded rounded-tr-none rounded-br-none
-              w-full
-              py-2
-              px-4
-              text-gray-700
-              leading-tight
-              focus:outline-none focus:bg-white focus:border-purple-500
-            "
+            class="rounded-tr-none rounded-br-none"
             id="inline-full-url"
             type="text"
             v-model="password.url"
@@ -297,50 +199,29 @@ defineExpose({ sendForm });
             ref="urlInput"
             :readonly="selectedUrl !== 'other'"
           />
-          <button
-            type="button"
+          <span
             @click="transformUrlInDropdown()"
-            class="
-              bg-gray-200
-              py-2
-              px-4
-              rounded rounded-tl-none rounded-bl-none
-            "
+            class="span-button"
             :title="$t('passwords.form.url-back-button-title')"
           >
             <!-- list icon -->
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
             </svg>
             <!-- end list icon -->
-          </button>
+          </span>
         </div>
       </div>
     </div>
 
     <div class="md:flex md:items-center mb-6">
       <div class="md:w-1/3">
-        <label
-          class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-          for="inline-full-folder"
-        >
+        <label for="inline-full-folder">
           {{ $t("passwords.form.folder") }}
         </label>
       </div>
       <div class="md:w-2/3">
         <select
-          class="
-            bg-gray-200
-            appearance-none
-            border-2 border-gray-200
-            rounded
-            w-full
-            py-2
-            px-4
-            text-gray-700
-            leading-tight
-            focus:outline-none focus:bg-white focus:border-purple-500
-          "
           @change="changeFolder"
           v-show="!folderIsInput"
           v-model="password.folder.id"
@@ -363,78 +244,34 @@ defineExpose({ sendForm });
         <div v-if="folderIsInput" class="flex">
           <input
             ref="folderInput"
-            class="
-              uppercase
-              bg-gray-200
-              appearance-none
-              border-2 border-gray-200
-              rounded
-              w-full
-              py-2
-              px-4
-              text-gray-700
-              leading-tight
-              focus:outline-none focus:bg-white focus:border-purple-500
-            "
+            class="rounded-tr-none rounded-br-none"
             id="inline-full-folder"
             type="text"
             v-model="password.folder.name"
             :placeholder="$t('passwords.form.folder-placeholder')"
           />
-          <button
+          <span
             v-if="PasswordStore.foldersList.value.length > 0"
-            type="button"
             @click="transformFolderInDropdown()"
-            class="
-              bg-gray-200
-              py-2
-              px-4
-              rounded rounded-tl-none rounded-bl-none
-            "
+            class="span-button"
             :title="$t('passwords.form.url-back-button-title')"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M4 6h16M4 10h16M4 14h16M4 18h16"
-              />
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
             </svg>
-          </button>
+          </span>
         </div>
       </div>
     </div>
 
     <div class="md:flex md:items-center mb-6">
       <div class="md:w-1/3">
-        <label
-          class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-          for="inline-full-desc"
-        >
+        <label for="inline-full-desc">
           {{ $t("passwords.form.description") }}
         </label>
       </div>
       <div class="md:w-2/3">
         <textarea
-          class="
-            bg-gray-200
-            appearance-none
-            border-2 border-gray-200
-            rounded
-            w-full
-            py-2
-            px-4
-            text-gray-700
-            leading-tight
-            focus:outline-none focus:bg-white focus:border-purple-500
-          "
           id="inline-full-desc"
           type="text"
           v-model="password.description"
@@ -444,3 +281,31 @@ defineExpose({ sendForm });
     </div>
   </form>
 </template>
+
+<style lang="postcss" scoped>
+label {
+  @apply block text-gray-500 dark:text-gray-200 font-bold md:text-right mb-1 md:mb-0 pr-4
+}
+
+.span-button {
+  @apply  cursor-pointer
+          bg-gray-200 dark:bg-gray-600
+          hover:bg-gray-400 dark:hover:bg-gray-800
+          flex items-center px-4
+          select-none
+          rounded rounded-tl-none rounded-bl-none
+}
+
+input, select, textarea {
+  @apply  bg-gray-200 dark:bg-gray-500
+            appearance-none
+            border-2 border-gray-200 dark:border-gray-600
+            rounded
+            w-full py-2 px-4
+            text-gray-700 dark:text-gray-200
+            leading-tight
+            focus:outline-none focus:bg-white focus:border-purple-500
+            dark:focus:bg-gray-400 dark:focus:border-purple-800
+            dark:focus:text-gray-800
+}
+</style>

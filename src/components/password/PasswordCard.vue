@@ -30,18 +30,31 @@ const handleRemove = () => {
       focus:outline-none
       w-full
       md:w-80 md:mx-2
-      mb-7
-      bg-white
-      p-6
-      border
+      mb-7 p-6
+      bg-white dark:bg-gray-800
+      border dark:border-gray-700
       shadow-lg
       rounded
       transition-all hover:scale-105
     "
   >
-    <div class="flex items-center border-b border-gray-300 pb-6 text-left cursor-pointer">
+    <div
+      class="
+        flex items-center
+        border-b border-gray-300
+        dark:border-gray-700
+        pb-6 text-left cursor-pointer
+      "
+    >
       <div @click="handleEdit()">
-        <div class="avatar w-12 h-12 rounded-full bg-gray-300 shadow-lg flex items-center justify-center text-xl">
+        <div
+          class="
+            avatar w-12 h-12 rounded-full
+            bg-gray-300 dark:bg-gray-700
+            shadow-lg flex items-center justify-center
+            text-xl
+          "
+        >
           {{ initial }}
         </div>
       </div>
@@ -51,9 +64,8 @@ const handleRemove = () => {
             class="
               focus:outline-none
               text-xl
-              font-medium
-              leading-5
-              text-gray-800
+              font-medium leading-5
+              text-gray-800 dark:text-white
               truncate
             "
           >
@@ -83,14 +95,12 @@ const handleRemove = () => {
       >
         <button
           class="
-            py-2
-            px-3
-            text-xs
-            leading-3
+            py-2 px-3
+            text-xs leading-3
             shadow
-            text-gray-700
-            bg-gray-100
-            hover:bg-gray-200
+            text-gray-700 dark:text-gray-300
+            bg-gray-100 dark:bg-gray-600
+            hover:bg-gray-200 dark:hover:bg-gray-700
             rounded-full
             flex items-center
           "
@@ -104,16 +114,12 @@ const handleRemove = () => {
         </button>
         <button
           class="
-            py-2
-            px-3
-            text-xs
-            leading-3
-            rounded-full
-            text-gray-700
-            bg-gray-100
-            hover:bg-gray-200
-            flex
-            items-center
+            py-2 px-3
+            text-xs leading-3 rounded-full
+            text-gray-700 dark:text-gray-300
+            bg-gray-100 dark:bg-gray-600
+            hover:bg-gray-200 dark:hover:bg-gray-700
+            flex items-center
           "
           @click="WinkleScripts.copyText(password.password)"
           :title="$t('passwords.copy-password')"
@@ -125,9 +131,9 @@ const handleRemove = () => {
         </button>
         <button
           class="
-            py-2 px-3
-            text-xs leading-3 text-red-700
-            bg-red-100 hover:bg-red-300
+            py-2 px-3 text-xs leading-3
+            text-red-700 bg-red-100 hover:bg-red-300
+            dark:bg-red-600 dark:text-red-100 dark:hover:bg-red-700
             rounded-full flex items-center
           "
           @click="handleRemove()"

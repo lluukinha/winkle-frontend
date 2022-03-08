@@ -44,7 +44,7 @@ const handleSave = () => { emit('save'); }
         my-40
         rounded
         shadow-lg
-        bg-white
+        bg-white dark:bg-gray-700 dark:text-gray-200
         max-h-[calc(100vh-2rem)]
       "
     >

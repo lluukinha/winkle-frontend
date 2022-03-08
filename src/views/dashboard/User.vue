@@ -67,15 +67,8 @@ const userUpdated = (updatedUser: IUser) => {
   <DashboardHeader :title="$t('user.title')" />
   <DashboardContainer v-if="UserStore.user.value">
     <div class="w-full flex flex-col items-center md:items-end">
-      <div
-        class="
-          bg-gray-50
-          w-full mt-6
-          rounded-lg shadow-lg
-          p-6 text-left
-        "
-      >
-        <div class="w-full">
+      <div class="w-full mt-6 p-1 text-left">
+        <div class="w-full dark:text-gray-200">
           <h1 class="md:text-xl">
             <b>{{ $t('user.content.user') }}:</b> {{ UserStore.user.value.name }}
           </h1>
@@ -90,10 +83,13 @@ const userUpdated = (updatedUser: IUser) => {
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
             </svg>
             </span>
-            <span class="text-xs text-green-500" v-if="UserStore.user.value.emailVerified">
+            <span
+              class="text-xs text-green-500 dark:text-green-400"
+              v-if="UserStore.user.value.emailVerified"
+            >
               ({{ $t('user.content.verified') }})
             </span>
-            <span class="text-xs text-red-500" v-if="!UserStore.user.value.emailVerified">
+            <span class="text-xs text-red-500 dark:text-red-400" v-if="!UserStore.user.value.emailVerified">
               ({{ $t('user.content.not-verified') }})
             </span>
           </h2>
@@ -108,31 +104,30 @@ const userUpdated = (updatedUser: IUser) => {
             <b>{{ $t('user.content.expires-at') }}:</b> {{ UserStore.timeTo(UserStore.user.value.expirationDate) }}
           </h2>
         </div>
-        <div class="w-full flex flex-wrap justify-between mt-10 md:mt-16 mb-10">
-          <div class="w-full md:w-1/3">
-            <WinkleButton
-              type="success"
-              size="xl"
-              class="w-full md:w-auto"
-              @click="isUpdatingEmail = true"
-            >
-              {{ $t('user.update-email') }}
-            </WinkleButton>
-          </div>
+        <div class="w-full mt-10 md:mt-16 mb-10">
+          <WinkleButton
+            type="success"
+            size="xl"
+            class="w-full md:w-auto"
+            @click="isUpdatingEmail = true"
+          >
+            {{ $t('user.update-email') }}
+          </WinkleButton>
 
-          <div class="w-full md:w-1/3 flex justify-between">
-            <WinkleButton
-              type="success"
-              size="xl"
-              class="w-full md:w-auto"
-              @click="isUpdatingPassword = true"
-            >
-              {{ $t('user.update-password') }}
-            </WinkleButton>
-          </div>
+          <br>
 
-          <div class="w-full md:w-1/3 text-center flex justify-center items-center flex-col">
-          <div>
+          <WinkleButton
+            type="success"
+            size="xl"
+            class="w-full md:w-auto mt-4"
+            @click="isUpdatingPassword = true"
+          >
+            {{ $t('user.update-password') }}
+          </WinkleButton>
+
+          <br>
+
+          <div class="mt-4">
             <WinkleButton
               type="success"
               size="xl"
@@ -145,7 +140,6 @@ const userUpdated = (updatedUser: IUser) => {
                 <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
               </svg>
             </WinkleButton>
-            </div>
             <span
               class="text-xs hover:underline cursor-pointer"
               v-if="!UserStore.canUpdateMasterPassword.value"
@@ -154,7 +148,7 @@ const userUpdated = (updatedUser: IUser) => {
               {{ $t('user.master-alert.title') }}
             </span>
           </div>
-        </div>
+          </div>
       </div>
       <div class="w-full text-center text-xs text-gray-500 mt-10">
         {{ $t('last-update') }}:
