@@ -45,7 +45,10 @@ onMounted(() => { firstInput.value?.focus(); });
   <div>
     <form @submit="rememberPassword" v-if="!emailSent" autocomplete="off">
       <div class="text-left">
-        <label for="email-input" class="text-sm font-bold text-gray-700 tracking-wide">
+        <label
+          for="email-input"
+          class="text-sm font-bold text-gray-700 dark:text-gray-100 tracking-wide"
+        >
           {{ $t('login.email') }}
         </label>
         <input
@@ -70,15 +73,14 @@ onMounted(() => { firstInput.value?.focus(); });
       <button
         class="
           mt-4
-          bg-gray-600
-          text-gray-100
+          bg-gray-600 hover:bg-gray-800 text-gray-100
+          dark:bg-gray-800 dark:hover:bg-gray-900
           p-4
           w-full
           rounded-full
           tracking-wide
           font-semibold font-display
           focus:outline-none focus:shadow-outline
-          hover:bg-gray-800
           shadow-lg
         "
       >
@@ -99,8 +101,8 @@ onMounted(() => { firstInput.value?.focus(); });
         mt-6
         text-xs
         font-display font-semibold
-        text-gray-600
-        hover:text-gray-800
+        text-gray-600 hover:text-gray-800
+        dark:text-gray-300 dark:hover:text-gray-100
         cursor-pointer
         flex items-center
         w-full

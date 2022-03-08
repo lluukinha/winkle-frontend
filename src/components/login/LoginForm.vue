@@ -45,7 +45,7 @@ onMounted(() => { firstInput.value?.focus(); });
 <template>
   <form @submit="doLogin">
     <div class="text-left">
-      <div class="text-sm font-bold text-gray-700 tracking-wide">
+      <div class="text-sm font-bold text-gray-700 dark:text-gray-100 tracking-wide">
         {{ $t('login.email') }}
       </div>
       <input
@@ -68,7 +68,7 @@ onMounted(() => { firstInput.value?.focus(); });
 
     <div class="mt-8">
       <div class="flex justify-between items-center">
-        <div class="text-sm font-bold text-gray-700 tracking-wide">
+        <div class="text-sm font-bold text-gray-700 dark:text-gray-100 tracking-wide">
           {{ $t('login.password') }}
         </div>
         <div>
@@ -77,8 +77,8 @@ onMounted(() => { firstInput.value?.focus(); });
             class="
               text-xs
               font-display font-semibold
-              text-gray-600
-              hover:text-gray-800
+              text-gray-600 hover:text-gray-800
+              dark:text-gray-300 dark:hover:text-gray-100
               cursor-pointer
             "
           >
@@ -105,15 +105,14 @@ onMounted(() => { firstInput.value?.focus(); });
     <div class="mt-10">
       <button
         class="
-          bg-gray-600
-          text-gray-100
+          bg-gray-600 hover:bg-gray-800 text-gray-100
+          dark:bg-gray-800 dark:hover:bg-gray-900
           p-4
           w-full
           rounded-full
           tracking-wide
           font-semibold font-display
           focus:outline-none focus:shadow-outline
-          hover:bg-gray-800
           shadow-lg
         "
       >
