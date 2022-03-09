@@ -244,7 +244,7 @@ defineExpose({ sendForm });
         <div v-if="folderIsInput" class="flex">
           <input
             ref="folderInput"
-            class="rounded-tr-none rounded-br-none"
+            class="uppercase rounded-tr-none rounded-br-none"
             id="inline-full-folder"
             type="text"
             v-model="password.folder.name"
@@ -293,7 +293,7 @@ label {
           hover:bg-gray-400 dark:hover:bg-gray-800
           flex items-center px-4
           select-none
-          rounded rounded-tl-none rounded-bl-none
+          rounded rounded-tl-none rounded-bl-none;
 }
 
 input, select, textarea {
@@ -306,6 +306,6 @@ input, select, textarea {
             leading-tight
             focus:outline-none focus:bg-white focus:border-purple-500
             dark:focus:bg-gray-400 dark:focus:border-purple-800
-            dark:focus:text-gray-800
+            dark:focus:text-gray-800;
 }
 </style>

@@ -1,4 +1,5 @@
 import AES from '../../scripts/AES';
+import { IFolder } from '../folder/IFolder';
 import LoginRepository from '../login/LoginRepository';
 import { Repository } from '../_Repository';
 import { IImportedPassword } from './IImportedPassword';
@@ -82,7 +83,17 @@ const mapDataFromImportedResults = (data: IImportedPasswordResponse, master: str
   return data;
 };
 
-const createPassword = async (p : IPassword) : Promise<IPassword> => {
+const createFolder = async (name: string) : Promise<IFolder> => {
+  const { data } = await Repository.post('/folders', { name });
+  return data.data;
+};
+
+const updateFolder = async (id: string, name: string) : Promise<IFolder> => {
+  const { data } = await Repository.put(`/folders/${id}`, { name });
+  return data.data;
+};
+
+const createPassword = async (p: IPassword) : Promise<IPassword> => {
   const master = LoginRepository.masterPassword.value || '';
   const newPass = JSON.parse(JSON.stringify(p));
   if (newPass.login.length > 0) newPass.login = AES.aesEncrypt(p.login, master);
@@ -119,5 +130,7 @@ export default {
   updatePassword,
   removePassword,
   convertPasswords,
-  importCsv
+  importCsv,
+  createFolder,
+  updateFolder
 }

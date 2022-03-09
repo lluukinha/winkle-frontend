@@ -34,6 +34,7 @@ const handleSave = (password: IPassword) => {
 
   const folderName = password.folder.name;
   if (folderName !== '') {
+    password.folder.name = password.folder.name.toUpperCase();
     const currentFolder = PasswordStore.foldersList.value
       .find((f: IFolder) => f.name.toUpperCase() === folderName.toUpperCase());
     password.folder.id = currentFolder?.id || '';
@@ -49,7 +50,9 @@ const handleSave = (password: IPassword) => {
 
 <template>
   <Modal @close="handleClose()" @save="passwordForm.sendForm()">
-    <h2 class="text-xl font-bold py-4">{{ $t('passwords.create') }}</h2>
+    <h2 class="text-xl font-bold pb-4 uppercase">
+      {{ $t('passwords.create') }}
+    </h2>
     <PasswordForm ref="passwordForm" @save="handleSave" />
   </Modal>
 </template>

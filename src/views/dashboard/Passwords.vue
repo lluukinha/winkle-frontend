@@ -18,12 +18,12 @@ import ImportPasswordsModal from "../../components/password/ImportPasswords/Impo
 import PasswordStore from "../../store/passwords/PasswordStore";
 import RemoveIcon from "../../components/icons/RemoveIcon.vue";
 import PasswordFolderToggle from "../../components/password/PasswordFolderToggle.vue";
+import CreateNew from "../../components/password/CreateNew.vue";
 
 const { t } = i18n.element.global;
 
 const isImportingPasswords: Ref<boolean> = ref(false);
 const editingPassword: Ref<IPassword | null> = ref(null);
-const isCreating: Ref<boolean> = ref(false);
 const filter: Ref<string> = ref("");
 const isShowingSortDropdown: Ref<boolean> = ref(false);
 
@@ -38,6 +38,11 @@ const filteredFolders = computed(() => {
 
   return PasswordStore.foldersList.value
     .filter((folder) => PasswordStore.selectedFolderIds.value.includes(folder.id));
+});
+
+const showWithoutFolders = computed(() => {
+  return PasswordStore.selectedFolderIds.value.length === 0
+    || PasswordStore.selectedFolderIds.value.includes('0');
 });
 
 const filteredPasswords = computed(() => {
@@ -55,11 +60,6 @@ const filteredPasswords = computed(() => {
 const filterHasPasswordsInFolder = (folderId: string) => {
   if (filter.value.length === 0) return true;
   return filter.value.length > 0 && passwordsInFolder(folderId).length > 0;
-};
-
-const includePasswordInList = (newPassword: IPassword) => {
-  isCreating.value = false;
-  PasswordStore.includePasswordInList(newPassword);
 };
 
 const changePasswordInList = (newPassword: IPassword) => {
@@ -87,34 +87,7 @@ onMounted(() => PasswordStore.getAllData());
     @close="editingPassword = null"
     @save="changePasswordInList"
   />
-  <CreatePasswordModal
-    v-if="isCreating"
-    @close="isCreating = false"
-    @save="includePasswordInList"
-  />
-  <button
-    class="
-      bg-gray-500 hover:bg-gray-700
-      dark:bg-gray-800 dark:hover:bg-gray-900
-      text-gray-200
-      py-2
-      px-2
-      border border-gray-200 dark:border-gray-700
-      rounded-full
-      shadow-lg
-      absolute
-      bottom-6
-      md:bottom-10
-      right-6
-      md:right-10
-    "
-    @click="isCreating = true"
-    :title="$t('passwords.create')"
-  >
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-    </svg>
-  </button>
+  <CreateNew />
   <DashboardHeader :title="$t('passwords.title')" />
 
   <DashboardContainer>
@@ -130,8 +103,8 @@ onMounted(() => PasswordStore.getAllData());
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
           </svg>
-          <span class="hidden md:block">
-          {{ $t('passwords.folder-filter.title') }}
+          <span class="hidden md:block mr-1">
+            {{ $t('passwords.folder-filter.title') }}
           </span>
           <template v-if="PasswordStore.selectedFolderIds.value.length > 0">
             ({{ PasswordStore.selectedFolderIds.value.length }})
@@ -157,11 +130,11 @@ onMounted(() => PasswordStore.getAllData());
         <WinkleButton
           class="mr-1 items-center hidden md:flex"
           @click="isImportingPasswords = !isImportingPasswords"
+          :title="$t('passwords.import.title')"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-4" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
           </svg>
-          <span class="block ml-2">{{ $t('passwords.import.title') }}</span>
         </Winklebutton>
         <ImportPasswordsModal
           v-if="isImportingPasswords"
@@ -186,15 +159,6 @@ onMounted(() => PasswordStore.getAllData());
         <input
           id="search-input"
           type="text"
-          class="
-            ml-4
-            bg-gray-100 dark:bg-gray-600
-            border border-none border-b-2
-            dark:border-gray-600
-            focus:border-none
-            w-24 md:w-full
-            !outline-none
-          "
           v-model="filter"
           :placeholder="$t('passwords.search')"
           autocomplete="off"
@@ -203,13 +167,7 @@ onMounted(() => PasswordStore.getAllData());
     </div>
 
     <!-- Without category -->
-    <div
-      class="w-full mb-4"
-      v-if="
-        PasswordStore.selectedFolderIds.value.length === 0
-        || PasswordStore.selectedFolderIds.value.includes('0')
-      "
-    >
+    <div class="w-full mb-4" v-if="showWithoutFolders">
       <PasswordFolderToggle
         @toggle="PasswordStore.emptyFolderIsOpen.value = !PasswordStore.emptyFolderIsOpen.value"
         :isOpen="PasswordStore.emptyFolderIsOpen.value"
@@ -272,3 +230,14 @@ onMounted(() => PasswordStore.getAllData());
     </div>
   </DashboardContainer>
 </template>
+
+<style lang="postcss" scoped>
+#search-input {
+  @apply  ml-4 w-24 md:w-full
+          bg-gray-100 dark:bg-gray-600
+          border border-none border-b-2
+          dark:border-gray-600
+          focus:border-none
+          !outline-none;
+}
+</style>

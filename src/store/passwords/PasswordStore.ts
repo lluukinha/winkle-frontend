@@ -62,6 +62,17 @@ const includePasswordInList = (password: IPassword) => {
   checkAndIncludeFolder(password);
 };
 
+const includeFolderInList = (folder: IFolder) => {
+  foldersList.value.push(folder);
+  if (selectedFolderIds.value.length > 0) selectedFolderIds.value.push(folder.id);
+  showNotification(t('passwords.folder-created'), folder.name, 'success');
+};
+
+const changeFolderInList = (folder: IFolder) => {
+  const index = foldersList.value.findIndex((f) => f.id === folder.id);
+  foldersList.value[index] = { ...folder };
+};
+
 const changePasswordInList = (password: IPassword) => {
   const index = passwordsList.value.findIndex((p) => p.id === password.id);
   passwordsList.value[index] = { ...password };
@@ -145,5 +156,7 @@ export default {
   removeFolder,
   includeMany,
   updateMany,
-  removeData
+  removeData,
+  includeFolderInList,
+  changeFolderInList
 };

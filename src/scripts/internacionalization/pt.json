@@ -211,6 +211,7 @@
         "empty-list": "Nenhuma senha sem categoria encontrada",
         "clicking-here": "clicando aqui",
         "empty-filtered-list": "Não encontrei nada usando \"{filter}\" como chave",
+        "folder-created": "Categoria criada",
         "created": "Senha criada",
         "updated": "Senha atualizada",
         "removed": "Senha removida",
@@ -220,12 +221,21 @@
         "description": "Todas as suas senhas cadastradas estão aqui",
         "copy-login": "Copiar login",
         "copy-password": "Copiar senha",
-        "create": "Criar nova senha",
+        "create": "Criar senha",
+        "create-folder": "Criar categoria",
         "edit": "Alterar senha",
         "remove": "Remover senha",
         "remove-confirm": "Tem certeza que deseja remover esta senha?",
         "open-url": "Abrir url em uma nova aba",
         "without-folder": "SEM CATEGORIA",
+        "folder-form": {
+            "name-placeholder": "Ex: REDES SOCIAIS",
+            "errors": {
+                "already-exists": "Já existe uma categoria com este nome.",
+                "not-found": "Insira um nome para criar",
+                "name-too-short": "O nome é muito curto, tente criar uma categoria com nome maior"
+            }
+        },
         "form": {
             "name": "Nome",
             "name-placeholder": "Ex: Meu Facebook",
