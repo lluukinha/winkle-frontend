@@ -13,6 +13,7 @@ import PasswordStore from "../../store/passwords/PasswordStore";
 const emit = defineEmits(["close", "save"]);
 const password : Ref<IPassword> = ref({
   type: 'password',
+  id: '',
   name: '',
   description: '',
   login: '',

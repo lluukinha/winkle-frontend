@@ -11,6 +11,7 @@ const props = defineProps<{ newPassword?: IPassword }>();
 const emit = defineEmits(["save"]);
 const password: Ref<IPassword> = ref({
   type: 'password',
+  id: '',
   name: '',
   description: '',
   login: '',
