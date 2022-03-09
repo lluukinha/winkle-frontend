@@ -1,6 +1,7 @@
 import AES from '../../scripts/AES';
 import { IFolder } from '../folder/IFolder';
 import LoginRepository from '../login/LoginRepository';
+import { IUpdatePassword } from '../user/UserInterfaces';
 import { Repository } from '../_Repository';
 import { IImportedPassword } from './IImportedPassword';
 import { IImportedPasswordResponse } from './IImportedPasswordResponse';
@@ -98,6 +99,11 @@ const changeFolder = async (id: string, folderId: string) : Promise<IPassword> =
   return data.data;
 };
 
+const removeFolder = async (id: string) : Promise<IPassword> => {
+  const { data } = await Repository.put(`/passwords/${id}/removeFolder`);
+  return data.data;
+};
+
 const createPassword = async (p: IPassword) : Promise<IPassword> => {
   const master = LoginRepository.masterPassword.value || '';
   const newPass = JSON.parse(JSON.stringify(p));
@@ -138,5 +144,6 @@ export default {
   importCsv,
   createFolder,
   updateFolder,
-  changeFolder
+  changeFolder,
+  removeFolder
 }

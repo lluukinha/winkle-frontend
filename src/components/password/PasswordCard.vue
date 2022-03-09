@@ -33,10 +33,13 @@ const showOptions = (e: MouseEvent) => {
   }, 50);
 };
 
-const changeFolder = (passwordId: string, folderId: string) => {
+const changeFolder = (passwordId: string, folderId: string | null) => {
   isShowingOptions.value = false;
   WinkleScripts.setLoading(true);
-  PasswordRepository.changeFolder(passwordId, folderId)
+
+  const method = !folderId ? 'removeFolder' : 'changeFolder';
+
+  PasswordRepository[method](passwordId, folderId || '')
     .then((newPassword: IPassword) => {
       PasswordStore.changePasswordInList(newPassword);
     })
@@ -46,10 +49,8 @@ const changeFolder = (passwordId: string, folderId: string) => {
 
 const isShowingOptions: Ref<boolean> = ref(false);
 const optionsMenu: Ref<HTMLElement | undefined> = ref();
-const foldersList = computed(() => {
-  return PasswordStore.foldersList.value.filter(f => f.id !== props.password.folder.id);
-});
-
+const foldersList = computed(() => PasswordStore.foldersList.value
+  .filter(f => f.id !== props.password.folder.id));
 </script>
 
 <template>
@@ -72,11 +73,6 @@ const foldersList = computed(() => {
             {{ password.url }}
           </p>
         </div>
-        <!-- a v-if="password.url" :title="$t('passwords.open-url')" target="_blank" :href="password.url">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        </a -->
         <div>
           <svg @click="showOptions" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
@@ -94,13 +90,20 @@ const foldersList = computed(() => {
               <hr>
               <ul class="py-2 px-4">
                 <li
+                  class="li"
+                  @click="changeFolder(password.id, null)"
+                  v-if="password.folder.id !== ''"
+                >
+                  {{ $t('passwords.card.remove-folder') }}
+                </li>
+                <li
                   v-for="folder in foldersList"
                   :key="folder.id"
                   class="li"
                   :class="{ hidden: password.folder.id === folder.id }"
                   @click="changeFolder(password.id, folder.id)"
                 >
-                  Mover para {{ folder.name }}
+                  {{ $t('passwords.card.move-folder') }} {{ folder.name }}
                 </li>
               </ul>
             </div>

@@ -180,6 +180,10 @@
     },
 
     "passwords": {
+        "card": {
+            "remove-folder": "Remover categoria",
+            "move-folder": "Mover para"
+        },
         "import": {
             "title": "Importar senhas",
             "finished-title": "Importação finalizada",
