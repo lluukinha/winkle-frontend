@@ -10,12 +10,9 @@ onMounted(() => {
 <template>
   <div
     class="
-      h-screen
-      w-screen
-      flex
-      justify-center
-      items-center bg-gradient-to-br from-gray-600 to-gray-900
-      flex-col
+      h-screen w-screen
+      flex justify-center items-center flex-col
+      bg-gradient-to-br from-gray-600 to-gray-900
     "
   >
     <h1 class="text-gray-50 text-4xl">{{ $t('wait') }}...</h1>

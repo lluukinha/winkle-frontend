@@ -71,13 +71,19 @@ const removeMasterPassword = () => {
 
 const loginTimeout = () : boolean => {
   const info = loginInfo();
-  const login = !info ? null : JSON.parse(info);
-  if (!login) return true;
+  const login: ILoginInfo | null = info ? JSON.parse(info) : null;
+  if (!login) {
+    removeLoginInfo();
+    return true;
+  }
   const loginTime = new Date(login.last_login);
   const timeAfterTimeout = new Date(login.last_login);
   timeAfterTimeout.setSeconds(timeAfterTimeout.getSeconds() + login.expires_in);
   const currentTime = new Date();
-  if (loginTime >= timeAfterTimeout || currentTime >= timeAfterTimeout) return true;
+  if (loginTime >= timeAfterTimeout || currentTime >= timeAfterTimeout) {
+    removeLoginInfo();
+    return true;
+  }
 
   if (!isRunningTimeout.value) {
     const diff = currentTime.getTime() - timeAfterTimeout.getTime();
@@ -94,7 +100,7 @@ const canUseLoginInfo = () : boolean => {
 };
 
 const canUseMasterPassword = () : boolean => {
-  const master = getMasterPassword();
+  const master = masterPassword.value || '';
   return master !== null;
 };
 
@@ -113,10 +119,6 @@ const setMasterPassword = async (master: string) : Promise<boolean> => {
   return true;
 };
 
-const getMasterPassword = () : string | null => {
-  return localStorage.getItem('master');
-};
-
 const checkMasterPassword = async (master: string) : Promise<boolean> => {
   const masterPass = loginData();
   if (!masterPass) return false;
@@ -132,7 +134,6 @@ export default {
   loginData,
   canUseLoginInfo,
   setMasterPassword,
-  getMasterPassword,
   checkMasterPassword,
   forgotPassword,
   resetPassword,

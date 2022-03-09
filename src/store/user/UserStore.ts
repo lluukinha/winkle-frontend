@@ -1,6 +1,7 @@
 import { computed, ref, Ref } from "vue";
 import { IUser } from "../../repositories/user/UserInterfaces";
 import UserRepository from "../../repositories/user/UserRepository";
+import showErrorMessage from "../../scripts/ErrorLogs";
 import WinkleScripts from "../../scripts/WinkleScripts";
 import PasswordStore from "../passwords/PasswordStore";
 
@@ -10,10 +11,13 @@ const userIsLoaded: Ref<boolean> = ref(false);
 const getUserData = async () => {
   if (userIsLoaded.value) return;
   WinkleScripts.setLoading(true);
-  const userData = await UserRepository.getUserInfo();
-  WinkleScripts.setLoading(false);
-  user.value = userData;
-  userIsLoaded.value = true;
+  UserRepository.getUserInfo()
+    .then((userData) => {
+      user.value = userData;
+      userIsLoaded.value = true;
+    })
+    .catch(showErrorMessage)
+    .finally(() => { WinkleScripts.setLoading(false); });
 };
 
 const updateUserData = (updatedUser: IUser) => {

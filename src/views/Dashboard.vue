@@ -7,10 +7,8 @@ import MasterPassword from "../components/login/MasterPassword.vue";
 
 const isLoaded: Ref<boolean> = ref(false);
 
-onMounted(() => {
-  const canUseLoginInfo = LoginRepository.canUseLoginInfo();
-  const available = canUseLoginInfo;
-  if (!available) {
+onMounted(async () => {
+  if (!LoginRepository.canUseLoginInfo()) {
     router.push({ name: 'logout' });
     return;
   }

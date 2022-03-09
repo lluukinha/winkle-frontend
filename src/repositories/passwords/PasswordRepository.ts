@@ -6,7 +6,7 @@ import { IImportedPasswordResponse } from './IImportedPasswordResponse';
 import { IPassword } from './IPassword';
 
 const convertPasswords = (list: IImportedPassword[]) : IImportedPassword[] => {
-  const master = LoginRepository.getMasterPassword() || '';
+  const master = LoginRepository.masterPassword.value || '';
   return list.map((p: IImportedPassword) => {
     if (p.username && p.username.length > 0) {
       p.username = AES.aesEncrypt(p.username, master);
@@ -19,7 +19,7 @@ const convertPasswords = (list: IImportedPassword[]) : IImportedPassword[] => {
 };
 
 const getPasswords = async () : Promise<IPassword[]> => {
-  const master = LoginRepository.getMasterPassword() || '';
+  const master = LoginRepository.masterPassword.value || '';
   const { data } = await Repository.get('/passwords');
   const passwords: IPassword[] = data.data;
   passwords.map((p: IPassword) => {
@@ -32,7 +32,7 @@ const getPasswords = async () : Promise<IPassword[]> => {
 };
 
 const importCsv = async (passwords: IImportedPassword[]) : Promise<IImportedPasswordResponse> => {
-  const master = LoginRepository.getMasterPassword() || '';
+  const master = LoginRepository.masterPassword.value || '';
   const list = passwords
     .filter(p => p.name && p.name.length > 0)
     .map((p: IImportedPassword) => {
@@ -83,7 +83,7 @@ const mapDataFromImportedResults = (data: IImportedPasswordResponse, master: str
 };
 
 const createPassword = async (p : IPassword) : Promise<IPassword> => {
-  const master = LoginRepository.getMasterPassword() || '';
+  const master = LoginRepository.masterPassword.value || '';
   const newPass = JSON.parse(JSON.stringify(p));
   if (newPass.login.length > 0) newPass.login = AES.aesEncrypt(p.login, master);
   if (newPass.password.length > 0) newPass.password = AES.aesEncrypt(p.password, master);
@@ -96,7 +96,7 @@ const createPassword = async (p : IPassword) : Promise<IPassword> => {
 };
 
 const updatePassword = async (p : IPassword) : Promise<IPassword> => {
-  const master = LoginRepository.getMasterPassword() || '';
+  const master = LoginRepository.masterPassword.value || '';
   const newPass = JSON.parse(JSON.stringify(p));
   if (newPass.login.length > 0) newPass.login = AES.aesEncrypt(p.login, master);
   if (newPass.password.length > 0) newPass.password = AES.aesEncrypt(p.password, master);

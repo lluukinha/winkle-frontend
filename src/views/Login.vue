@@ -11,7 +11,7 @@ const forgotPassword: Ref<boolean> = ref(false);
 const loggedIn: Ref<boolean> = ref(false);
 
 onBeforeMount(() => {
-  const masterPass = LoginRepository.getMasterPassword();
+  const masterPass = LoginRepository.masterPassword.value;
   if (LoginRepository.canUseLoginInfo()) {
     if (masterPass != null) router.push({ name: 'dashboard' });
     if (masterPass == null) loggedIn.value = true;
@@ -42,6 +42,3 @@ onBeforeMount(() => {
     @success="router.push({ name: 'dashboard' })"
   />
 </template>
-
-<style scoped>
-</style>
