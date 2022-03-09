@@ -2,7 +2,7 @@ import { IFolder } from "../folder/IFolder";
 
 export interface IPassword {
   description: string;
-  id?: string;
+  id: string;
   login: string;
   name: string;
   password: string;

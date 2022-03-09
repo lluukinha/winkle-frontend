@@ -93,6 +93,11 @@ const updateFolder = async (id: string, name: string) : Promise<IFolder> => {
   return data.data;
 };
 
+const changeFolder = async (id: string, folderId: string) : Promise<IPassword> => {
+  const { data } = await Repository.put(`/passwords/${id}/folder/${folderId}`);
+  return data.data;
+};
+
 const createPassword = async (p: IPassword) : Promise<IPassword> => {
   const master = LoginRepository.masterPassword.value || '';
   const newPass = JSON.parse(JSON.stringify(p));
@@ -132,5 +137,6 @@ export default {
   convertPasswords,
   importCsv,
   createFolder,
-  updateFolder
+  updateFolder,
+  changeFolder
 }
