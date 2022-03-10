@@ -7,6 +7,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@imengyu/vue3-context-menu": "^1.0.9",
     "@kyvg/vue3-notification": "^2.3.4",
     "axios": "^0.25.0",
     "bcryptjs": "^2.4.3",

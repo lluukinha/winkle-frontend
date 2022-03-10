@@ -27,10 +27,10 @@ const handleRemove = () => {
 };
 
 const showOptions = (e: MouseEvent) => {
+  e.preventDefault();
   isShowingOptions.value = true;
-  setTimeout(() => {
-    if (optionsMenu.value) optionsMenu.value.style.top = `${e.y}px`;
-  }, 50);
+  options.value.x = e.x;
+  options.value.y = e.y;
 };
 
 const changeFolder = (passwordId: string, folderId: string | null) => {
@@ -51,10 +51,37 @@ const isShowingOptions: Ref<boolean> = ref(false);
 const optionsMenu: Ref<HTMLElement | undefined> = ref();
 const foldersList = computed(() => PasswordStore.foldersList.value
   .filter(f => f.id !== props.password.folder.id));
+
+const options = computed(() => ({
+  items: [
+    {
+      label: t('passwords.open-url'),
+      onClick: () => { window.open(props.password.url, 'blank') },
+      disabled: !props.password.url || props.password.url.length === 0,
+      divided: true
+    },
+    {
+      label: t('passwords.card.remove-folder'),
+      onClick: () => changeFolder(props.password.id, null),
+      disabled: props.password.folder.id.length === 0,
+    },
+    {
+      label: t('passwords.card.move-folder'),
+      children: foldersList.value.map(f => ({
+        label: f.name,
+        onClick: () => changeFolder(props.password.id, f.id),
+      }))
+    }
+  ],
+  customClass: 'dark:bg-gray-800 dark:text-white',
+  minWidth: 230,
+  x: 0,
+  y: 0
+}));
 </script>
 
 <template>
-  <div class="card">
+  <div class="card" @contextmenu="showOptions">
     <div class="card-top">
       <div @click="handleEdit()">
         <div class="card-avatar">
@@ -78,35 +105,7 @@ const foldersList = computed(() => PasswordStore.foldersList.value
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
           </svg>
           <template v-if="isShowingOptions">
-            <div ref="optionsMenu" class="optionsmenu">
-              <ul class="py-2 px-4">
-                <li :class="{ disabled: !password.url }">
-                  <a :href="password.url" target="_blank" v-if="password.url">
-                    {{ $t('passwords.open-url') }}
-                  </a>
-                  <span v-else>{{ $t('passwords.open-url') }}</span>
-                </li>
-              </ul>
-              <hr>
-              <ul class="py-2 px-4">
-                <li
-                  class="li"
-                  @click="changeFolder(password.id, null)"
-                  v-if="password.folder.id !== ''"
-                >
-                  {{ $t('passwords.card.remove-folder') }}
-                </li>
-                <li
-                  v-for="folder in foldersList"
-                  :key="folder.id"
-                  class="li"
-                  :class="{ hidden: password.folder.id === folder.id }"
-                  @click="changeFolder(password.id, folder.id)"
-                >
-                  {{ $t('passwords.card.move-folder') }} {{ folder.name }}
-                </li>
-              </ul>
-            </div>
+            <context-menu :show="isShowingOptions" :options="options" />
             <div class="overlay" @click="isShowingOptions = false" />
           </template>
         </div>
@@ -198,26 +197,22 @@ button {
 .overlay {
   @apply fixed bg-black opacity-0 inset-0 z-0 h-screen w-screen top-0 left-0 cursor-default;
 }
+</style>
 
-li {
-  @apply  flex justify-center items-center
-          py-2 px-4 text-sm
-          text-gray-700
-          hover:bg-gray-300 dark:hover:bg-gray-600
-          dark:text-gray-200
-          dark:hover:text-white
-          cursor-pointer
+<style lang="postcss">
+.mx-context-menu-item-sperator {
+  @apply dark:bg-gray-800;
 }
 
-li.disabled {
-  @apply text-gray-400 cursor-not-allowed
+.mx-context-menu-item-sperator:after {
+  @apply dark:bg-gray-700;
 }
 
-.optionsmenu {
-  @apply absolute z-50 p-2 select-none
-          right-4 md:right-auto
-          text-base list-none
-          bg-white rounded divide-y divide-gray-200
-          shadow dark:bg-gray-800 dark:divide-gray-700
+.mx-context-menu-item {
+  @apply dark:hover:bg-gray-600;
+}
+
+.mx-context-menu-item > span {
+  @apply dark:text-gray-50;
 }
 </style>
