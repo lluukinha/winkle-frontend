@@ -67,13 +67,14 @@ const options = computed(() => ({
     },
     {
       label: t('passwords.card.move-folder'),
+      disabled: foldersList.value.length === 0,
       children: foldersList.value.map(f => ({
         label: f.name,
         onClick: () => changeFolder(props.password.id, f.id),
       }))
     }
   ],
-  customClass: 'dark:bg-gray-800 dark:text-white',
+  customClass: 'dark:bg-gray-800 dark:text-white force-z-20',
   minWidth: 230,
   x: 0,
   y: 0
@@ -105,7 +106,10 @@ const options = computed(() => ({
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
           </svg>
           <template v-if="isShowingOptions">
-            <context-menu :show="isShowingOptions" :options="options" />
+            <context-menu
+              :show="isShowingOptions"
+              :options="options"
+            />
             <div class="overlay" @click="isShowingOptions = false" />
           </template>
         </div>
@@ -157,7 +161,7 @@ const options = computed(() => ({
       w-full md:w-80 md:mx-2 mb-7 p-6
       bg-white dark:bg-gray-800
       border dark:border-gray-700
-      shadow-lg rounded;
+      shadow-lg rounded select-none;
 }
 
 .card-top {
@@ -196,23 +200,5 @@ button {
 
 .overlay {
   @apply fixed bg-black opacity-0 inset-0 z-0 h-screen w-screen top-0 left-0 cursor-default;
-}
-</style>
-
-<style lang="postcss">
-.mx-context-menu-item-sperator {
-  @apply dark:bg-gray-800;
-}
-
-.mx-context-menu-item-sperator:after {
-  @apply dark:bg-gray-700;
-}
-
-.mx-context-menu-item {
-  @apply dark:hover:bg-gray-600;
-}
-
-.mx-context-menu-item > span {
-  @apply dark:text-gray-50;
 }
 </style>

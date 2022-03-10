@@ -10,6 +10,34 @@ body {
   overflow: hidden;
 }
 
+.force-z-20 {
+  z-index: 20 !important;
+}
+
+.mx-right-arrow {
+  @apply dark:invert;
+}
+
+.mx-context-menu-updown {
+  @apply dark:bg-gray-800;
+}
+
+.mx-context-menu-item-sperator {
+  @apply dark:bg-gray-800;
+}
+
+.mx-context-menu-item-sperator:after {
+  @apply dark:bg-gray-700;
+}
+
+.mx-context-menu-item {
+  @apply dark:hover:bg-gray-600;
+}
+
+.mx-context-menu-item > span {
+  @apply dark:text-gray-50;
+}
+
 @supports (-webkit-touch-callout: none) {
   .h-screen {
     height: -webkit-fill-available;
