@@ -3,7 +3,6 @@ import LoginRepository from "../../repositories/login/LoginRepository";
 import DefaultSidebar from './sidebar/DefaultSidebar.vue';
 import MobileSidebar from './sidebar/MobileSidebar.vue';
 import { ISidebarItem } from './sidebar/ISidebarItem';
-import { ILoginInfo } from "../../repositories/login/ILoginInfo";
 import SidebarScript from "../../scripts/SidebarScript";
 import i18n from "../../scripts/internacionalization/i18n";
 

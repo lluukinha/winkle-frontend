@@ -12,9 +12,9 @@ const loggedIn: Ref<boolean> = ref(false);
 
 onBeforeMount(() => {
   const masterPass = LoginRepository.masterPassword.value;
-  if (LoginRepository.canUseLoginInfo()) {
+  if (!LoginRepository.checkLoginTimeout()) {
+    loggedIn.value = true;
     if (masterPass != null) router.push({ name: 'dashboard' });
-    if (masterPass == null) loggedIn.value = true;
   }
 });
 </script>
@@ -39,6 +39,6 @@ onBeforeMount(() => {
   <MasterPassword
     v-if="loggedIn"
     @failed="loggedIn = false"
-    @success="router.push({ name: 'dashboard' })"
+    @success="$router.push({ name: 'dashboard' })"
   />
 </template>

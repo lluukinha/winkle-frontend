@@ -15,16 +15,16 @@ const Repository = axios.create({
 
 // Interceptors for Non Public Repository
 Repository.interceptors.request.use(async (config: AxiosRequestConfig) => {
-  const isJwtExpired = !LoginRepository.canUseLoginInfo();
-  if (isJwtExpired) return;
-  const login = LoginRepository.loginData();
-  if (login && config.headers) config.headers.Authorization = `Bearer ${login.access_token}`;
+  if (LoginRepository.checkLoginTimeout()) return;
+  if (LoginRepository.loginData.value && config.headers) {
+    config.headers.Authorization = `Bearer ${LoginRepository.loginData.value.access_token}`;
+  }
   return config;
 });
 
-Repository.interceptors.response.use(undefined, (error) => {
+Repository.interceptors.response.use(undefined, async (error) => {
   if (WinkleScripts.isLoading.value) WinkleScripts.setLoading(false);
-  if (!LoginRepository.canUseLoginInfo() || error.response.status === 401) router.push({ name: 'logout' });
+  if (LoginRepository.checkLoginTimeout() || error.response.status === 401) router.push({ name: 'logout' });
   return Promise.reject(error);
 });
 

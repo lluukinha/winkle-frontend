@@ -2,30 +2,35 @@
 import router from "../router";
 import LoginRepository from "../repositories/login/LoginRepository";
 import Sidebar from "../components/dashboard/Sidebar.vue";
-import { onMounted, Ref, ref } from "@vue/runtime-core";
+import { onBeforeMount, Ref, ref } from "@vue/runtime-core";
 import MasterPassword from "../components/login/MasterPassword.vue";
 
 const isLoaded: Ref<boolean> = ref(false);
 
-onMounted(async () => {
-  if (!LoginRepository.canUseLoginInfo()) {
+onBeforeMount(() => {
+  if (LoginRepository.checkLoginTimeout()) {
     router.push({ name: 'logout' });
     return;
   }
 
-  if (router.currentRoute.value.name === 'dashboard') router.push({ name: 'dashboard-passwords' });
+  if (!LoginRepository.isRefreshed.value) LoginRepository.refreshUser();
+
+  if (router.currentRoute.value.name === 'dashboard') {
+    isLoaded.value = true;
+    router.push({ name: 'dashboard-passwords' });
+    return;
+  }
+
   isLoaded.value = true;
-});
+})
 </script>
 
 <template>
-  <MasterPassword
-    v-if="isLoaded && !LoginRepository.masterPassword.value"
-  />
-  <div class="w-screen bg-gray-400 dark:bg-gray-600 flex justify-center" v-else>
-    <div class="w-full flex flex-col items-center">
+  <MasterPassword v-if="isLoaded && !LoginRepository.masterPassword.value" />
+  <div class="w-screen h-screen bg-gray-400 dark:bg-gray-600 flex justify-center" v-else>
+    <div class="w-full flex flex-col items-center" v-if="isLoaded && LoginRepository.isRefreshed.value">
       <div class="w-full flex justify-center">
-        <Sidebar v-if="isLoaded" />
+        <Sidebar />
         <div
           class="
             bg-gray-300 dark:bg-gray-700 dark:text-gray-400

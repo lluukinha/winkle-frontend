@@ -2,20 +2,11 @@
 import { computed, onMounted, Ref, ref } from "vue";
 import { ISidebarItem } from "./ISidebarItem";
 import router from "../../../router";
-
 import SidebarIcon from "./SidebarIcon.vue";
-import { ILoginInfo } from "../../../repositories/login/ILoginInfo";
-import LoginRepository from "../../../repositories/login/LoginRepository";
-import DarkModeSelector from "../../shared/DarkModeSelector.vue";
 
 const props = defineProps<{ items: ISidebarItem[] }>();
 const isOpen: Ref<boolean> = ref(true);
 const currentRoute = computed(() => router.currentRoute.value.name);
-const userData: Ref<ILoginInfo | null> = ref(null);
-
-onMounted(() => {
-  userData.value = LoginRepository.loginData();
-});
 </script>
 
 <template>
