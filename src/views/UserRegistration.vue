@@ -66,6 +66,7 @@ const finishRegistration = (e: Event) => {
   WinkleScripts.setLoading(true);
   UserRepository.finishRegistration(formData.value)
     .then(() => {
+      isFinished.value = true;
       router.push({ name: 'login' });
     })
     .catch((errors: AxiosError) => {
@@ -78,7 +79,7 @@ const finishRegistration = (e: Event) => {
 };
 
 const isLoaded: Ref<boolean> = ref(false);
-const isFinished: Ref<boolean> = ref(true);
+const isFinished: Ref<boolean> = ref(false);
 const hasErrorsOnVerification: Ref<boolean> = ref(false);
 const isShowingMasterDetails: Ref<boolean> = ref(false);
 
