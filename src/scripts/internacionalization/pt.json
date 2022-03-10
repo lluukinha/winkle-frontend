@@ -64,8 +64,11 @@
     },
 
     "registration": {
+        "title": "Finalize seu Cadastro",
         "not-available-1": "Usuário não está mais habilitado para finalizar cadastro.",
         "not-available-2": "Verifique se o cadastro já não está ativo",
+        "finished-1": "Cadastro efetuado com sucesso!",
+        "finished-2": "Clique no botão abaixo e entre no sistema",
         "master-password-help": {
             "what-is": "o que é isso?",
             "title": "O que é Senha Mestre?",
@@ -73,6 +76,10 @@
             "description-2": "<b>IMPORTANTE:</b> Isso significa que sua senha mestre precisa ser uma senha que seja fácil de você lembrar, pois ela nunca será armazenada no nosso sistema, então não será possível redefini-la caso você já tenha senhas cadastradas no sistema."
         },
         "form": {
+            "name": "Seu nome completo",
+            "ddd": "DDD",
+            "phone": "Telefone",
+            "only-numbers": "Somente números",
             "email": "Endereço de Email",
             "password": "Senha",
             "password-placeholder": "******",

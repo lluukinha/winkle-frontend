@@ -38,6 +38,9 @@ interface IResetPassword {
 }
 
 interface IUserRegistration {
+  name: string;
+  area_code: number | null;
+  phone: number | null;
   email: string;
   token: string;
   password: string;

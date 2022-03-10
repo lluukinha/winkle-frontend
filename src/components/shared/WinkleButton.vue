@@ -25,8 +25,8 @@ const buttonClass = computed(() => {
       border border-red-500
       text-white`,
     info: `
-      bg-indigo-500
-      border border-indigo-400
+      bg-indigo-500 dark:bg-indigo-900
+      border border-indigo-400 dark:border-indigo-700
       hover:bg-indigo-600
       text-white`,
     default: `
