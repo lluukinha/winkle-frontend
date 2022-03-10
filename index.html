@@ -3,11 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="application-name" content="Winkle">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <link rel="icon" href="/favicon.ico" id="light-scheme-icon">
     <link rel="icon" href="/favicon-white.ico" id="dark-scheme-icon">
+
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name='mobile-web-app-capable' content='yes' />
+    <meta name='apple-mobile-web-app-capable' content='yes' />
+    <meta name='apple-mobile-web-app-title' content="Winkle Senhas" />
+    <meta name="msapplication-TileImage" content="<%= BASE_URL %>app_icon.png"/>
+    <link rel='apple-touch-startup-image' href='<%= BASE_URL %>app_icon.png' />
+    <link rel='apple-touch-icon' href='<%= BASE_URL %>app_icon.png' />
+    <link rel='apple-touch-icon' sizes='72x72' href='<%= BASE_URL %>app_icon.png' />
+    <link rel='apple-touch-icon' sizes='114x114' href='<%= BASE_URL %>app_icon.png' />
+    <link rel='apple-touch-icon' sizes='144x144' href='<%= BASE_URL %>app_icon.png' />
+    <link rel='icon' sizes='192x192' href='<%= BASE_URL %>app_icon.png' />
+    <link rel='icon' sizes='128x128' href='<%= BASE_URL %>app_icon.png' />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Winkle - Gerenciador de Senhas</title>
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -18,7 +29,7 @@
       gtag('js', new Date());
       gtag('config', 'G-EWH58E8W94');
     </script>
-    <script>
+    <script type="text/javascript">
       if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
         document.documentElement.classList.add('dark');
         if (!localStorage.getItem('theme')) localStorage.theme = 'dark';
@@ -26,7 +37,26 @@
         document.documentElement.classList.remove('dark');
         if (!localStorage.getItem('theme')) localStorage.theme = 'light';
       }
-    </script>
+
+      (function (document, navigator, standalone) {
+        if ((standalone in navigator) && navigator[standalone]) {
+          var curnode, location = document.location, stop = /^(a|html)$/i;
+          document.addEventListener('click', function (e) {
+            curnode = e.target;
+            while (!(stop).test(curnode.nodeName)) curnode = curnode.parentNode;
+
+            if (
+              'href' in curnode &&
+              (chref = curnode.href).replace(location.href, '').indexOf('#') && // is not an anchor
+              (!(/^[a-z\+\.\-]+:/i).test(chref) || chref.indexOf(location.protocol + '//' + location.host) === 0)
+            ) {
+              e.preventDefault();
+              location.href = curnode.href;
+            }
+          }, false);
+        }
+      })(document, window.navigator, 'standalone');
+  </script>
   </head>
   <body>
     <div id="app"></div>
