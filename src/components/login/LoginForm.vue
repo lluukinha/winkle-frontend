@@ -105,8 +105,7 @@ onMounted(() => { firstInput.value?.focus(); });
     <div class="mt-10">
       <button
         class="
-          bg-gray-600 hover:bg-gray-800 text-gray-100
-          dark:bg-gray-800 dark:hover:bg-gray-900
+          bg-gray-600 hover:bg-gray-700 text-gray-100
           p-4
           w-full
           rounded-full

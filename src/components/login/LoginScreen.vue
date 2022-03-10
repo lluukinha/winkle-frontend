@@ -9,7 +9,7 @@ defineProps<{ title: string }>();
     <div
       class="
         lg:w-1/2 xl:max-w-screen-sm h-screen
-        bg-white dark:bg-gray-600
+        bg-white dark:bg-gray-800
         flex flex-col justify-center px-10 lg:px-16 xl:px-20
       "
     >
@@ -63,12 +63,7 @@ defineProps<{ title: string }>();
         </div>
       </div>
     </div>
-    <div
-      class="
-        hidden h-screen
-        lg:flex items-center justify-center flex-1
-      "
-    >
+    <div class="hidden h-screen lg:flex items-center justify-center flex-1">
       <div class="max-w-xs transform duration-200 hover:scale-110 cursor-pointer">
         <WinkleImg />
       </div>

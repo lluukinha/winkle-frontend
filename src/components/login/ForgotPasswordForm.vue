@@ -55,13 +55,10 @@ onMounted(() => { firstInput.value?.focus(); });
           id="email-input"
           ref="firstInput"
           class="
-            w-full
-            text-lg
-            p-2
+            w-full text-lg p-2
             border-b border-gray-300
             focus:outline-none focus:border-gray-200
-            bg-gray-100
-            rounded
+            bg-gray-100 rounded
           "
           type="email"
           placeholder="lucas@winkle.com.br"
@@ -72,11 +69,8 @@ onMounted(() => { firstInput.value?.focus(); });
 
       <button
         class="
-          mt-4
-          bg-gray-600 hover:bg-gray-800 text-gray-100
-          dark:bg-gray-800 dark:hover:bg-gray-900
-          p-4
-          w-full
+          mt-4 p-4 w-full
+          bg-gray-600 hover:bg-gray-700 text-gray-100
           rounded-full
           tracking-wide
           font-semibold font-display
