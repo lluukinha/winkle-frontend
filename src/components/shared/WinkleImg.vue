@@ -1,5 +1,12 @@
+<script setup lang="ts">
+const currentIndex = Math.floor(Math.random() * (2 - 0 + 1) + 0);
+</script>
+
 <template>
-  <svg
+  <img src="../../assets/man1.png" class="w-full mx-auto" v-if="currentIndex === 0" />
+  <img src="../../assets/man2.png" class="w-full mx-auto" v-if="currentIndex === 1" />
+  <img src="../../assets/woman.png" class="w-full mx-auto" v-if="currentIndex === 2" />
+  <!-- svg
     class="w-5/6 mx-auto"
     xmlns="http://www.w3.org/2000/svg"
     id="f080dbb7-9b2b-439b-a118-60b91c514f72"
@@ -146,5 +153,5 @@
       transform="translate(-335.6414 -100.11607)"
       fill="#2f2e41"
     />
-  </svg>
+  </svg -->
 </template>
