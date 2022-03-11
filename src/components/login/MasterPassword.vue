@@ -16,7 +16,6 @@ const failedCounter: Ref<number> = ref(0);
 const systemOk: Ref<boolean> = ref(false);
 const masterPassword: Ref<string> = ref('');
 const masterInput: Ref<HTMLElement | undefined> = ref();
-const loginData: Ref<ILoginInfo | null> = ref(null);
 const isShowingMasterPassword: Ref<boolean> = ref(false);
 
 const emit = defineEmits(['failed', 'success']);
@@ -59,9 +58,7 @@ const checkMasterPassword = (e: Event) => {
 };
 
 onBeforeMount(() => {
-  const newLoginData = LoginRepository.loginData();
-  if (!newLoginData) router.push({ name: 'logout' });
-  loginData.value = newLoginData;
+  if (!LoginRepository.loginData.value) router.push({ name: 'logout' });
 })
 
 onMounted(() => {
@@ -94,9 +91,9 @@ onMounted(() => {
       class="bg-gradient-to-b from-gray-800 to-gray-600 pt-10 transition-all duration-300 w-full overflow-hidden"
       :class="{ 'h-[65vh]': !systemOk, 'h-0 fixed bottom-0': systemOk }"
     >
-      <div class="flex flex-col justify-center">
+      <div class="flex flex-col justify-center items-center">
         <h3 class="text-xl text-gray-100 mb-2">
-          {{ $t('hello') }} <span class="font-bold">{{ loginData?.user }}</span>
+          {{ $t('hello') }} <span class="font-bold">{{ LoginRepository.loginData.value?.user }}</span>
           <router-link
             tag="span"
             class="text-sm text-gray-400 hover:underline"

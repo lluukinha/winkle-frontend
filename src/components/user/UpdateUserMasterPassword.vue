@@ -70,10 +70,9 @@ const clearMasterOnly = () : void => {
 };
 
 const localMasterMatch = async () : Promise<boolean> => {
-  const masterPass = LoginRepository.loginData();
-  if (!masterPass) return false;
-  const result = await dcodeIO.compare(form.value.oldMasterPassword, masterPass.shuffled);
-  return result;
+  if (!LoginRepository.loginData.value) return false;
+  return await dcodeIO
+    .compare(form.value.oldMasterPassword, LoginRepository.loginData.value.shuffled);
 };
 
 const sendForm = () => { formSubmit.value?.click(); };
