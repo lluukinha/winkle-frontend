@@ -43,7 +43,7 @@ const showAll = () => {
       rounded p-4 shadow-lg
       bg-gray-50 dark:bg-gray-700"
   >
-    <ul class="max-h-[40vh] max-w-[calc(100vw-60px)] md:max-w-64 overflow-auto px-4">
+    <ul class="max-h-[60vh] max-w-[calc(100vw-60px)] md:max-w-64 overflow-auto px-4">
       <li @click="showAll()">
         <input
           type="checkbox"
