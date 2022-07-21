@@ -1,71 +1,270 @@
 {
+    "app-title": "Winkle",
+    "app-description": "Password Manager",
+    "hello": "Hello",
+    "leave": "leave",
+    "wait": "Please wait",
+    "not-redirected-message": "If you were not redirected,",
+    "click-here": "click here",
+    "go-back": "Go back",
+    "i-remembered-my-password": "I remembered my password!",
+    "enter": "Enter",
     "cancel": "Cancel",
+    "close": "Close",
     "save": "Save",
     "remove": "Remove",
-    "search": "Search",
-    "logout": "logout",
+    "logout": "Logout",
+    "my-data": "My data",
+    "created-at": "Created at",
+    "last-update": "Last update",
 
     "text-copied": "Text copied",
-    "text-copied-description": "Text was copied to your clipboard",
-    "text-copy-error": "Error copying text",
-    "text-copy-error-description": "Your browser is not allowing to copy",
+    "text-copied-description": "Text copied to your clipboard",
+    "text-copy-error": "Error when trying to copy",
+    "text-copy-error-description": "Your browser did not give the permission to copy the text",
 
     "api-errors": {
-        "title": "An error occurred",
+        "title": "An error ocurred",
+        "passwords-dont-match": "Passwords does not match",
         "already-exists": "{ param } already exists",
         "unauthenticated": "Session expired",
+        "password-incorrect": "Wrong password",
+        "password-is-equal": "This password is already being used",
+        "master-password-incorrect": "Master password is incorrect",
+        "forgot-password-user-not-found": "No users found with this email",
+        "token-or-user-not-found": "Token not valid anymore or user not found",
+        "user-has-reset-password-in-progress": "There is already a recent request for reset password. Verify your e-mail or try again in the next 24 hours.",
+        "must-be-at-least-6": "This field needs to have at least 6 characters",
+        "plan-expired": "Verify your signature",
+        "folder-has-passwords": "Is not possible to delete a category that contains passwords.",
         "params": {
             "name": "name",
             "password": "password",
             "login": "login",
             "user": "user",
             "email": "email"
+        },
+        "password-import": {
+            "column-missing": "The CSV file does not contains all the needed columns.",
+            "column-missing-description": "The CSV file needs to contain the following columns: 'name', 'url', 'username', and 'password'",
+            "too-many-rows": "File sent is too big",
+            "too-many-rows-description": "Please send a file with at most 300 rows"
         }
+    },
+
+    "time-convert": {
+        "years": "{time} year(s) ago",
+        "months": "{time} month(s) ago",
+        "days": "{time} day(s) ago",
+        "hours": "{time} hour(s) ago",
+        "minutes": "{time} minute(s) ago",
+        "seconds": "seconds ago",
+        "days-to": "{days} day(s)",
+        "never": "never expires"
+    },
+
+    "registration": {
+        "title": "Finish your registration",
+        "not-available-1": "User is not available to finish registration anymore.",
+        "not-available-2": "Verify your status. Probably is already activated",
+        "finished-1": "Registration success!",
+        "finished-2": "Click on the button below to enter in the system",
+        "master-password-help": {
+            "what-is": "what is this?",
+            "title": "What is a master password?",
+            "description-1": "The <b>Master Password</b> is the password utilized to encrypt/shuffle all the passwords you insert in the system. It is the first level of our cryptography, your real password <b>WILL NEVER</b> be sent to our server/database, we always send them already encrypted with your master password.",
+            "description-2": "<b>IMPORTANT:</b> This means that your master password needs to be something easy for you to remember, because it will never be stored in our system, so it will not be possible to change if you already have passwords inserted on Winkle."
+        },
+        "form": {
+            "name": "Full name",
+            "ddd": "Prefix",
+            "phone": "Phone",
+            "only-numbers": "Only numbers",
+            "email": "Email address",
+            "password": "Password",
+            "password-placeholder": "********",
+            "confirm-password": "Confirm your password",
+            "confirm-password-placeholder": "********",
+            "master-password": "Master password",
+            "master-password-placeholder": "********",
+            "confirm-master-password": "Confirm your master password",
+            "confirm-master-password-placeholder": "********",
+            "send-form": "Finish!"
+        }
+    },
+
+    "reset-password": {
+        "form": {
+            "token": "Token",
+            "token-placeholder": "Insert the token sent you via e-mail",
+            "password": "New password",
+            "password-placeholder": "**********",
+            "confirm-password": "Confirm your new password",
+            "confirm-password-placeholder": "**********",
+            "submit": "Change my password"
+        },
+        "email-sent": "Email sent!",
+        "email-sent-description": "We sent you an email with instructions to reset your password. The code will be valid for the next 24 hours.",
+        "message-reseted": "Password updated!",
+        "message-reseted-description": "Your password was updated successfully, please log in again"
     },
 
     "login": {
         "login": "Log in",
-        "enter": "Log in",
-        "email": "Email Address",
+        "enter": "Enter",
+        "email": "Email address",
         "password": "Password",
-        "password-placeholder": "Enter your password",
+        "password-placeholder": "Enter with your password",
         "login-failed": "Login failed",
-        "user-not-found": "User not found with this email and password"
+        "user-not-found": "No user found with this e-mail address or password",
+        "forgot-password": "Forgot your password?",
+        "no-account": "Don't have an account?",
+        "sign-up": "Sign up"
+    },
+
+    "master-password": {
+        "message": "Insert your master password",
+        "expires-in": "Expires in",
+        "minutes": "minutes",
+        "all-day": "1 day",
+        "timeout-title": "Warning",
+        "timeout-description": "The screen will be blocked in {count} seconds"
+    },
+
+    "user": {
+        "content": {
+            "user": "User",
+            "email": "Email",
+            "verified": "email verified",
+            "not-verified": "not verified",
+            "created-at": "Account created at",
+            "plan": "Plan",
+            "expires-at": "Expires in"
+        },
+        "master-alert": {
+            "title": "Why I can not update my master password?",
+            "description": "If you already have any password created, your master password can not be updated, because all your passwords are encrypted based on your master password."
+        },
+        "messages": {
+            "updated": "User updated",
+            "updated-description": "{email} updated successfully",
+            "emails-dont-match": "Emails does not match",
+            "passwords-dont-match": "Passwords does not match",
+            "master-passwords-dont-match": "Master passwords does not match"
+        },
+        "title": "My data",
+        "created-at": "Account created",
+        "update-email": "Update email",
+        "update-password": "Update password",
+        "update-master-password": "Update master password",
+        "update-email-form": {
+          "email": "New email",
+          "email-placeholder": "Insert your email",
+          "email-confirm": "Confirm",
+          "email-confirm-placeholder": "Insert again",
+          "password": "Password",
+          "password-placeholder": "Your current password"
+        },
+        "update-password-form": {
+            "password": "Password",
+            "password-placeholder": "Your current password",
+            "new-password": "New password",
+            "new-password-placeholder": "Insert the new password",
+            "confirm-new-password": "Confirm",
+            "confirm-new-password-placeholder": "Confirm the new password"
+        },
+        "update-master-password-form": {
+            "new-master-password": "New master password",
+            "new-master-password-placeholder": "Insert the new master password",
+            "confirm-new-master-password": "Confirm",
+            "confirm-new-master-password-placeholder": "Confirm the new master password",
+            "old-master-password": "Current master password",
+            "old-master-password-placeholder": "Insert your current master password",
+            "password": "Password",
+            "password-placeholder": "Your current password"
+        }
     },
 
     "passwords": {
-        "empty-list": "No passwords were found, but you can create your first",
+        "card": {
+            "remove-folder": "Remove category",
+            "move-folder": "Move to"
+        },
+        "import": {
+            "title": "Import passwords",
+            "finished-title": "Import finished",
+            "description": "If you have passwords stored in your browser, you can export them and import the file directly here. We will encrypt all the data and include in the system.",
+            "import-btn": "Import",
+            "obs": "Attention",
+            "obs-1": "Passwords without name will be ignored",
+            "obs-2": "Duplicated names will be updated with the last item information",
+            "headers": {
+                "name": "Name",
+                "login": "Login",
+                "password": "Password",
+                "folder": "Category"
+            },
+            "created": "Passwords created",
+            "updated": "Passwords updated",
+            "not-inserted": "Passwords not inserted",
+            "not-inserted-description": "(incorrect or duplicated)"
+        },
+        "folder-filter": {
+            "title": "Categories",
+            "save": "Filter",
+            "cancel": "Cancel",
+            "show-all": "Show all"
+        },
+        "toggle-folders": "Show/hide all",
+        "folder-is-empty": "Empty category",
+        "search": "Search",
+        "empty-list": "No passwords without category was found",
         "clicking-here": "clicking here",
-        "empty-filtered-list": "Nothing was found using \"{filter}\" as search key",
-        "copied": "Text copied",
-        "copied-description": "Something was inserted on your clipboard",
+        "empty-filtered-list": "Nothing using \"{filter}\" as a key was found",
+        "folder-created": "Category created",
         "created": "Password created",
         "updated": "Password updated",
         "removed": "Password removed",
         "login": "login",
         "password": "password",
         "title": "Passwords",
-        "description": "All your passwords is here",
+        "description": "All your passwords will be here",
         "copy-login": "Copy login",
         "copy-password": "Copy password",
-        "create": "Create new password",
+        "create": "New password",
+        "create-folder": "New category",
         "edit": "Update password",
-        "remove": "Remove password",
+        "remove": "Delete password",
         "remove-confirm": "Are you sure you want to remove this password?",
-        "open-url": "Open URL in a new tab",
+        "open-url": "Open url in a new tab",
+        "without-folder": "NO CATEGORY",
+        "folder-form": {
+            "name-placeholder": "SOCIAL NETWORKS",
+            "errors": {
+                "already-exists": "There is already a category with this name.",
+                "not-found": "Insert a name to create",
+                "name-too-short": "The name is too short, try creating something with a bigger name"
+            }
+        },
         "form": {
             "name": "Name",
-            "name-placeholder": "Application name",
+            "name-placeholder": "My facebook",
             "login": "Login",
-            "login-placeholder": "Login/Username",
+            "login-placeholder": "Login/User",
             "show-login": "Show/hide login",
             "password": "Password",
             "password-placeholder": "********",
             "show-password": "Show/hide password",
-            "url": "URL",
-            "url-placeholder": "https://www.facebook.com.br",
+            "url": "URL/Link",
+            "url-placeholder": "Ex: https://www.facebook.com.br",
+            "select": "Select",
+            "url-select-other": "Other (i will type)",
+            "folder-select-other": "Other (create new)",
+            "url-back-button-title": "Select from existing list",
             "description": "Description",
-            "description-placeholder": ""
+            "description-placeholder": "",
+            "folder": "Folder/Category",
+            "folder-placeholder": "Without category"
         }
     },
     "documents": {
@@ -78,9 +277,12 @@
         "title": "Credit cards"
     },
     "bitcoin-wallet": {
-        "title": "Bitcoin wallet"
+        "title": "Bitcoin wallets"
     },
     "notes": {
         "title": "Notes"
+    },
+    "emails": {
+        "title": "E-mails"
     }
 }
