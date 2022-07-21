@@ -7,11 +7,13 @@ import { showError } from "../../scripts/NotificationScript";
 import i18n from "../../scripts/internacionalization/i18n";
 import { ILoginForm } from "../../repositories/login/ILoginForm";
 import showErrorMessage from "../../scripts/ErrorLogs";
+import EyeIcon from "../icons/EyeIcon.vue";
 
 const emit = defineEmits(['loginFinished', 'forgot']);
 const { t } = i18n.element.global;
 const firstInput : Ref<HTMLElement | undefined> = ref();
 const loginForm: Ref<ILoginForm> = ref({ email: '', password: '' });
+const isShowingPassword : Ref<boolean> = ref(false);
 
 const doLogin = (e: Event) => {
   e.preventDefault();
@@ -34,7 +36,7 @@ const doLogin = (e: Event) => {
 };
 
 const clearform = () => {
-  loginForm.value.email = '';
+  // loginForm.value.email = ''; -> Request from user, do not clear the email, just the password
   loginForm.value.password = '';
   firstInput.value?.focus();
 };
@@ -86,21 +88,27 @@ onMounted(() => { firstInput.value?.focus(); });
           </span>
         </div>
       </div>
-      <input
-        class="
-          w-full
-          text-lg
-          p-2
-          border-b border-gray-300
-          focus:outline-none focus:border-gray-200
-          bg-gray-100
-          rounded
-        "
-        type="password"
-        :placeholder="$t('login.password-placeholder')"
-        v-model="loginForm.password"
-        required
-      />
+      <div class="w-full flex">
+        <input
+          class="
+            w-full text-lg p-2
+            border-b border-gray-300 bg-gray-100
+            focus:outline-none focus:border-gray-200
+            rounded rounded-tr-none rounded-br-none
+          "
+          :type="isShowingPassword ? 'text' : 'password'"
+          :placeholder="$t('login.password-placeholder')"
+          v-model="loginForm.password"
+          required
+        />
+        <span
+          class="span-button bg-gray-200 hover:bg-gray-300 flex items-center p-2 rounded-tr rounded-br"
+          @click="isShowingPassword = !isShowingPassword"
+          :title="$t('passwords.form.show-password')"
+        >
+          <EyeIcon :isShowing="isShowingPassword" />
+        </span>
+      </div>
     </div>
     <div class="mt-10">
       <button
