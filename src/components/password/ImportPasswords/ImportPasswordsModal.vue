@@ -8,7 +8,6 @@ import WinkleScripts from '../../../scripts/WinkleScripts';
 import Modal from '../../shared/Modal.vue';
 import ImportPasswordsList from './ImportPasswordsList.vue';
 import i18n from '../../../scripts/internacionalization/i18n';
-import { showError } from '../../../scripts/NotificationScript';
 import PasswordStore from '../../../store/passwords/PasswordStore';
 
 const { t } = i18n.element.global;
@@ -78,7 +77,7 @@ const importList = () => {
 
 <template>
   <Modal
-    :saveLabel="importedList.length === 0 ? 'Importar' : undefined"
+    :saveLabel="importedList.length === 0 ? t('passwords.import.import-btn') : undefined"
     :removeSave="!!importResult"
     @close="$emit('close')"
     @save="importedList.length === 0 ? submitButton?.click() : importList()"

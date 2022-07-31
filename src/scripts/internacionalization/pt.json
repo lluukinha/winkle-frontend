@@ -23,8 +23,13 @@
     "text-copy-error": "Erro ao copiar",
     "text-copy-error-description": "Seu navegador não deu permissão para copiar o texto",
 
+    "browser": {
+        "title": "Winkle - Gerenciador de Senhas"
+    },
+
     "api-errors": {
         "title": "Ocorreu um erro",
+        "not-found": "Usuário não encontrado",
         "passwords-dont-match": "Senhas não conferem",
         "already-exists": "Este { param } já existe no sistema",
         "unauthenticated": "A sessão expirou",

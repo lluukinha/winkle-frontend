@@ -2,7 +2,7 @@
     "app-title": "Winkle",
     "app-description": "Password Manager",
     "hello": "Hello",
-    "leave": "leave",
+    "leave": "logout",
     "wait": "Please wait",
     "not-redirected-message": "If you were not redirected,",
     "click-here": "click here",
@@ -23,8 +23,13 @@
     "text-copy-error": "Error when trying to copy",
     "text-copy-error-description": "Your browser did not give the permission to copy the text",
 
+    "browser": {
+        "title": "Winkle - Password Manager"
+    },
+
     "api-errors": {
         "title": "An error ocurred",
+        "not-found": "User not found",
         "passwords-dont-match": "Passwords does not match",
         "already-exists": "{ param } already exists",
         "unauthenticated": "Session expired",

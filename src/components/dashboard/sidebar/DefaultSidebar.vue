@@ -44,7 +44,7 @@ const currentRoute = computed(() => router.currentRoute.value.name);
         >
           <div class="flex items-center focus:outline-none">
             <SidebarIcon :icon="item.icon" />
-            <span class="text-sm ml-2">{{ item.name }}</span>
+            <span class="text-sm ml-2">{{ $t(item.name) }}</span>
           </div>
         </router-link>
       </ul>

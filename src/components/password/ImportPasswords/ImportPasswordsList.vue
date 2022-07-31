@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { defineProps, ref } from "vue";
 import { IImportedPassword } from "../../../repositories/passwords/IImportedPassword";
 import PasswordStore from "../../../store/passwords/PasswordStore";
 const props = defineProps<{ list: IImportedPassword[] }>();

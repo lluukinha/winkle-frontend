@@ -64,7 +64,7 @@ const changeRoute = (newRoute: string) : void => {
         >
           <div class="flex items-center focus:outline-none">
             <SidebarIcon :icon="item.icon" />
-            <span class="text-lg ml-2">{{ item.name }}</span>
+            <span class="text-lg ml-2">{{ $t(item.name) }}</span>
           </div>
         </li>
       </ul>

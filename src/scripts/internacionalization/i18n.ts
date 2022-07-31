@@ -3,8 +3,8 @@ import EN from "./en.json";
 import PT from "./pt.json";
 
 const options = {
-  locale: 'pt',
-  fallbackLocale: 'pt',
+  locale: localStorage.lang || 'pt',
+  fallbackLocale: localStorage.lang || 'pt',
   messages: {
     en: EN,
     pt: PT,

@@ -1,6 +1,5 @@
 import { ref } from "vue"
 import { IImportedPassword } from "../repositories/passwords/IImportedPassword";
-import UserRepository from "../repositories/user/UserRepository";
 import i18n from "./internacionalization/i18n";
 import { showError, showSuccess } from "./NotificationScript";
 const { t } = i18n.element.global;
@@ -41,7 +40,6 @@ const urlTypes : UrlType[] = [
   { name: 'Hotmart', url: 'https://www.hotmart.com/pt-BR' },
   { name: 'Instagram', url: 'https://www.instagram.com/' },
   { name: 'ICloud', url: 'https://www.icloud.com/' },
-  { name: 'Mercado Livre', url: 'https://www.mercadolivre.com.br/' },
   { name: 'Netflix', url: 'https://www.netflix.com/' },
   { name: 'Spotify', url: 'https://www.spotify.com/' },
   { name: 'Star Plus', url: 'https://www.starplus.com/' },

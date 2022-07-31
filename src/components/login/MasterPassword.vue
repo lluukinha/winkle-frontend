@@ -69,12 +69,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="w-screen h-screen bg-gray-300 overflow-hidden">
+  <div class="w-screen h-screen bg-gray-300 dark:bg-gray-600 overflow-hidden">
     <div
       class="
         bg-gradient-to-b from-gray-600 to-gray-800
         transition-all duration-300
-        border-b-8 overflow-hidden w-full
+        border-b-8 dark:border-gray-600 overflow-hidden w-full
         flex justify-center items-end
       "
       :class="{ 'h-[35vh]': !systemOk, 'h-0': systemOk, }"

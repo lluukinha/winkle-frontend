@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import WinkleImg from "../shared/WinkleImg.vue";
+import LanguageSelector from "../shared/LanguageSelector.vue";
 defineProps<{ title: string }>();
 </script>
 
@@ -13,6 +14,7 @@ defineProps<{ title: string }>();
         flex flex-col justify-center px-10 lg:px-16 xl:px-20
       "
     >
+      <div class="flex justify-between">
       <router-link
         tag="div"
         class="
@@ -29,6 +31,8 @@ defineProps<{ title: string }>();
           <span class="text-sm ml-1">{{ $t('app-description') }}</span>
         </div>
       </router-link>
+      <LanguageSelector class="bg-white dark:bg-gray-800 text-xl md:text-2xl" />
+      </div>
 
       <h2
         class="
