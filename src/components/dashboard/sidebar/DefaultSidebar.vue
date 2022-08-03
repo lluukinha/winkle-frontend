@@ -3,10 +3,21 @@ import { computed, onMounted, Ref, ref } from "vue";
 import { ISidebarItem } from "./ISidebarItem";
 import router from "../../../router";
 import SidebarIcon from "./SidebarIcon.vue";
+import UserStore from "../../../store/user/UserStore";
+import WinkleScripts from "../../../scripts/WinkleScripts";
 
 const props = defineProps<{ items: ISidebarItem[] }>();
-const isOpen: Ref<boolean> = ref(true);
 const currentRoute = computed(() => router.currentRoute.value.name);
+
+const filteredItems = computed(() => {
+  if (!UserStore.user.value) return [];
+  if (UserStore.user.value.admin) return props.items;
+  return props.items.filter(i => !i.condition || i.condition != 'admin');
+});
+
+onMounted(() => {
+  if (!UserStore.user.value && !WinkleScripts.isLoading) UserStore.getUserData();
+})
 </script>
 
 <template>
@@ -39,7 +50,7 @@ const currentRoute = computed(() => router.currentRoute.value.name);
             'cursor-pointer text-gray-300 hover:bg-gray-600': !item.disabled,
             'cursor-not-allowed text-gray-500': item.disabled,
           }"
-          v-for="item in items"
+          v-for="item in filteredItems"
           :key="item.name"
         >
           <div class="flex items-center focus:outline-none">

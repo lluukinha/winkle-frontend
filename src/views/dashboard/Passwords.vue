@@ -1,26 +1,17 @@
 <script setup lang="ts">
 import { onMounted, computed, Ref, ref, watch } from "vue";
 import { IPassword } from "../../repositories/passwords/IPassword";
-import { IFolder } from "../../repositories/folder/IFolder";
-import PasswordRepository from "../../repositories/passwords/PasswordRepository";
-import WinkleScripts from "../../scripts/WinkleScripts";
-import i18n from "../../scripts/internacionalization/i18n";
-import { showNotification } from "../../scripts/NotificationScript";
 
 import EditPasswordModal from "../../components/password/EditPasswordModal.vue";
 import PasswordCard from "../../components/password/PasswordCard.vue";
-import CreatePasswordModal from "../../components/password/CreatePasswordModal.vue";
 import DashboardHeader from "../../components/shared/DashboardHeader.vue";
 import DashboardContainer from "../../components/shared/DashboardContainer.vue";
 import WinkleButton from "../../components/shared/WinkleButton.vue";
 import FolderFilterDropdown from "../../components/password/FolderFilterDropdown.vue";
 import ImportPasswordsModal from "../../components/password/ImportPasswords/ImportPasswordsModal.vue";
 import PasswordStore from "../../store/passwords/PasswordStore";
-import RemoveIcon from "../../components/icons/RemoveIcon.vue";
 import PasswordFolderToggle from "../../components/password/PasswordFolderToggle.vue";
 import CreateNew from "../../components/password/CreateNew.vue";
-
-const { t } = i18n.element.global;
 
 const isImportingPasswords: Ref<boolean> = ref(false);
 const editingPassword: Ref<IPassword | null> = ref(null);

@@ -1,5 +1,4 @@
 import { Ref, ref } from 'vue';
-import router from '../../router';
 import { IResetPassword } from '../user/UserInterfaces';
 import { PublicRepository, Repository } from '../_Repository';
 import { ILoginForm } from "./ILoginForm";
@@ -85,6 +84,7 @@ const refreshUser = async () : Promise<ILoginInfo | void> => {
   loginInfo.value = JSON.stringify(data);
   loginData.value = JSON.parse(JSON.stringify(data));
   isRefreshed.value = true;
+  if (!UserStore.user.value) await UserStore.getUserData();
   return data;
 };
 

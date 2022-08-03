@@ -5,6 +5,7 @@ import Logout from './views/Logout.vue';
 import Dashboard from './views/Dashboard.vue';
 import Passwords from './views/dashboard/Passwords.vue';
 import User from './views/dashboard/User.vue';
+import Users from './views/dashboard/Users.vue';
 import RedefinePassword from './views/RedefinePassword.vue';
 import UserRegistration from './views/UserRegistration.vue';
 import NotFound from './views/NotFound.vue';
@@ -31,6 +32,11 @@ const router = createRouter({
           path: 'user',
           name: 'dashboard-user',
           component: User,
+        },
+        {
+          path: 'users',
+          name: 'dashboard-users',
+          component: Users,
         }
       ],
     },

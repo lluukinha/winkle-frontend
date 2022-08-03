@@ -11,13 +11,16 @@ const userIsLoaded: Ref<boolean> = ref(false);
 const getUserData = async () => {
   if (userIsLoaded.value) return;
   WinkleScripts.setLoading(true);
-  UserRepository.getUserInfo()
-    .then((userData) => {
-      user.value = userData;
-      userIsLoaded.value = true;
-    })
-    .catch(showErrorMessage)
-    .finally(() => { WinkleScripts.setLoading(false); });
+
+  try {
+    user.value = await UserRepository.getUserInfo();
+  } catch (error: any) {
+    showErrorMessage(error)
+    return null;
+  } finally {
+    WinkleScripts.setLoading(false);
+    return user.value;
+  }
 };
 
 const updateUserData = (updatedUser: IUser) => {

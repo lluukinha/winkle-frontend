@@ -15,23 +15,23 @@ defineProps<{ title: string }>();
       "
     >
       <div class="flex justify-between">
-      <router-link
-        tag="div"
-        class="
-          cursor-pointer
-          flex justify-center md:justify-start items-center
-          select-none drop-shadow
-        "
-        :to="{ name: 'login' }"
-      >
-        <img src="../../assets/logo-white.png" class="w-20 px-0 mr-2 hidden dark:inline" />
-        <img src="../../assets/logo-dark.png" class="w-20 px-0 mr-2 dark:hidden" />
-        <div class="flex flex-col items-start text-gray-800 dark:text-gray-100">
-          <span class="text-5xl font-bold italic">Winkle</span>
-          <span class="text-sm ml-1">{{ $t('app-description') }}</span>
-        </div>
-      </router-link>
-      <LanguageSelector class="bg-white dark:bg-gray-800 text-xl md:text-2xl" />
+        <router-link
+          tag="div"
+          class="
+            cursor-pointer
+            flex justify-center md:justify-start items-center
+            select-none drop-shadow
+          "
+          :to="{ name: 'login' }"
+        >
+          <img src="../../assets/logo-white.png" class="w-20 px-0 mr-2 hidden dark:inline" />
+          <img src="../../assets/logo-dark.png" class="w-20 px-0 mr-2 dark:hidden" />
+          <div class="flex flex-col items-start text-gray-800 dark:text-gray-100">
+            <span class="text-5xl font-bold italic">Winkle</span>
+            <span class="text-sm ml-1">{{ $t('app-description') }}</span>
+          </div>
+        </router-link>
+        <LanguageSelector class="bg-white dark:bg-gray-800 text-xl md:text-2xl w-20" />
       </div>
 
       <h2

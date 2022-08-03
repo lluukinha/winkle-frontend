@@ -3,4 +3,5 @@ export interface ISidebarItem {
   icon: string;
   route: string;
   disabled: boolean;
+  condition?: string;
 };

@@ -4,6 +4,7 @@ import SidebarIcon from "./SidebarIcon.vue";
 import { ISidebarItem } from "./ISidebarItem";
 import router from "../../../router";
 import SidebarScript from "../../../scripts/SidebarScript";
+import UserStore from "../../../store/user/UserStore";
 
 const props = defineProps<{ items: ISidebarItem[], isOpen: boolean }>();
 const currentRoute = computed(() => router.currentRoute.value.name);
@@ -12,6 +13,11 @@ const changeRoute = (newRoute: string) : void => {
   router.push({ name: newRoute });
 };
 
+const filteredItems = computed(() => {
+  if (!UserStore.user.value) return [];
+  if (UserStore.user.value.admin) return props.items;
+  return props.items.filter(i => !i.condition || i.condition != 'admin');
+});
 </script>
 
 <template>
@@ -53,7 +59,7 @@ const changeRoute = (newRoute: string) : void => {
       <ul>
         <li
           class="flex justify-between items-center w-full mb-2 py-4 px-8"
-          v-for="item in items"
+          v-for="item in filteredItems"
           :key="item.name"
           :class="{
             'bg-gray-700': currentRoute === item.route,

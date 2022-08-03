@@ -9,6 +9,7 @@ interface IUser {
   createdAt: string;
   name: string;
   type: 'users';
+  admin: boolean;
 }
 
 interface IUpdateUserEmail {

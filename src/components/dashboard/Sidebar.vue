@@ -6,7 +6,7 @@ import SidebarScript from "../../scripts/SidebarScript";
 
 const items : ISidebarItem[] = [
   { name: 'passwords.title', icon: 'passwords', route: 'dashboard-passwords', disabled: false },
-  // { name: t('documents.title'), icon: 'documents', route: 'dashboard-documents', disabled: true },
+  { name: 'users.title', icon: 'users', route: 'dashboard-users', disabled: false, condition: 'admin' },
   // { name: t('bank-accounts.title'), icon: 'bank-accounts', route: 'dashboard-bankaccounts', disabled: true },
   // { name: t('credit-cards.title'), icon: 'credit-cards', route: 'dashboard-creditcards', disabled: true },
   // { name: t('bitcoin-wallet.title'), icon: 'wallet', route: 'dashboard-wallet', disabled: true },

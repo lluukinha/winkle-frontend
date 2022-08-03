@@ -29,7 +29,7 @@ defineProps<{ icon: string }>();
     fill="none"
     viewBox="0 0 24 24"
     stroke="currentColor"
-    v-if="icon === 'documents'"
+    v-if="icon === 'users'"
   >
     <path
       stroke-linecap="round"

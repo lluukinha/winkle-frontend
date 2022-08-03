@@ -4,16 +4,17 @@ import LoginRepository from "../repositories/login/LoginRepository";
 import Sidebar from "../components/dashboard/Sidebar.vue";
 import { onBeforeMount, Ref, ref } from "@vue/runtime-core";
 import MasterPassword from "../components/login/MasterPassword.vue";
+import UserStore from "../store/user/UserStore";
 
 const isLoaded: Ref<boolean> = ref(false);
 
-onBeforeMount(() => {
+onBeforeMount(async () => {
   if (LoginRepository.checkLoginTimeout()) {
     router.push({ name: 'logout' });
     return;
   }
 
-  if (!LoginRepository.isRefreshed.value) LoginRepository.refreshUser();
+  if (!LoginRepository.isRefreshed.value) await LoginRepository.refreshUser();
 
   if (router.currentRoute.value.name === 'dashboard') {
     isLoaded.value = true;

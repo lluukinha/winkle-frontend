@@ -33,11 +33,17 @@ const finishRegistration = async (payload: IUserRegistration): Promise<boolean> 
   return data.data;
 };
 
+const listUsers = async () : Promise<IUser[]> => {
+  const { data } = await Repository.get('/user/list');
+  return data.data;
+}
+
 export default {
   getUserInfo,
   updateEmail,
   updatePassword,
   updateMasterPassword,
   verifyUserRegistration,
-  finishRegistration
+  finishRegistration,
+  listUsers
 }

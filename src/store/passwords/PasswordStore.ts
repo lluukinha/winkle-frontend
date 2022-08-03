@@ -8,6 +8,7 @@ import showErrorMessage from "../../scripts/ErrorLogs";
 import i18n from "../../scripts/internacionalization/i18n";
 import { showNotification } from "../../scripts/NotificationScript";
 import WinkleScripts from "../../scripts/WinkleScripts";
+import UserStore from "../user/UserStore";
 
 const { t } = i18n.element.global;
 const passwordsList: Ref<IPassword[]> = ref([]);
@@ -18,6 +19,7 @@ const emptyFolderIsOpen: Ref<boolean> = ref(true);
 
 const getAllData = (forceLoad: boolean = false) => {
   if (!listIsLoaded.value || forceLoad) {
+    UserStore.getUserData();
     loadFolders();
     loadPasswords();
     listIsLoaded.value = true;

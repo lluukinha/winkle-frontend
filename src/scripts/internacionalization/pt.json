@@ -273,6 +273,20 @@
             "folder-placeholder": "Sem categoria"
         }
     },
+
+    "users": {
+        "title": "Usuários",
+        "create": "Criar usuário",
+        "table": {
+            "name": "Nome",
+            "plan": "Plano",
+            "created": "Criado",
+            "expires": "Expira em",
+            "admin": "Admin",
+            "edit": "Editar"
+        }
+    },
+
     "documents": {
         "title": "Documentos"
     },
