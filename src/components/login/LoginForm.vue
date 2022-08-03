@@ -92,7 +92,7 @@ onMounted(() => { firstInput.value?.focus(); });
         <input
           class="
             w-full text-lg p-2
-            border-b border-gray-300 bg-gray-100
+            border-b border-gray-300 bg-gray-100 border-r-0
             focus:outline-none focus:border-gray-200
             rounded rounded-tr-none rounded-br-none
           "
@@ -102,7 +102,7 @@ onMounted(() => { firstInput.value?.focus(); });
           required
         />
         <span
-          class="span-button bg-gray-200 hover:bg-gray-300 flex items-center p-2 rounded-tr rounded-br"
+          class="bg-gray-200 hover:bg-gray-300 flex items-center p-2 rounded-tr rounded-br"
           @click="isShowingPassword = !isShowingPassword"
           :title="$t('passwords.form.show-password')"
         >
@@ -128,3 +128,15 @@ onMounted(() => { firstInput.value?.focus(); });
     </div>
   </form>
 </template>
+
+
+<style lang="postcss">
+.span-button {
+  @apply  cursor-pointer
+          bg-gray-200 dark:bg-gray-600
+          hover:bg-gray-400 dark:hover:bg-gray-800
+          flex items-center px-4
+          select-none
+          rounded rounded-tl-none rounded-bl-none;
+}
+</style>

@@ -69,7 +69,7 @@ const toggleSidebar = () => {
         <div
           class="flex justify-center items-center p-2 text-gray-700 dark:text-gray-200 dark:hover:text-white cursor-pointer"
         >
-          <LanguageSelector class="bg-white dark:bg-gray-800 px-4" />
+          <LanguageSelector class="bg-white dark:bg-gray-800 focus:bg-white dark:focus:bg-gray-800 dark:focus:text-white" />
         </div>
         <div
           class="flex justify-center items-center p-2 text-sm text-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white cursor-pointer"

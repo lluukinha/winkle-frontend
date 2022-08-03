@@ -31,7 +31,9 @@ defineProps<{ title: string }>();
             <span class="text-sm ml-1">{{ $t('app-description') }}</span>
           </div>
         </router-link>
-        <LanguageSelector class="bg-white dark:bg-gray-800 text-xl md:text-2xl w-20" />
+        <div class="flex items-center justify-end">
+          <LanguageSelector class="bg-white dark:bg-gray-800 focus:bg-white dark:focus:bg-gray-800 dark:focus:text-white text-xl md:text-2xl" />
+        </div>
       </div>
 
       <h2

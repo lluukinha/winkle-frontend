@@ -12,7 +12,7 @@ const changeLanguage = (event: Event) => {
 <template>
   <select
     v-model="$i18n.locale"
-    class="border-gray-200 text-gray-800 dark:text-white uppercase ml-4 cursor-pointer hover:underline"
+    class="border-gray-200 text-gray-800 dark:text-white uppercase ml-4 cursor-pointer hover:underline border-none"
     @change="changeLanguage"
   >
     <option
