@@ -11,22 +11,7 @@ import PasswordForm from "./PasswordForm.vue";
 import PasswordStore from "../../store/passwords/PasswordStore";
 
 const emit = defineEmits(["close", "save"]);
-const password : Ref<IPassword> = ref({
-  type: 'password',
-  id: '',
-  name: '',
-  description: '',
-  login: '',
-  password: '',
-  url: '',
-  folderId: '',
-  folder: { id: '', name: '' }
-});
-
 const passwordForm = ref();
-const isShowingLogin : Ref<Boolean> = ref(false);
-const isShowingPassword : Ref<Boolean> = ref(false);
-
 const handleClose = () => { emit("close"); };
 const handleSave = (password: IPassword) => {
   const { url } = password;

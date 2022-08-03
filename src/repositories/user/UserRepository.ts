@@ -1,5 +1,5 @@
 import { PublicRepository, Repository } from '../_Repository';
-import { IUser, IUpdatePassword, IUpdateMasterPassword, IUpdateUserEmail, IUserVerification, IUserRegistration } from './UserInterfaces';
+import { IUser, IUpdatePassword, IUpdateMasterPassword, IUpdateUserEmail, IUserVerification, IUserRegistration, IUserForm } from './UserInterfaces';
 
 const getUserInfo = async () : Promise<IUser> => {
   const { data } = await Repository.get('/user');
@@ -38,6 +38,16 @@ const listUsers = async () : Promise<IUser[]> => {
   return data.data;
 }
 
+const createUser = async (user: IUserForm) : Promise<IUser> => {
+  const { data } = await Repository.post('/user', user);
+  return data.data;
+}
+
+const deleteUser = async (userId: string) : Promise<boolean> => {
+  const { data } = await Repository.delete(`/user/${userId}`);
+  return data;
+}
+
 export default {
   getUserInfo,
   updateEmail,
@@ -45,5 +55,7 @@ export default {
   updateMasterPassword,
   verifyUserRegistration,
   finishRegistration,
-  listUsers
+  listUsers,
+  createUser,
+  deleteUser
 }

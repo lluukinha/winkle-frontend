@@ -277,13 +277,24 @@
     "users": {
         "title": "Usuários",
         "create": "Criar usuário",
+        "remove-msg": "Tem certeza que deseja remover este usuário? Nenhum rastro ficará no banco de dados.",
         "table": {
             "name": "Nome",
             "plan": "Plano",
             "created": "Criado",
             "expires": "Expira em",
             "admin": "Admin",
-            "edit": "Editar"
+            "edit": "Editar",
+            "remove": "Remover"
+        },
+        "form": {
+            "name": "Nome",
+            "name-placeholder": "Nome do Usuário",
+            "email": "Email",
+            "email-placeholder": "Email do usuário",
+            "plan": "Plano",
+            "plan-placeholder": "Selecione um Plano",
+            "admin": "Admin"
         }
     },
 

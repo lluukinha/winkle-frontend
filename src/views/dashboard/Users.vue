@@ -11,7 +11,9 @@ import showErrorMessage from "../../scripts/ErrorLogs";
 import VerifiedIcon from "../../components/icons/VerifiedIcon.vue";
 import WinkleButton from "../../components/shared/WinkleButton.vue";
 import CreateNew from "../../components/users/CreateNew.vue";
+import i18n from "../../scripts/internacionalization/i18n";
 
+const { t } = i18n.element.global;
 const users : Ref<IUser[]> = ref([]);
 
 const checkAccessToThisScreen = (user: IUser) : boolean => {
@@ -37,10 +39,28 @@ const loadUsers = () => {
     })
 };
 
+const deleteUser = (userId: string) => {
+  WinkleScripts.setLoading(true);
+  UserRepository.deleteUser(userId)
+    .then((result: boolean) => {
+      if (!result) return;
+      const indexToRemove = users.value.findIndex(u => u.id == userId);
+      users.value.splice(indexToRemove, 1);
+    })
+    .catch(showErrorMessage)
+    .finally(() => {
+      WinkleScripts.setLoading(false);
+    })
+}
+
+const removeUser = (userId: string) => {
+  const sure = confirm(t('users.remove-msg'));
+  if (!sure) return;
+  deleteUser(userId);
+}
+
 onMounted(async () => {
-  if (UserStore.user.value) {
-    checkAccessToThisScreen(UserStore.user.value);
-  }
+  if (UserStore.user.value) checkAccessToThisScreen(UserStore.user.value);
 });
 </script>
 
@@ -93,6 +113,15 @@ onMounted(async () => {
           <td class="px-6 py-4 text-right">
             <button type="button" class="font-medium text-blue-600 dark:text-blue-400 hover:underline">
               {{ $t('users.table.edit') }}
+            </button>
+
+            <button
+              type="button"
+              class="font-medium text-blue-600 dark:text-blue-400 hover:underline ml-2 disabled:opacity-50"
+              @click="removeUser(user.id)"
+              :disabled="!user.canUpdateMasterPassword || user.id === UserStore.user.value?.id"
+            >
+              {{ $t('users.table.remove') }}
             </button>
           </td>
         </tr>

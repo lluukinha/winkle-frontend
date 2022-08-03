@@ -1,21 +1,21 @@
 <script setup lang="ts">
 import Modal from "../shared/Modal.vue";
-import { Ref, ref } from "vue";
+import { ref } from "vue";
 import WinkleScripts from "../../scripts/WinkleScripts";
 import showErrorMessage from "../../scripts/ErrorLogs";
-import { IFolder } from "../../repositories/folder/IFolder";
-import PasswordStore from "../../store/passwords/PasswordStore";
-// import { IPassword } from "../../repositories/passwords/IPassword";
-// import PasswordRepository from "../../repositories/passwords/PasswordRepository";
 import UserForm from "./UserForm.vue";
+import { IUser, IUserForm } from "../../repositories/user/UserInterfaces";
+import UserRepository from "../../repositories/user/UserRepository";
 
 const emit = defineEmits(["close", "save"]);
-
 const userForm = ref();
-
 const handleClose = () => { emit("close"); };
-const handleSave = () => {
-
+const handleSave = (user: IUserForm) => {
+  WinkleScripts.setLoading(true);
+  UserRepository.createUser(user)
+    .then((newUser : IUser) => { emit("save", newUser); })
+    .catch(showErrorMessage)
+    .finally(() => { WinkleScripts.setLoading(false); });
 };
 </script>
 

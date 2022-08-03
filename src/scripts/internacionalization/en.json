@@ -272,6 +272,31 @@
             "folder-placeholder": "Without category"
         }
     },
+
+    "users": {
+        "title": "Users",
+        "create": "Create user",
+        "remove-msg": "Are you sure you want to remove this user? All related data will be removed from the database.",
+        "table": {
+            "name": "Name",
+            "plan": "Plan",
+            "created": "Created",
+            "expires": "Expires in",
+            "admin": "Admin",
+            "edit": "Edit",
+            "remove": "Remove"
+        },
+        "form": {
+            "name": "Name",
+            "name-placeholder": "User name",
+            "email": "Email",
+            "email-placeholder": "User email",
+            "plan": "Plan",
+            "plan-placeholder": "Select a Plan",
+            "admin": "Admin"
+        }
+    },
+
     "documents": {
         "title": "Documents"
     },

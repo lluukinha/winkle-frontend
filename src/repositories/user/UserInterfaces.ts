@@ -12,6 +12,13 @@ interface IUser {
   admin: boolean;
 }
 
+interface IUserForm {
+  name: string;
+  email: string;
+  plan: number;
+  admin: boolean;
+}
+
 interface IUpdateUserEmail {
   email: string;
   confirmEmail: string;
@@ -62,5 +69,6 @@ export {
   IUpdateMasterPassword,
   IResetPassword,
   IUserRegistration,
-  IUserVerification
+  IUserVerification,
+  IUserForm
 }
