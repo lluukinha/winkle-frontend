@@ -298,7 +298,7 @@
     },
 
     "notes": {
-        "title": "Notes (beta)",
+        "title": "Notes",
         "create": "New note",
         "notepad-placeholder": "To create a new note, just start typing here...",
         "words": "word(s)",

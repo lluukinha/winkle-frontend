@@ -6,9 +6,10 @@ import i18n from '../../scripts/internacionalization/i18n';
 import WinkleScripts from '../../scripts/WinkleScripts';
 
 const { t } = i18n.element.global;
+const emptyNote = { id: '', note: '' };
 const props = defineProps({ note: Object as PropType<INote> });
 const emit = defineEmits(['save', 'remove', 'back']);
-const winkleNote : Ref<INote> = ref({ id: '', note: '' });
+const winkleNote : Ref<INote> = ref(emptyNote);
 const words = computed(() => winkleNote.value.note.split('\n').join(' ').split(' ').filter(a => a.length > 0).length);
 onBeforeRouteLeave(async () => saveNote);
 
@@ -17,7 +18,10 @@ const saveNote = () => {
   const isDifferentToUpdate = props.note && props.note.note != winkleNote.value.note;
   const hasText = winkleNote.value.note.split('\n').join('').trim().length > 0;
   if (hasText && (isCreating || isDifferentToUpdate)) emit('save', winkleNote.value);
-  if (!hasText && isDifferentToUpdate) emit('remove', winkleNote.value.id);
+  if (!hasText && isDifferentToUpdate) {
+    emit('remove', winkleNote.value.id);
+    winkleNote.value = emptyNote;
+  }
 };
 
 const loadNote = (note: INote) => {

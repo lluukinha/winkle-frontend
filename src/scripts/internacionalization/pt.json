@@ -299,7 +299,7 @@
     },
 
     "notes": {
-        "title": "Notas (em testes)",
+        "title": "Notas",
         "create": "Nova nota",
         "notepad-placeholder": "Para criar uma nova nota, basta começar a digitar aqui mesmo...",
         "words": "palavra(s)",
