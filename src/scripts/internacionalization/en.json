@@ -297,6 +297,14 @@
         }
     },
 
+    "notes": {
+        "title": "Notes (beta)",
+        "create": "New note",
+        "notepad-placeholder": "To create a new note, just start typing here...",
+        "words": "word(s)",
+        "confirm-delete": "Are you sure you want to remove this note?"
+    },
+
     "documents": {
         "title": "Documents"
     },
@@ -308,9 +316,6 @@
     },
     "bitcoin-wallet": {
         "title": "Bitcoin wallets"
-    },
-    "notes": {
-        "title": "Notes"
     },
     "emails": {
         "title": "E-mails"
