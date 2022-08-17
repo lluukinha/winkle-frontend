@@ -11,6 +11,7 @@ const loadNotes = async () => {
   WinkleScripts.setLoading(true);
   const result = await NoteRepository.list();
   notes.value = result;
+  listIsLoaded.value = true;
   WinkleScripts.setLoading(false);
   return result;
 };
