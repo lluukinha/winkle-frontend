@@ -40,7 +40,7 @@ const backToList = () => {
 }
 
 onMounted(() => {
-  if (!NotesStore.listIsLoaded) NotesStore.loadNotes().catch(showErrorMessage);
+  if (!NotesStore.listIsLoaded.value) NotesStore.loadNotes().catch(showErrorMessage);
 });
 </script>
 
