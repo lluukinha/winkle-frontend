@@ -10,10 +10,8 @@ import { INote } from "../../repositories/notes/INote";
 
 const emptyNote = { id: '', note: '' };
 const notepad = ref();
-const notes : Ref<INote[]> = ref([]);
 const chosenNote: Ref<INote> = ref(emptyNote);
 
-const loadNotes = () => NotesStore.loadNotes().catch(showErrorMessage);
 const createNote = (note: INote) => NotesStore.createNote(note).then((result: INote) => loadNote(result)).catch(showErrorMessage);
 const updateNote = (note: INote) => NotesStore.updateNote(note).catch(showErrorMessage);
 const removeNote = (noteId: string) => NotesStore.removeNote(noteId).then((result: INote) => loadNote(result)).catch(showErrorMessage);
@@ -42,7 +40,7 @@ const backToList = () => {
 }
 
 onMounted(() => {
-  if (!NotesStore.listIsLoaded) loadNotes();
+  if (!NotesStore.listIsLoaded) NotesStore.loadNotes().catch(showErrorMessage);
 });
 </script>
 
@@ -64,7 +62,7 @@ onMounted(() => {
         {{ $t('notes.create') }}
       </li>
       <li
-        v-for="note in notes"
+        v-for="note in NotesStore.notes.value"
         :key="note.id"
         class="note-li"
         :class="{ 'chosen-note': chosenNote?.id === note.id }"
