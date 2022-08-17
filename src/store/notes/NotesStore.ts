@@ -32,14 +32,14 @@ const updateNote = async (note: INote) => {
 }
 
 const removeNote = async (noteId: string) => {
-  if (noteId === '') return;
+  if (noteId === '') return emptyNote;
 
   WinkleScripts.setLoading(true);
   const result = await NoteRepository.remove(noteId);
   const index = notes.value.findIndex(n => n.id === noteId);
   notes.value.splice(index, 1);
   WinkleScripts.setLoading(false);
-  if (!result) return null;
+  if (!result) return emptyNote;
 
   const currentIndex = notes.value.findIndex(n => n.id === noteId);
   notes.value.splice(currentIndex, 1);
