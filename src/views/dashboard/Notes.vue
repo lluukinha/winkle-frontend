@@ -2,7 +2,8 @@
 import { onMounted, Ref, ref } from "vue";
 import DashboardHeader from "../../components/shared/DashboardHeader.vue";
 import WinkleScripts from "../../scripts/WinkleScripts";
-import NoteRepository from "../../repositories/notes/NoteRepository";
+import NotesStore from "../../store/notes/NotesStore";
+
 import showErrorMessage from "../../scripts/ErrorLogs";
 import Notepad from "../../components/notes/Notepad.vue";
 import { INote } from "../../repositories/notes/INote";
@@ -12,51 +13,10 @@ const notepad = ref();
 const notes : Ref<INote[]> = ref([]);
 const chosenNote: Ref<INote> = ref(emptyNote);
 
-const loadNotes = () => {
-  WinkleScripts.setLoading(true);
-  NoteRepository.list()
-    .then((result: INote[]) => {
-      notes.value = result;
-    })
-    .catch(showErrorMessage)
-    .finally(() => {
-      WinkleScripts.setLoading(false);
-    })
-};
-
-const createNote = (note: INote) => {
-  NoteRepository.create(note.note)
-    .then((result: INote) => {
-      notes.value.push(result);
-      loadNote(result);
-    })
-    .catch(showErrorMessage)
-};
-
-const updateNote = (note: INote) => {
-  NoteRepository.update(note)
-    .then((result: INote) => {
-      const currentIndex = notes.value.findIndex(n => n.id === result.id);
-      notes.value[currentIndex] = result;
-    })
-    .catch(showErrorMessage)
-}
-
-const removeNote = (noteId: string) => {
-  if (noteId === '') return;
-  NoteRepository.remove(noteId)
-    .then((result: boolean) => {
-      if (!result) return;
-      const currentIndex = notes.value.findIndex(n => n.id === noteId);
-      notes.value.splice(currentIndex, 1);
-      const newSelectedNote = currentIndex > 0 ? notes.value[currentIndex - 1] : emptyNote;
-      loadNote(newSelectedNote);
-    })
-    .catch(showErrorMessage)
-    .finally(() => {
-      WinkleScripts.setLoading(false);
-    })
-};
+const loadNotes = () => NotesStore.loadNotes().catch(showErrorMessage);
+const createNote = (note: INote) => NotesStore.createNote(note).then((result: INote) => loadNote(result)).catch(showErrorMessage);
+const updateNote = (note: INote) => NotesStore.updateNote(note).catch(showErrorMessage);
+const removeNote = (noteId: string) => NotesStore.removeNote(noteId).then((result: INote) => loadNote(result)).catch(showErrorMessage);
 
 const noteUpdated = (note: INote) => {
   if (note.id === '') createNote(note);
@@ -81,7 +41,9 @@ const backToList = () => {
   isShowingList.value = true;
 }
 
-onMounted(() => loadNotes());
+onMounted(() => {
+  if (!NotesStore.listIsLoaded) loadNotes();
+});
 </script>
 
 <template>
