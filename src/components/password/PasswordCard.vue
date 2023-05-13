@@ -64,6 +64,7 @@ const foldersList = computed(() =>
   )
 );
 
+const showImage = ref<boolean>(true);
 const tryGetFavicon = computed(() => {
   const hasUrl =
     props.password.url.length > 0 && props.password.url.startsWith('http');
@@ -111,7 +112,11 @@ const options = computed(() => ({
     <div class="card-top">
       <div @click="handleEdit()">
         <div class="card-avatar">
-          <img :src="tryGetFavicon" v-if="!!tryGetFavicon" />
+          <img
+            :src="tryGetFavicon"
+            v-if="!!tryGetFavicon && showImage"
+            @error="showImage = false"
+          />
           <template v-else>
             {{ initial }}
           </template>
