@@ -64,6 +64,14 @@ const foldersList = computed(() =>
   )
 );
 
+const tryGetFavicon = computed(() => {
+  const hasUrl =
+    props.password.url.length > 0 && props.password.url.startsWith('http');
+  if (!hasUrl) return null;
+  const rawUrl = props.password.url.split('/');
+  return rawUrl[0] + '//' + rawUrl[2] + '/favicon.ico';
+});
+
 const options = computed(() => ({
   items: [
     {
@@ -103,7 +111,10 @@ const options = computed(() => ({
     <div class="card-top">
       <div @click="handleEdit()">
         <div class="card-avatar">
-          {{ initial }}
+          <img :src="tryGetFavicon" v-if="!!tryGetFavicon" />
+          <template v-else>
+            {{ initial }}
+          </template>
         </div>
       </div>
       <div class="flex items-start justify-between w-full">
