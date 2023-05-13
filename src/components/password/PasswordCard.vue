@@ -1,29 +1,36 @@
 <script setup lang="ts">
-import { computed } from "@vue/runtime-core";
-import { IPassword } from "../../repositories/passwords/IPassword";
-import PasswordRepository from "../../repositories/passwords/PasswordRepository";
-import WinkleScripts from "../../scripts/WinkleScripts";
-import i18n from "../../scripts/internacionalization/i18n";
-import showErrorMessage from "../../scripts/ErrorLogs";
-import RemoveIcon from "../icons/RemoveIcon.vue";
-import { ref, Ref } from "vue";
-import PasswordStore from "../../store/passwords/PasswordStore";
+import { computed } from '@vue/runtime-core';
+import { IPassword } from '../../repositories/passwords/IPassword';
+import PasswordRepository from '../../repositories/passwords/PasswordRepository';
+import WinkleScripts from '../../scripts/WinkleScripts';
+import i18n from '../../scripts/internacionalization/i18n';
+import showErrorMessage from '../../scripts/ErrorLogs';
+import RemoveIcon from '../icons/RemoveIcon.vue';
+import { ref, Ref } from 'vue';
+import PasswordStore from '../../store/passwords/PasswordStore';
+import CopyIcon from '../icons/CopyIcon.vue';
 
 const { t } = i18n.element.global;
 const props = defineProps<{ password: IPassword }>();
-const emit = defineEmits(["edit", "remove"]);
+const emit = defineEmits(['edit', 'remove']);
 
 const initial = computed(() => props.password.name.charAt(0).toUpperCase());
-const handleEdit = () => { emit("edit", props.password); };
+const handleEdit = () => {
+  emit('edit', props.password);
+};
 const handleRemove = () => {
   const willRemove = confirm(t('passwords.remove-confirm'));
   if (!willRemove) return;
 
   WinkleScripts.setLoading(true);
   PasswordRepository.removePassword(Number(props.password.id))
-    .then(() => { emit("remove", Number(props.password.id)); })
+    .then(() => {
+      emit('remove', Number(props.password.id));
+    })
     .catch(showErrorMessage)
-    .finally(() => { WinkleScripts.setLoading(false); });
+    .finally(() => {
+      WinkleScripts.setLoading(false);
+    });
 };
 
 const showOptions = (e: MouseEvent) => {
@@ -44,21 +51,31 @@ const changeFolder = (passwordId: string, folderId: string | null) => {
       PasswordStore.changePasswordInList(newPassword);
     })
     .catch(showErrorMessage)
-    .finally(() => { WinkleScripts.setLoading(false); })
+    .finally(() => {
+      WinkleScripts.setLoading(false);
+    });
 };
 
 const isShowingOptions: Ref<boolean> = ref(false);
 const optionsMenu: Ref<HTMLElement | undefined> = ref();
-const foldersList = computed(() => PasswordStore.foldersList.value
-  .filter(f => f.id !== props.password.folder.id));
+const foldersList = computed(() =>
+  PasswordStore.foldersList.value.filter(
+    (f) => f.id !== props.password.folder.id
+  )
+);
 
 const options = computed(() => ({
   items: [
     {
       label: t('passwords.open-url'),
-      onClick: () => { window.open(props.password.url, 'blank') },
+      onClick: () => {
+        const url = props.password.url.startsWith('http')
+          ? props.password.url
+          : `//${props.password.url}`;
+        window.open(url, '_blank');
+      },
       disabled: !props.password.url || props.password.url.length === 0,
-      divided: true
+      divided: true,
     },
     {
       label: t('passwords.card.remove-folder'),
@@ -68,16 +85,16 @@ const options = computed(() => ({
     {
       label: t('passwords.card.move-folder'),
       disabled: foldersList.value.length === 0,
-      children: foldersList.value.map(f => ({
+      children: foldersList.value.map((f) => ({
         label: f.name,
         onClick: () => changeFolder(props.password.id, f.id),
-      }))
-    }
+      })),
+    },
   ],
   customClass: 'dark:bg-gray-800 dark:text-white force-z-20',
   minWidth: 230,
   x: 0,
-  y: 0
+  y: 0,
 }));
 </script>
 
@@ -102,14 +119,23 @@ const options = computed(() => ({
           </p>
         </div>
         <div>
-          <svg @click="showOptions" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+          <svg
+            @click="showOptions"
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
+            />
           </svg>
           <template v-if="isShowingOptions">
-            <context-menu
-              :show="isShowingOptions"
-              :options="options"
-            />
+            <context-menu :show="isShowingOptions" :options="options" />
             <div class="overlay" @click="isShowingOptions = false" />
           </template>
         </div>
@@ -120,7 +146,7 @@ const options = computed(() => ({
         class="focus:outline-none flex"
         :class="{
           'justify-between': password.password || password.login,
-          'justify-end': !password.password && !password.login
+          'justify-end': !password.password && !password.login,
         }"
       >
         <button
@@ -129,9 +155,8 @@ const options = computed(() => ({
           :title="$t('passwords.copy-login')"
           v-if="password.login"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-          </svg> {{ $t('passwords.login') }}
+          <CopyIcon class="mr-2" />
+          {{ $t('passwords.login') }}
         </button>
         <button
           class="copy-btn"
@@ -139,9 +164,8 @@ const options = computed(() => ({
           :title="$t('passwords.copy-password')"
           v-if="password.password"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-          </svg> {{ $t('passwords.password') }}
+          <CopyIcon class="mr-2" />
+          {{ $t('passwords.password') }}
         </button>
         <button
           class="remove-btn"
@@ -172,14 +196,14 @@ const options = computed(() => ({
 }
 
 .card-avatar {
-  @apply  w-12 h-12 rounded-full
+  @apply w-12 h-12 rounded-full
           bg-gray-300 dark:bg-gray-700
           shadow-lg flex items-center justify-center
           text-xl;
 }
 
 .card-name {
-  @apply  focus:outline-none truncate
+  @apply focus:outline-none truncate
           text-xl font-medium leading-5
           text-gray-800 dark:text-white;
 }
@@ -188,14 +212,14 @@ button {
   @apply py-2 px-3 rounded-full leading-3 flex items-center text-xs;
 }
 .copy-btn {
-  @apply  text-gray-700 dark:text-gray-300
+  @apply text-gray-700 dark:text-gray-300
           bg-gray-100 dark:bg-gray-600 shadow
           hover:bg-gray-200 dark:hover:bg-gray-700;
 }
 
 .remove-btn {
-  @apply  text-red-700 bg-red-100 hover:bg-red-300
-          dark:bg-red-600 dark:text-red-100 dark:hover:bg-red-700
+  @apply text-red-700 bg-red-100 hover:bg-red-300
+          dark:bg-red-600 dark:text-red-100 dark:hover:bg-red-700;
 }
 
 .overlay {
