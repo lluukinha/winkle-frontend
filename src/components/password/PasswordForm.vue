@@ -122,12 +122,12 @@ defineExpose({ sendForm });
       </div>
       <div class="md:w-2/3 flex">
         <input
+          class="rounded-tr-none rounded-br-none"
           id="inline-full-login"
           type="search"
           v-model="password.login"
           :placeholder="$t('passwords.form.login-placeholder')"
           autocomplete="off"
-          aria-autocomplete="none"
         />
         <span
           class="span-button"
