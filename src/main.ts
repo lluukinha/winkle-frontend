@@ -10,6 +10,10 @@ import ContextMenu from '@imengyu/vue3-context-menu';
 import './styles/index.css';
 import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css';
 
+if (!!localStorage.master) {
+  localStorage.removeItem('master');
+}
+
 createApp(App)
   .use(Notifications)
   .use(i18n.element)
