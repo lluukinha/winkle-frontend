@@ -9,6 +9,7 @@ import DashboardContainer from '../../components/shared/DashboardContainer.vue';
 import WinkleButton from '../../components/shared/WinkleButton.vue';
 import FolderFilterDropdown from '../../components/password/FolderFilterDropdown.vue';
 import ImportPasswordsModal from '../../components/password/ImportPasswords/ImportPasswordsModal.vue';
+import ExportPasswordsModal from '../../components/password/ExportPasswords/ExportPasswordsModal.vue';
 import PasswordStore from '../../store/passwords/PasswordStore';
 import PasswordFolderToggle from '../../components/password/PasswordFolderToggle.vue';
 import CreateNew from '../../components/password/CreateNew.vue';
@@ -18,6 +19,7 @@ import ImportIcon from '../../components/icons/ImportIcon.vue';
 import SearchIcon from '../../components/icons/SearchIcon.vue';
 
 const isImportingPasswords: Ref<boolean> = ref(false);
+const isExportingPasswords: Ref<boolean> = ref(false);
 const editingPassword: Ref<IPassword | null> = ref(null);
 const filter: Ref<string> = ref('');
 const isShowingSortDropdown: Ref<boolean> = ref(false);
@@ -132,6 +134,19 @@ onMounted(() => PasswordStore.getAllData());
           v-if="isImportingPasswords"
           @close="isImportingPasswords = false"
           @save="() => {}"
+        />
+        <WinkleButton
+          size="sm"
+          class="mr-1 items-center md:flex"
+          @click="isExportingPasswords = !isExportingPasswords"
+          :title="'Export passwords'"
+        >
+          <ImportIcon class="rotate-180 mr-1" />
+          <span class="hidden md:block">Exportar senhas</span>
+        </WinkleButton>
+        <ExportPasswordsModal
+          v-if="isExportingPasswords"
+          @close="isExportingPasswords = false"
         />
       </div>
 
