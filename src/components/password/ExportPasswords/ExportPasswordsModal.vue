@@ -8,21 +8,21 @@ const emit = defineEmits(['close']);
 const exportToCsv = () => {
   const passwordsList: {
     name: string;
-    url: string;
     login: string;
     password: string;
     folder: string;
     description: string;
+    url: string;
   }[] = [];
 
   PasswordStore.passwordsList.value.forEach((password) => {
     const passwordElement = {
       name: password.name,
-      url: password.url,
       login: password.login,
       password: password.password,
       folder: password.folder.name,
       description: password.description,
+      url: password.url,
     };
     passwordsList.push(passwordElement);
   });
